@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Boid : MonoBehaviour {
-
+    
 	// Use this for initialization
 	void Start () {
 	
