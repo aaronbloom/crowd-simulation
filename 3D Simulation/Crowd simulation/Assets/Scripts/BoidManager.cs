@@ -15,7 +15,7 @@ public class BoidManager : MonoBehaviour {
                 random.Next(0, (int)EnvironmentManager.Bounds.x),
                 random.Next(0, (int)EnvironmentManager.Bounds.y),
                 random.Next(0, (int)EnvironmentManager.Bounds.z));
-            Instantiate(Resources.Load("Prefabs/CubeBoid"), transform.position + positionOffset, transform.rotation);
+            Instantiate(Resources.Load("Prefabs/CylinderBoid"), transform.position + positionOffset, transform.rotation);
         }
     }
 
