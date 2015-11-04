@@ -32,6 +32,25 @@ public class Boid : MonoBehaviour {
         return closeBoids;
     }
 
+    Vector3 Cohesion (List<Boid> boids)
+    {
+        Vector3 averagePosition = Vector3.zero;
+        foreach (Boid boid in boids)
+        {
+            averagePosition += boid.transform.position;
+        }
+        if (boids.Count > 0)
+        {
+            averagePosition /= boids.Count;
+            Vector3 aim = averagePosition - this.transform.position;
+            aim.Normalize();
+            aim *= this.maxSpeed;
+            Vector3 steeringDirection = aim - velocity;
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, maxForce);
+            return steeringDirection;
+        }
+        return Vector3.zero;
+    }
 
     Vector3 Alignment (List<Boid> boids)
     {
@@ -85,11 +104,13 @@ public class Boid : MonoBehaviour {
     void Update () {
         List<Boid> boids = findBoidsWithinView();
 
+        Vector3 cohesionDirection = Cohesion(boids);
         Vector3 seperationDirection = Separation(boids);
         Vector3 alignmentDirection = Alignment(boids);
 
         this.acceleration += seperationDirection;
         this.acceleration += alignmentDirection;
+        this.acceleration += cohesionDirection;
 
         this.velocity += acceleration;
         this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
