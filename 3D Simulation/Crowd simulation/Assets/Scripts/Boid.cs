@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Boid : MonoBehaviour {
 
     private float viewingDistance = 20;
+    private float minimumDistance = 5;
     public Vector3 velocity;
-    private float maxSpeed = 0.1f;
+    private Vector3 acceleration;
+    private float maxSpeed = 8.0f;
     private float maxForce = 0.05f;
     
 	// Use this for initialization
 	void Start () {
-        direction = Vector3.forward;
+        this.velocity = Vector3.zero;
 	}
 
     List<Boid> findBoidsWithinView()
@@ -50,8 +52,18 @@ public class Boid : MonoBehaviour {
         return Vector3.zero;
     }
 
+
+    // Update is called once per frame
     void Update () {
-        float step = speed * Time.deltaTime;
-        transform.position += this.direction * speed;
+        List<Boid> boids = findBoidsWithinView();
+
+        Vector3 alignmentDirection = Alignment(boids);
+
+        this.acceleration += alignmentDirection;
+
+        this.velocity += acceleration;
+        this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
+        this.transform.position += (this.velocity * Time.deltaTime);
+        this.acceleration = Vector3.zero; //reset acceleration
     }
 }
