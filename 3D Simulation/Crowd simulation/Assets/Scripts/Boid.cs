@@ -12,7 +12,7 @@ public class Boid : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        this.velocity = Vector3.zero;
+        this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
 	}
 
     List<Boid> findBoidsWithinView()
