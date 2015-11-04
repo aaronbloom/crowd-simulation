@@ -116,5 +116,8 @@ public class Boid : MonoBehaviour {
         this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
         this.transform.position += (this.velocity * Time.deltaTime);
         this.acceleration = Vector3.zero; //reset acceleration
+
+        //Set boid to face direction of travel
+        this.transform.rotation = Quaternion.LookRotation(this.velocity);
     }
 }
