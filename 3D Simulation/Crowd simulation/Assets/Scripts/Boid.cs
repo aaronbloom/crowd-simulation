@@ -52,13 +52,43 @@ public class Boid : MonoBehaviour {
         return Vector3.zero;
     }
 
+    Vector3 Separation (List<Boid> boids)
+    {
+        int count = 0;
+        Vector3 steeringDirection = Vector3.zero;
+        foreach (Boid boid in boids)
+        {
+            float distance = Vector3.Distance(this.transform.position, boid.transform.position);
+            if (distance < minimumDistance)
+            {
+                count++;
+                Vector3 difference = this.transform.position - boid.transform.position;
+                difference.Normalize();
+                difference /= distance; //weight by distance
+                steeringDirection += difference;
+            }
+        }
+        if (count > 0)
+        {
+            steeringDirection /= count;
+        }
+        if (steeringDirection.magnitude > 0)
+        {
+            steeringDirection.Normalize();
+            steeringDirection *= maxSpeed;
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.maxForce);
+        }
+        return steeringDirection;
+    }
 
     // Update is called once per frame
     void Update () {
         List<Boid> boids = findBoidsWithinView();
 
+        Vector3 seperationDirection = Separation(boids);
         Vector3 alignmentDirection = Alignment(boids);
 
+        this.acceleration += seperationDirection;
         this.acceleration += alignmentDirection;
 
         this.velocity += acceleration;
