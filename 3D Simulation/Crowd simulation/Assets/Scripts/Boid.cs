@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Boid : MonoBehaviour {
 
+    private EnvironmentManager environmentManager;
     private float viewingDistance = 20;
     private float minimumDistance = 5;
     public Vector3 velocity;
@@ -12,6 +13,7 @@ public class Boid : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        this.environmentManager = EnvironmentManager.Shared();
         this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
 	}
 
@@ -102,32 +104,34 @@ public class Boid : MonoBehaviour {
 
     Vector3 PlaneAvoidance ()
     {
-        //Just ground plane for now...
-        Plane groundBoundary = new Plane(Vector3.up, Vector3.zero);
-
-        //if really close proximity to a plane boundary
-        if(groundBoundary.GetDistanceToPoint(this.transform.position) < 5)
+        Plane[] boundaries = environmentManager.Boundaries;
+        Vector3 steeringDirection = Vector3.zero;
+        foreach (Plane boundary in boundaries)
         {
-            Vector3 steeringDirection = Vector3.up;
-            steeringDirection *= this.maxSpeed;
-            steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.maxForce);
-            return steeringDirection;
-        }
-
-        //if directly facing boundary and within reasonable distance from plane boundary
-        Ray direction = new Ray(this.transform.position, this.velocity);
-        float distance;
-        if (groundBoundary.Raycast(direction, out distance))
-        {
-            if(distance < 15)
+            //if really close proximity to a plane boundary
+            if (boundary.GetDistanceToPoint(this.transform.position) < 5)
             {
-                Vector3 steeringDirection = Vector3.up;
-                steeringDirection *= this.maxSpeed;
-                steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.maxForce);
-                return steeringDirection;
+                Vector3 avoidDirection = boundary.normal;
+                avoidDirection *= this.maxSpeed;
+                avoidDirection = Vector3.ClampMagnitude(avoidDirection, this.maxForce);
+                steeringDirection += avoidDirection;
+            }
+
+            //if directly facing boundary and within reasonable distance from plane boundary
+            Ray direction = new Ray(this.transform.position, this.velocity);
+            float distance;
+            if (boundary.Raycast(direction, out distance))
+            {
+                if (distance < 35) 
+                {
+                    Vector3 avoidDirection = boundary.normal;
+                    avoidDirection *= this.maxSpeed;
+                    avoidDirection = Vector3.ClampMagnitude(avoidDirection, this.maxForce);
+                    steeringDirection += avoidDirection;
+                }
             }
         }
-        return Vector3.zero;
+        return steeringDirection;
     }
 
     // Update is called once per frame
