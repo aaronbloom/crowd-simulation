@@ -12,7 +12,7 @@ public class Boid : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
-        this.behaviour = new FlockingBehaviour(this);
+        this.behaviour = new FlockingBehaviour(this, 20, 5);
 	}
 
     // Update is called once per frame

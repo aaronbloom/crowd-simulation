@@ -7,11 +7,13 @@ public class FlockingBehaviour : BoidBehaviour
 {
     private Boid boid;
     private EnvironmentManager environmentManager;
-    private float viewingDistance = 20;
-    private float minimumDistance = 5;
-    public FlockingBehaviour (Boid boid)
+    private float viewingDistance;
+    private float minimumDistance;
+    public FlockingBehaviour (Boid boid, float viewingDistance, float minimumDistance)
     {
         this.boid = boid;
+        this.viewingDistance = viewingDistance;
+        this.minimumDistance = minimumDistance;
         this.environmentManager = EnvironmentManager.Shared();
     }
 
@@ -40,7 +42,7 @@ public class FlockingBehaviour : BoidBehaviour
         foreach (Plane boundary in boundaries)
         {
             //if really close proximity to a plane boundary
-            if (boundary.GetDistanceToPoint(boid.transform.position) < 5)
+            if (boundary.GetDistanceToPoint(boid.transform.position) < this.minimumDistance)
             {
                 Vector3 avoidDirection = boundary.normal;
                 avoidDirection *= boid.maxSpeed;
