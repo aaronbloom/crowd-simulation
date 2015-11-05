@@ -100,6 +100,36 @@ public class Boid : MonoBehaviour {
         return steeringDirection;
     }
 
+    Vector3 PlaneAvoidance ()
+    {
+        //Just ground plane for now...
+        Plane groundBoundary = new Plane(Vector3.up, Vector3.zero);
+
+        //if really close proximity to a plane boundary
+        if(groundBoundary.GetDistanceToPoint(this.transform.position) < 5)
+        {
+            Vector3 steeringDirection = Vector3.up;
+            steeringDirection *= this.maxSpeed;
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.maxForce);
+            return steeringDirection;
+        }
+
+        //if directly facing boundary and within reasonable distance from plane boundary
+        Ray direction = new Ray(this.transform.position, this.velocity);
+        float distance;
+        if (groundBoundary.Raycast(direction, out distance))
+        {
+            if(distance < 15)
+            {
+                Vector3 steeringDirection = Vector3.up;
+                steeringDirection *= this.maxSpeed;
+                steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.maxForce);
+                return steeringDirection;
+            }
+        }
+        return Vector3.zero;
+    }
+
     // Update is called once per frame
     void Update () {
         List<Boid> boids = findBoidsWithinView();
@@ -107,10 +137,12 @@ public class Boid : MonoBehaviour {
         Vector3 cohesionDirection = Cohesion(boids);
         Vector3 seperationDirection = Separation(boids);
         Vector3 alignmentDirection = Alignment(boids);
+        Vector3 boundaryAvoidance = PlaneAvoidance();
 
         this.acceleration += seperationDirection;
         this.acceleration += alignmentDirection;
         this.acceleration += cohesionDirection;
+        this.acceleration += boundaryAvoidance;
 
         this.velocity += acceleration;
         this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
