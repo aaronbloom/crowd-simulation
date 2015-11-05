@@ -48,7 +48,7 @@ public class EnvironmentManager : MonoBehaviour {
         }
     }
 
-    // Return the static instance of this GameManager
+    // Return the static instance of this EnvironmentManager
     public static EnvironmentManager Shared()
     {
         return shared;
