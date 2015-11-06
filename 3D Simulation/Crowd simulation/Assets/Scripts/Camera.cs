@@ -17,6 +17,9 @@ public class Camera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.RotateAround(rotationCenter, Vector3.up, rotationSpeed * Time.deltaTime);
+        if (Input.anyKey)
+        {
+            transform.RotateAround(rotationCenter, Vector3.up, rotationSpeed * Time.deltaTime);
+        }
     }
 }
