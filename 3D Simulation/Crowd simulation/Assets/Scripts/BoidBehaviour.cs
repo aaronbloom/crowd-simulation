@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface BoidBehaviour
+public abstract class BoidBehaviour
 {
-    Vector3 updateAcceleration();
+    public abstract Vector3 updateAcceleration();
 }

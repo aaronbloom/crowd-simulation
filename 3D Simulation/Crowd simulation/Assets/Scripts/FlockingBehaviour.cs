@@ -17,7 +17,7 @@ public class FlockingBehaviour : BoidBehaviour
         this.environmentManager = EnvironmentManager.Shared();
     }
 
-    public Vector3 updateAcceleration ()
+    public override Vector3 updateAcceleration ()
     {
         List<Boid> boids = FindBoidsWithinView();
 
