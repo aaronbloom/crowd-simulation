@@ -9,6 +9,7 @@ public class FlockingBehaviour : BoidBehaviour
     private EnvironmentManager environmentManager;
     private float viewingDistance;
     private float minimumDistance;
+    private const float seperationFactor = 1.5f;
     public FlockingBehaviour (Boid boid, float viewingDistance, float minimumDistance)
     {
         this.boid = boid;
@@ -27,7 +28,7 @@ public class FlockingBehaviour : BoidBehaviour
         Vector3 boundaryAvoidance = PlaneAvoidance();
 
         Vector3 acceleration = Vector3.zero;
-        acceleration += seperationDirection;
+        acceleration += seperationDirection * seperationFactor;
         acceleration += alignmentDirection;
         acceleration += cohesionDirection;
         acceleration += boundaryAvoidance;
