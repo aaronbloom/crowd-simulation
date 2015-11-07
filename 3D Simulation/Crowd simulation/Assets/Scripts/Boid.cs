@@ -8,9 +8,10 @@ public class Boid : MonoBehaviour {
     private Vector3 acceleration;
     public float maxSpeed = 8.0f;
     public float maxForce = 0.05f;
-    
-	// Use this for initialization
-	void Start () {
+    private float visualRotationSpeed = 1f;
+
+    // Use this for initialization
+    void Start () {
         this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
         this.behaviour = new FlockingBehaviour(this, 20, 5);
 	}
@@ -25,6 +26,6 @@ public class Boid : MonoBehaviour {
         this.acceleration = Vector3.zero; //reset acceleration
 
         //Set boid to face direction of travel
-        this.transform.rotation = Quaternion.LookRotation(this.velocity);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(this.velocity), visualRotationSpeed * Time.deltaTime);
     }
 }
