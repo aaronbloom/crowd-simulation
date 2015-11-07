@@ -21,6 +21,7 @@ public class Boid : MonoBehaviour {
 
         this.velocity += acceleration;
         this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
+        this.velocity.y = 0;    //remove any tendency for the boid to want to move in the y axis (up/down)
         this.transform.position += (this.velocity * Time.deltaTime);
         this.acceleration = Vector3.zero; //reset acceleration
 
