@@ -5,6 +5,7 @@ public class BoidManager : MonoBehaviour {
 
     private EnvironmentManager EnvironmentManager;
     public int NumberOfBoids = 1;
+    private const int boidHeight = 2;
 
     private void SpawnBoids () {
         System.Random random = new System.Random();
@@ -13,7 +14,7 @@ public class BoidManager : MonoBehaviour {
         {
             Vector3 positionOffset = new Vector3(
                 random.Next(0, (int)EnvironmentManager.Bounds.x),
-                1,
+                boidHeight,
                 random.Next(0, (int)EnvironmentManager.Bounds.z));
             Instantiate(Resources.Load("Prefabs/CylinderBoid"), transform.position + positionOffset, transform.rotation);
         }
