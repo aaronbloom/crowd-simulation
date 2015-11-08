@@ -13,7 +13,7 @@ public class BoidManager : MonoBehaviour {
         {
             Vector3 positionOffset = new Vector3(
                 random.Next(0, (int)EnvironmentManager.Bounds.x),
-                random.Next(0, (int)EnvironmentManager.Bounds.y),
+                1,
                 random.Next(0, (int)EnvironmentManager.Bounds.z));
             Instantiate(Resources.Load("Prefabs/CylinderBoid"), transform.position + positionOffset, transform.rotation);
         }

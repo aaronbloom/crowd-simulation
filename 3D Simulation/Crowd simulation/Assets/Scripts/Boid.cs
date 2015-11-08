@@ -13,7 +13,7 @@ public class Boid : MonoBehaviour {
     // Use this for initialization
     void Start () {
         this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
-        this.behaviour = new FlockingBehaviour(this, 20, 5);
+        this.behaviour = new FlockingBehaviour(this, 10, 6);
 	}
 
     // Update is called once per frame
@@ -22,6 +22,7 @@ public class Boid : MonoBehaviour {
 
         this.velocity += acceleration;
         this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
+        this.velocity.y = 0;    //remove any tendency for the boid to want to move in the y axis (up/down)
         this.transform.position += (this.velocity * Time.deltaTime);
         this.acceleration = Vector3.zero; //reset acceleration
 
