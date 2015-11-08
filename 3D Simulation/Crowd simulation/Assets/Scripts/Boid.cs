@@ -27,6 +27,6 @@ public class Boid : MonoBehaviour {
         this.acceleration = Vector3.zero; //reset acceleration
 
         //Set boid to face direction of travel
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(this.velocity), visualRotationSpeed * Time.deltaTime);
+        this.transform.rotation = Quaternion.LookRotation(this.velocity);
     }
 }
