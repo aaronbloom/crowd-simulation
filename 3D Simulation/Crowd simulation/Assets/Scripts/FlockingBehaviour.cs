@@ -52,7 +52,7 @@ public class FlockingBehaviour : BoidBehaviour
             }
 
             //if directly facing boundary and within reasonable distance from plane boundary
-            Ray direction = new Ray(boid.transform.position, boid.velocity);
+            Ray direction = new Ray(boid.transform.position, boid.Velocity);
             float distance;
             if (boundary.Raycast(direction, out distance))
             {
@@ -98,7 +98,7 @@ public class FlockingBehaviour : BoidBehaviour
             Vector3 aim = averagePosition - boid.transform.position;
             aim.Normalize();
             aim *= boid.maxSpeed;
-            Vector3 steeringDirection = aim - boid.velocity;
+            Vector3 steeringDirection = aim - boid.Velocity;
             steeringDirection = Vector3.ClampMagnitude(steeringDirection, boid.maxForce);
             return steeringDirection;
         }
@@ -110,14 +110,14 @@ public class FlockingBehaviour : BoidBehaviour
         Vector3 averageHeading = Vector3.zero;
         foreach (Boid otherBoid in boids)
         {
-            averageHeading += otherBoid.velocity;
+            averageHeading += otherBoid.Velocity;
         }
         if (boids.Count > 0)
         {
             averageHeading /= boids.Count;
             averageHeading.Normalize();
             averageHeading *= boid.maxSpeed;
-            Vector3 steeringDirection = averageHeading - boid.velocity;
+            Vector3 steeringDirection = averageHeading - boid.Velocity;
             steeringDirection = Vector3.ClampMagnitude(steeringDirection, boid.maxForce);
             return steeringDirection;
         }
