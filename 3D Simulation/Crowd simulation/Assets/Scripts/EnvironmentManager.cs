@@ -24,8 +24,6 @@ public class EnvironmentManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        Bounds = new Vector3(100, 100, 100);
-        this.Boundaries = constructCuboidBoundary(this.Bounds, Vector3.zero);
     }
 
     // Update is called once per frame
@@ -35,6 +33,9 @@ public class EnvironmentManager : MonoBehaviour {
 
     // Setup the static instance of this EnvironmentManager
     private void Awake() {
+        Bounds = new Vector3(100, 100, 100);
+        this.Boundaries = constructCuboidBoundary(this.Bounds, Vector3.zero);
+
         // Set the 'shared' variable as this environment manager
         if (shared == null) {
             shared = this;
