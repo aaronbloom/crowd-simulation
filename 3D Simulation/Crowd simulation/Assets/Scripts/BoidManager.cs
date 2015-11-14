@@ -3,8 +3,9 @@ using System.Collections;
 
 public class BoidManager : MonoBehaviour {
 
-    private EnvironmentManager EnvironmentManager;
     public int NumberOfBoids = 1;
+
+    private EnvironmentManager EnvironmentManager;
     private const int boidHeight = 2;
 
     private void SpawnBoids () {

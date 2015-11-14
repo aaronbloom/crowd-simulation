@@ -9,7 +9,8 @@ public class FlockingBehaviour : BoidBehaviour
     private EnvironmentManager environmentManager;
     private float viewingDistance;
     private float minimumDistance;
-    private const float seperationFactor = 1.5f;
+    private readonly float seperationFactor = 1.5f;
+
     public FlockingBehaviour (Boid boid, float viewingDistance, float minimumDistance)
     {
         this.boid = boid;

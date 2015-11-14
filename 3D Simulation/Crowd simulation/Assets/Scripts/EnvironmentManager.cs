@@ -3,12 +3,13 @@ using System.Collections;
 
 public class EnvironmentManager : MonoBehaviour {
 
+    public Vector3 Bounds { get; }
+
     private static EnvironmentManager shared;
-    public Vector3 Bounds;
-    private Plane[] boundaries;
+    private Plane[] _boundaries;
     public Plane[] Boundaries
     {
-        get { return boundaries; }
+        get { return _boundaries; }
     }
 
     private Plane[] constructCuboidBoundary (Vector3 bounds, Vector3 origin)
@@ -20,13 +21,13 @@ public class EnvironmentManager : MonoBehaviour {
         boundaries[3] = new Plane(Vector3.down, origin + bounds);       //top
         boundaries[4] = new Plane(Vector3.back, origin + bounds);       //back
         boundaries[5] = new Plane(Vector3.left, origin + bounds);       //right
-
+        
         return boundaries;
     }
 
     // Use this for initialization
     void Start () {
-        this.boundaries = this.constructCuboidBoundary(this.Bounds, Vector3.zero);
+        this._boundaries = this.constructCuboidBoundary(this.Bounds, Vector3.zero);
 	}
 	
 	// Update is called once per frame

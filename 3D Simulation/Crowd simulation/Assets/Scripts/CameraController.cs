@@ -4,11 +4,12 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
 
-    private EnvironmentManager environmentManager;
-    public float strafeSpeed = 1f;
-    public float forwardBackwardSpeed = 80f;
-    public float lookSpeed = 2f;
+    private float strafeSpeed = 1f;
+    private float forwardBackwardSpeed = 80f;
+    private float lookSpeed = 2f;
 
+    private EnvironmentManager environmentManager;
+    
     // Use this for initialization
     void Start()
     {
