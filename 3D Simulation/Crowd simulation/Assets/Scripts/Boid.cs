@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class Boid : MonoBehaviour {
 
+    private Vector3 _velocity;
+    public Vector3 Velocity {
+        get { return _velocity; }
+    }
+
     private BoidBehaviour behaviour;
-    public Vector3 velocity;
     private Vector3 acceleration;
-    public float maxSpeed = 8.0f;
-    public float maxForce = 0.05f;
     private float visualRotationSpeed = 1f;
+    public static readonly float MaxSpeed = 8.0f;
+    public static readonly float MaxForce = 0.05f;
 
     // Use this for initialization
     void Start () {
-        this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
+        this._velocity = Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
         this.behaviour = new FlockingBehaviour(this, 10, 6);
 	}
 
@@ -20,13 +23,13 @@ public class Boid : MonoBehaviour {
     void Update () {
         this.acceleration += this.behaviour.updateAcceleration();
 
-        this.velocity += acceleration;
-        this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
-        this.velocity.y = 0;    //remove any tendency for the boid to want to move in the y axis (up/down)
-        this.transform.position += (this.velocity * Time.deltaTime);
+        this._velocity += acceleration;
+        this._velocity = Vector3.ClampMagnitude(this._velocity, MaxSpeed);
+        this._velocity.y = 0; //remove any tendency for the boid to want to move in the y axis (up/down)
+        this.transform.position += (this._velocity * Time.deltaTime);
         this.acceleration = Vector3.zero; //reset acceleration
 
         //Set boid to face direction of travel
-        this.transform.rotation = Quaternion.LookRotation(this.velocity);
+        this.transform.rotation = Quaternion.LookRotation(this._velocity);
     }
 }
