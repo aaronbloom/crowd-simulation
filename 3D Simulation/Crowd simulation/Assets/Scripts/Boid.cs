@@ -14,13 +14,13 @@ public class Boid : MonoBehaviour {
     public static readonly float MaxForce = 0.05f;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         this._velocity = Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
         this.behaviour = new FlockingBehaviour(this, 10, 6);
-	}
+    }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         this.acceleration += this.behaviour.updateAcceleration();
 
         this._velocity += acceleration;

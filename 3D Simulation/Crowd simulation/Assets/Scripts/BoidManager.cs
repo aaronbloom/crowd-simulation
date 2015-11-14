@@ -8,11 +8,10 @@ public class BoidManager : MonoBehaviour {
     private EnvironmentManager EnvironmentManager;
     private const int boidHeight = 2;
 
-    private void SpawnBoids () {
+    private void SpawnBoids() {
         System.Random random = new System.Random();
 
-        for (int i = 0; i < NumberOfBoids; i++)
-        {
+        for (int i = 0; i < NumberOfBoids; i++) {
             Vector3 positionOffset = new Vector3(
                 random.Next(0, (int)EnvironmentManager.Bounds.x),
                 boidHeight,
@@ -22,13 +21,13 @@ public class BoidManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         EnvironmentManager = FindObjectOfType(typeof(EnvironmentManager)) as EnvironmentManager;
         SpawnBoids();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 }

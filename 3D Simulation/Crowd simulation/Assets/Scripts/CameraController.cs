@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraController : MonoBehaviour
-{
+public class CameraController : MonoBehaviour {
 
     private float strafeSpeed = 1f;
     private float forwardBackwardSpeed = 80f;
     private float lookSpeed = 2f;
 
     private EnvironmentManager environmentManager;
-    
+
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         this.environmentManager = EnvironmentManager.Shared();
         //setup initial camera view
         Vector3 environmentCenter = (this.environmentManager.Bounds / 2) + this.environmentManager.transform.position;
@@ -20,40 +18,30 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.W)) //forward
-        {
+    void Update() {
+        if (Input.GetKey(KeyCode.W)) { //forward
             transform.Translate(Vector3.up * strafeSpeed);
         }
-        if (Input.GetKey(KeyCode.S)) //back
-        {
+        if (Input.GetKey(KeyCode.S)) { //back
             transform.Translate(Vector3.down * strafeSpeed);
         }
-        if (Input.GetKey(KeyCode.A)) //left strafe
-        {
+        if (Input.GetKey(KeyCode.A)) { //left strafe
             transform.Translate(Vector3.left * strafeSpeed);
         }
-        if (Input.GetKey(KeyCode.D)) //right strafe
-        {
+        if (Input.GetKey(KeyCode.D)) { //right strafe
             transform.Translate(Vector3.right * strafeSpeed);
         }
 
         float mouseWheelChange = Input.GetAxis("Mouse ScrollWheel");
-        if (mouseWheelChange != 0)
-        {
-            if (mouseWheelChange > 0)
-            {
+        if (mouseWheelChange != 0) {
+            if (mouseWheelChange > 0) {
                 transform.Translate(Vector3.forward * forwardBackwardSpeed * mouseWheelChange);
-            }
-            else
-            {
+            } else {
                 transform.Translate(Vector3.forward * forwardBackwardSpeed * mouseWheelChange);
             }
         }
 
-        if (Input.GetMouseButton(2)) //middle mouse
-        {
+        if (Input.GetMouseButton(2)) { //middle mouse
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 mousePoint = ray.GetPoint(0.0f);
 
