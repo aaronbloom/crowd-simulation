@@ -13,23 +13,39 @@ public class Boid : MonoBehaviour {
     public static readonly float MaxSpeed = 8.0f;
     public static readonly float MaxForce = 0.05f;
 
-    // Use this for initialization
     void Start() {
         this._velocity = Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
         this.behaviour = new FlockingBehaviour(this, 10, 6);
     }
 
-    // Update is called once per frame
     void Update() {
-        this.acceleration += this.behaviour.updateAcceleration();
+        calculateNewPosition();
+        resetAcceleration();
+        faceTravelDirection();
+    }
 
-        this._velocity += acceleration;
-        this._velocity = Vector3.ClampMagnitude(this._velocity, MaxSpeed);
-        this._velocity.y = 0; //remove any tendency for the boid to want to move in the y axis (up/down)
+    private void calculateNewPosition() {
+        this.acceleration = calculateAcceleration(this.acceleration);
+        this._velocity = calculateVelocity(this._velocity);
         this.transform.position += (this._velocity * Time.deltaTime);
-        this.acceleration = Vector3.zero; //reset acceleration
+    }
 
-        //Set boid to face direction of travel
+    private Vector3 calculateAcceleration(Vector3 acceleration) {
+        return acceleration += this.behaviour.updateAcceleration();
+    }
+
+    private Vector3 calculateVelocity(Vector3 velocity) {
+        velocity += acceleration;
+        velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
+        velocity.y = 0;
+        return velocity;
+    }
+
+    private void resetAcceleration() {
+        this.acceleration = Vector3.zero;
+    }
+
+    private void faceTravelDirection() {
         this.transform.rotation = Quaternion.LookRotation(this._velocity);
     }
 }

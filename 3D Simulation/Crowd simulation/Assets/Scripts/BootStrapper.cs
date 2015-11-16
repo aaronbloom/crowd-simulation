@@ -2,6 +2,10 @@
 
 class BootStrapper : MonoBehaviour {
 
+    private static readonly string PrefabFilepath = "Prefabs/";
+    private static readonly string Camera = "Camera";
+
+
     //System properties
     int boidPopulation = 100;
 
@@ -15,17 +19,17 @@ class BootStrapper : MonoBehaviour {
     }
 
     void Start() {
-        initialise("Camera");
+        initialise(Camera);
         boidManager = new BoidManager(boidPopulation);
         boidManager.SpawnBoids();
     }
 
     static void initialise(string prefabName) {
-        MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + prefabName));
+        MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
     }
 
     static void initialise(string prefabName, Vector3 position, Quaternion rotation) {
-        MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + prefabName), position, rotation);
+        MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
     }
 
 }
