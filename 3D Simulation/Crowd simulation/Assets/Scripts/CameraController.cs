@@ -23,81 +23,65 @@ public class CameraController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         checkKeypress();
         checkMouseScroll();
         checkForMouseMovement();
     }
 
-    private void checkKeypress()
-    {
-        if (isKeyInput(Up))
-        {
+    private void checkKeypress() {
+        if (isKeyInput(Up)) {
             moveCamera(Vector3.up);
         }
-        if (isKeyInput(Down))
-        {
+        if (isKeyInput(Down)) {
             moveCamera(Vector3.down);
         }
-        if (isKeyInput(Left))
-        {
+        if (isKeyInput(Left)) {
             moveCamera(Vector3.left);
         }
-        if (isKeyInput(Right))
-        {
+        if (isKeyInput(Right)) {
             moveCamera(Vector3.right);
         }
     }
 
-    private void moveCamera(Vector3 direction)
-    {
+    private void moveCamera(Vector3 direction) {
         transform.Translate(direction * strafeSpeed);
     }
 
-    private static bool isKeyInput(KeyCode keyCode)
-    {
+    private static bool isKeyInput(KeyCode keyCode) {
         return Input.GetKey(keyCode);
     }
 
-    private void checkMouseScroll()
-    {
+    private void checkMouseScroll() {
         float mouseWheelChange = Input.GetAxis(Scrollwheel);
-        if (mouseWheelChange != 0)
-        {
+        if (mouseWheelChange != 0) {
             transform.Translate(Vector3.forward * forwardBackwardSpeed * mouseWheelChange);
         }
     }
 
-    private void checkForMouseMovement()
-    {
-        if (isMiddleMousePressed())
-        {
+    private void checkForMouseMovement() {
+        if (isMiddleMousePressed()) {
             calculateRoationFromMouseLocation();
 
         }
     }
 
-    private void calculateRoationFromMouseLocation()
-    {
+    private void calculateRoationFromMouseLocation() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 mousePoint = ray.GetPoint(0.0f);
         Quaternion targetRotation = rotationToMouseLocation(mousePoint);
         transform.rotation = rotateTowardsMouse(targetRotation);
     }
 
-    private static bool isMiddleMousePressed()
-    {
+    private static bool isMiddleMousePressed() {
         return Input.GetMouseButton(MiddleMouse);
     }
 
-    private Quaternion rotationToMouseLocation(Vector3 mousePoint)
-    {
+    private Quaternion rotationToMouseLocation(Vector3 mousePoint) {
         return Quaternion.LookRotation(mousePoint - transform.position);
     }
 
-    private Quaternion rotateTowardsMouse(Quaternion targetRotation)
-    {
+    private Quaternion rotateTowardsMouse(Quaternion targetRotation) {
         return Quaternion.Slerp(transform.rotation, targetRotation, lookSpeed * Time.deltaTime);
     }
 }

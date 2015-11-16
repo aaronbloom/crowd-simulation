@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BoidManager {   
-    
+public class BoidManager {
+
     private const int boidHeight = 2;
     private static readonly string BoidPrefab = "Prefabs/CylinderBoid";
 
@@ -18,21 +18,18 @@ public class BoidManager {
 
     public void SpawnBoids() {
         System.Random random = new System.Random();
-        for (int i = 0; i < NumberOfBoids; i++)
-        {
+        for (int i = 0; i < NumberOfBoids; i++) {
             spawnBoid(random);
         }
     }
 
-    private void spawnBoid(System.Random random)
-    {
+    private void spawnBoid(System.Random random) {
         Vector3 positionOffset = generateRandomPosition(random);
         Vector3 position = Vector3.zero + positionOffset;
         Object.Instantiate(Resources.Load(BoidPrefab), position, rotation);
     }
 
-    private Vector3 generateRandomPosition(System.Random random)
-    {
+    private Vector3 generateRandomPosition(System.Random random) {
         Vector3 environmentBounds = EnvironmentManager.Bounds;
         int xLimit = (int)environmentBounds.x;
         int zLimit = (int)environmentBounds.z;

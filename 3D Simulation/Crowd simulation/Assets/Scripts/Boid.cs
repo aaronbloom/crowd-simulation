@@ -18,40 +18,34 @@ public class Boid : MonoBehaviour {
         this.behaviour = new FlockingBehaviour(this, 10, 6);
     }
 
-    void Update()
-    {
+    void Update() {
         calculateNewPosition();
         resetAcceleration();
         faceTravelDirection();
     }
 
-    private void calculateNewPosition()
-    {
+    private void calculateNewPosition() {
         this.acceleration = calculateAcceleration(this.acceleration);
         this._velocity = calculateVelocity(this._velocity);
         this.transform.position += (this._velocity * Time.deltaTime);
     }
 
-    private Vector3 calculateAcceleration(Vector3 acceleration)
-    {
+    private Vector3 calculateAcceleration(Vector3 acceleration) {
         return acceleration += this.behaviour.updateAcceleration();
     }
 
-    private Vector3 calculateVelocity(Vector3 velocity)
-    {
+    private Vector3 calculateVelocity(Vector3 velocity) {
         velocity += acceleration;
         velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
         velocity.y = 0;
         return velocity;
     }
 
-    private void resetAcceleration()
-    {
+    private void resetAcceleration() {
         this.acceleration = Vector3.zero;
     }
 
-    private void faceTravelDirection()
-    {
+    private void faceTravelDirection() {
         this.transform.rotation = Quaternion.LookRotation(this._velocity);
     }
 }
