@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System;
 
 public class FlockingBehaviour : BoidBehaviour {
+
+    private static readonly string BoidTag = "Boid";
+
     private Boid boid;
     private EnvironmentManager environmentManager;
     private float viewingDistance;
@@ -34,35 +37,8 @@ public class FlockingBehaviour : BoidBehaviour {
         return acceleration;
     }
 
-    private Vector3 PlaneAvoidance() {
-        Plane[] boundaries = environmentManager.Boundaries;
-        Vector3 steeringDirection = Vector3.zero;
-        foreach (Plane boundary in boundaries) {
-            //if really close proximity to a plane boundary
-            if (boundary.GetDistanceToPoint(boid.transform.position) < this.minimumDistance) {
-                Vector3 avoidDirection = boundary.normal;
-                avoidDirection *= Boid.MaxSpeed;
-                avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
-                steeringDirection += avoidDirection;
-            }
-
-            //if directly facing boundary and within reasonable distance from plane boundary
-            Ray direction = new Ray(boid.transform.position, boid.Velocity);
-            float distance;
-            if (boundary.Raycast(direction, out distance)) {
-                if (distance < 35) {
-                    Vector3 avoidDirection = boundary.normal;
-                    avoidDirection *= Boid.MaxSpeed;
-                    avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
-                    steeringDirection += avoidDirection;
-                }
-            }
-        }
-        return steeringDirection;
-    }
-
     private List<Boid> FindBoidsWithinView() {
-        GameObject[] boids = GameObject.FindGameObjectsWithTag("Boid");
+        GameObject[] boids = GameObject.FindGameObjectsWithTag(BoidTag);
         List<Boid> closeBoids = new List<Boid>();
 
         foreach (GameObject otherBoid in boids) {
@@ -92,6 +68,35 @@ public class FlockingBehaviour : BoidBehaviour {
         return Vector3.zero;
     }
 
+    private Vector3 Separation(List<Boid> boids)
+    {
+        int count = 0;
+        Vector3 steeringDirection = Vector3.zero;
+        foreach (Boid otherBoid in boids)
+        {
+            float distance = Vector3.Distance(boid.transform.position, otherBoid.transform.position);
+            if (distance < minimumDistance)
+            {
+                count++;
+                Vector3 difference = boid.transform.position - otherBoid.transform.position;
+                difference.Normalize();
+                difference /= distance; //weight by distance
+                steeringDirection += difference;
+            }
+        }
+        if (count > 0)
+        {
+            steeringDirection /= count;
+        }
+        if (steeringDirection.magnitude > 0)
+        {
+            steeringDirection.Normalize();
+            steeringDirection *= Boid.MaxSpeed;
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, Boid.MaxForce);
+        }
+        return steeringDirection;
+    }
+
     private Vector3 Alignment(List<Boid> boids) {
         Vector3 averageHeading = Vector3.zero;
         foreach (Boid otherBoid in boids) {
@@ -108,26 +113,34 @@ public class FlockingBehaviour : BoidBehaviour {
         return Vector3.zero;
     }
 
-    private Vector3 Separation(List<Boid> boids) {
-        int count = 0;
+    private Vector3 PlaneAvoidance()
+    {
+        Plane[] boundaries = environmentManager.Boundaries;
         Vector3 steeringDirection = Vector3.zero;
-        foreach (Boid otherBoid in boids) {
-            float distance = Vector3.Distance(boid.transform.position, otherBoid.transform.position);
-            if (distance < minimumDistance) {
-                count++;
-                Vector3 difference = boid.transform.position - otherBoid.transform.position;
-                difference.Normalize();
-                difference /= distance; //weight by distance
-                steeringDirection += difference;
+        foreach (Plane boundary in boundaries)
+        {
+            //if really close proximity to a plane boundary
+            if (boundary.GetDistanceToPoint(boid.transform.position) < this.minimumDistance)
+            {
+                Vector3 avoidDirection = boundary.normal;
+                avoidDirection *= Boid.MaxSpeed;
+                avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
+                steeringDirection += avoidDirection;
             }
-        }
-        if (count > 0) {
-            steeringDirection /= count;
-        }
-        if (steeringDirection.magnitude > 0) {
-            steeringDirection.Normalize();
-            steeringDirection *= Boid.MaxSpeed;
-            steeringDirection = Vector3.ClampMagnitude(steeringDirection, Boid.MaxForce);
+
+            //if directly facing boundary and within reasonable distance from plane boundary
+            Ray direction = new Ray(boid.transform.position, boid.Velocity);
+            float distance;
+            if (boundary.Raycast(direction, out distance))
+            {
+                if (distance < 35)
+                {
+                    Vector3 avoidDirection = boundary.normal;
+                    avoidDirection *= Boid.MaxSpeed;
+                    avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
+                    steeringDirection += avoidDirection;
+                }
+            }
         }
         return steeringDirection;
     }
