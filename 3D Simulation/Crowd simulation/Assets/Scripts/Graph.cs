@@ -9,33 +9,41 @@ public class Graph {
         this.Nodes = nodes;
     }
 
-    public static Graph constructGraph(Environment environment) {
-        //work out width and height of
+    public static Graph ConstructGraph(Environment environment) {
         Vector2 dimensions = environment.GetFloorDimentions();
         int graphWidthInNodes = (int) dimensions.x;
         int graphHeightInNodes = (int) dimensions.y;
 
-        //loop through and generate nodes
+        List<Node> nodes = generateLatticeGraph(graphWidthInNodes, graphHeightInNodes);
+
+        return new Graph(nodes);
+    }
+
+    private static List<Node> generateNodeGraph(int width, int height) {
         List<Node> nodes = new List<Node>();
-        for (int a = 0; a < graphWidthInNodes; a++) {
-            for (int b = 0; b < graphHeightInNodes; b++) {
+        for (int a = 0; a < width; a++) {
+            for (int b = 0; b < height; b++) {
                 nodes.Add(new Node(new Vector3(a, 0, b)));
             }
         }
+        return nodes;
+    }
 
-        //loop through and add transitions between nodes
-        for (int a = 0; a < graphWidthInNodes; a++) {
-            for (int b = 0; b < graphHeightInNodes; b++) {
-                if(a + 1 < graphHeightInNodes) { //node to the right
+    private static List<Node> generateLatticeGraph(int width, int height) {
+        List<Node> nodes = generateNodeGraph(width, height);
+
+        //only need to look right and down per node to constuct full lattice
+        for (int a = 0; a < width; a++) {
+            for (int b = 0; b < height; b++) {
+                if (a + 1 < width) { //node to the right
                     nodes[a * b].addTransition(nodes[(a + 1) * b]);
                 }
-                if (a + 1 < graphHeightInNodes) { //node underneath
+                if (a + 1 < height) { //node underneath
                     nodes[a * b].addTransition(nodes[(a + 1) * b]);
                 }
             }
         }
-
-        return new Graph(nodes);
+        return nodes;
     }
 
 }
