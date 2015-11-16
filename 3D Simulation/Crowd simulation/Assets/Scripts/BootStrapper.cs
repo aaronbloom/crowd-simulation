@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 
-    class Bootstrapper : MonoBehaviour {
+class Bootstrapper : MonoBehaviour {
 
-        //System properties
-        int boidPopulation = 100;
+    //System properties
+    int boidPopulation = 100;
 
-        //System Fields
-        private BoidManager boidManager;
+    //System Fields
+    private BoidManager boidManager;
+    private EnvironmentManager environmentManager;
 
-        void Awake() {
-
-        }
-
-        void Start() {
-            boidManager = new BoidManager(boidPopulation);
-            boidManager.SpawnBoids();
-        }
-
+    void Awake() {
+        environmentManager = new EnvironmentManager();
     }
+
+    void Start() {
+        boidManager = new BoidManager(boidPopulation);
+        boidManager.SpawnBoids();
+    }
+
+}
 

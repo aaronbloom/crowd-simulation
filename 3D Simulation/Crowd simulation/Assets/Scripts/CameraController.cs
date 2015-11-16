@@ -13,8 +13,7 @@ public class CameraController : MonoBehaviour {
     void Start() {
         this.environmentManager = EnvironmentManager.Shared();
         //setup initial camera view
-        Vector3 environmentCenter = (this.environmentManager.Bounds / 2) + this.environmentManager.transform.position;
-        transform.LookAt(environmentCenter);
+        transform.LookAt(environmentManager.EnvironmentCenter);
     }
 
     // Update is called once per frame
