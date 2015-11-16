@@ -8,6 +8,7 @@ public class Node {
 
     public Node (Vector3 position) {
         this.Position = position;
+        this.Transitions = new List<Transition>();
     }
 
     public Node(Vector3 position, List<Transition> transitions) {

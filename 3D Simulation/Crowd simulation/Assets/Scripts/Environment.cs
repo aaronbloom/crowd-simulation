@@ -17,6 +17,7 @@ public class Environment {
         Origin = Vector3.zero;
         Bounds = new Vector3(100, 100, 100);
         this.Boundaries = constructCuboidBoundary(this.Bounds, Origin);
+        this.graph = Graph.constructGraph(this);
     }
 
     private Plane[] constructCuboidBoundary(Vector3 bounds, Vector3 origin) {
