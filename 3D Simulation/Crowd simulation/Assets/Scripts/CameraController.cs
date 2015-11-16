@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start() {
         this.environmentManager = EnvironmentManager.Shared();
-        transform.LookAt(environmentManager.EnvironmentCenter);
+        transform.LookAt(environmentManager.CurrentEnvironment.EnvironmentCenter);
     }
 
     // Update is called once per frame
