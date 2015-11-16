@@ -20,6 +20,10 @@ public class Environment {
         this.graph = Graph.constructGraph(this);
     }
 
+    public Vector2 GetFloorDimentions() {
+        return new Vector2(Bounds.x - Origin.x, Bounds.z - Origin.z);
+    }
+
     private Plane[] constructCuboidBoundary(Vector3 bounds, Vector3 origin) {
         Plane[] boundaries = new Plane[6];
         boundaries[0] = new Plane(Vector3.up, origin);                  //bottom (ground) plane

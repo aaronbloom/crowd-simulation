@@ -10,9 +10,10 @@ public class Graph {
     }
 
     public static Graph constructGraph(Environment environment) {
-        //work out width and height of 
-        int graphWidthInNodes = (int) (environment.Bounds.x - environment.Origin.x);
-        int graphHeightInNodes = (int) (environment.Bounds.z - environment.Origin.z);
+        //work out width and height of
+        Vector2 dimensions = environment.GetFloorDimentions();
+        int graphWidthInNodes = (int) dimensions.x;
+        int graphHeightInNodes = (int) dimensions.y;
 
         //loop through and generate nodes
         List<Node> nodes = new List<Node>();
