@@ -1,14 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnvironmentManager : MonoBehaviour {
+public class EnvironmentManager {
 
     public Vector3 Bounds { get; private set; }
+    public Plane[] Boundaries { get; private set; }
+    public Vector3 Origin { get; private set; }
+    public Vector3 EnvironmentCenter {
+        get {
+            return (Bounds / 2) + Origin;
+        }
+    }
 
     private static EnvironmentManager shared;
 
-    public Plane[] Boundaries { get; private set; }
- 
+    // Setup the static instance of this EnvironmentManager
+    public EnvironmentManager() {
+        initSingleton();
+        Origin = Vector3.zero;
+        Bounds = new Vector3(100, 100, 100);
+        this.Boundaries = constructCuboidBoundary(this.Bounds, Origin);
+    }
+
+    private void initSingleton() {
+        // Set the 'shared' variable as this environment manager
+        if (shared == null) {
+            shared = this;
+        } else {
+            throw new System.InvalidOperationException("Singleton already setup");
+        }
+    }
+
+    // Return the static instance of this EnvironmentManager
+    public static EnvironmentManager Shared() {
+        return shared;
+    }
 
     private Plane[] constructCuboidBoundary(Vector3 bounds, Vector3 origin) {
         Plane[] boundaries = new Plane[6];
@@ -22,30 +48,7 @@ public class EnvironmentManager : MonoBehaviour {
         return boundaries;
     }
 
-    // Use this for initialization
-    void Start() {
-    }
 
-    // Update is called once per frame
-    void Update() {
 
-    }
 
-    // Setup the static instance of this EnvironmentManager
-    private void Awake() {
-        Bounds = new Vector3(100, 100, 100);
-        this.Boundaries = constructCuboidBoundary(this.Bounds, Vector3.zero);
-
-        // Set the 'shared' variable as this environment manager
-        if (shared == null) {
-            shared = this;
-        } else {
-            Destroy(this);
-        }
-    }
-
-    // Return the static instance of this EnvironmentManager
-    public static EnvironmentManager Shared() {
-        return shared;
-    }
 }
