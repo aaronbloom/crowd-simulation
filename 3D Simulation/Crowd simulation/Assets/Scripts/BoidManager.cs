@@ -30,7 +30,7 @@ public class BoidManager {
     }
 
     private Vector3 generateRandomPosition(System.Random random) {
-        Vector3 environmentBounds = EnvironmentManager.Bounds;
+        Vector3 environmentBounds = EnvironmentManager.CurrentEnvironment.Bounds;
         int xLimit = (int)environmentBounds.x;
         int zLimit = (int)environmentBounds.z;
 

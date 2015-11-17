@@ -135,7 +135,7 @@ public class FlockingBehaviour : BoidBehaviour {
     }
 
     private Vector3 PlaneAvoidance() {
-        Plane[] boundaries = environmentManager.Boundaries;
+        Plane[] boundaries = environmentManager.CurrentEnvironment.Boundaries;
         Vector3 steeringDirection = Vector3.zero;
         foreach (Plane boundary in boundaries) {
             //if really close proximity to a plane boundary
