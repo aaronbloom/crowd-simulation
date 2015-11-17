@@ -65,13 +65,13 @@ class Path {
                     return new Path(convertParentageToList(parents, goalNode));
                 }
                 //calculate heuristics for candiate node
-                float g = gScores[mostPromisingNode] + distanceBetweenNodes(candidatePromisingNode, mostPromisingNode);
-                float h = distanceBetweenNodes(goalNode, candidatePromisingNode);
-                float f = gScores[candidatePromisingNode] + hScores[candidatePromisingNode];
+                float candidateG = calculateG(mostPromisingNode, candidatePromisingNode, gScores);
+                float candidateH = calculateH(goalNode, candidatePromisingNode);
+                float candidateF = calculateF(candidatePromisingNode, gScores, hScores);
                 //check this is the best route we know to the candidate
-                if (openSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < f) {
+                if (isBetterOpenPath(openSet, fScores, candidatePromisingNode, candidateF)) {
                     //skip, already better path for this node in open list
-                } else if (closedSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < f) {
+                } else if (isBetterClosedPath(closedSet, fScores, candidatePromisingNode, candidateF)) {
                     //skip, already better path for this node in closed list
                 } else {
                     //this is the best route to the candidate node
@@ -82,16 +82,36 @@ class Path {
                     //add to open set
                     openSet.Add(candidatePromisingNode);
                     //update stored node heuristics
-                    gScores[candidatePromisingNode] = g;
-                    hScores[candidatePromisingNode] = h;
-                    fScores[candidatePromisingNode] = f;
+                    gScores[candidatePromisingNode] = candidateG;
+                    hScores[candidatePromisingNode] = candidateH;
+                    fScores[candidatePromisingNode] = candidateF;
                 }
             }
             //all candidates processed, close node
             closedSet.Add(mostPromisingNode);
         }
-        throw new Exception("Could not find goal");
+        throw new InvalidOperationException("Specified goalNode was not in the same navigational Graph as startNode");
     }
+
+    private static bool isBetterOpenPath(List<Node> openSet, Dictionary<Node, float> fScores, Node candidatePromisingNode, float candidateF) {
+        return openSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < candidateF;
+    }
+    private static bool isBetterClosedPath(List<Node> closedSet, Dictionary<Node, float> fScores, Node candidatePromisingNode, float candidateF) {
+        return closedSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < f;
+    }
+
+    private static float calculateG(Node mostPromisingNode, Node candidatePromisingNode, Dictionary<Node, float> gScores) {
+        return gScores[mostPromisingNode] + distanceBetweenNodes(candidatePromisingNode, mostPromisingNode);
+    }
+
+    private static float calculateH(Node goalNode, Node candidatePromisingNode) {
+        return distanceBetweenNodes(goalNode, candidatePromisingNode);
+    }
+
+    private static float calculateF(Node candidatePromisingNode, Dictionary<Node, float> gScores, Dictionary<Node, float> hScores) {
+        return gScores[candidatePromisingNode] + hScores[candidatePromisingNode];
+    }
+
 
     //Convert Dictionary Linkages to Linear Ordered List
     private static List<Node> convertParentageToList(Dictionary<Node, Node> childParent, Node goal) {
