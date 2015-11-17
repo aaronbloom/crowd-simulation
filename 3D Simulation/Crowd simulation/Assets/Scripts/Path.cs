@@ -60,7 +60,7 @@ class Path {
             //Process Nodes which most Promising Node connects to
             foreach (var candidatePromisingNode in mostPromisingNode.TransitionsTo) {
                 //See if we're at our destination
-                if (candidatePromisingNode == goalNode) {#
+                if (candidatePromisingNode == goalNode) {
                     //return the path to the goal from start
                     return new Path(convertParentageToList(parents, goalNode));
                 }
@@ -90,8 +90,7 @@ class Path {
             //all candidates processed, close node
             closedSet.Add(mostPromisingNode);
         }
-        //probably should throw exception here.
-        return new Path(convertParentageToList(parents, goalNode));
+        throw new Exception("Could not find goal");
     }
 
     //Convert Dictionary Linkages to Linear Ordered List
