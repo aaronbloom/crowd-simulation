@@ -14,7 +14,7 @@ public class Node {
 
     public Node (Vector3 position) {
         this.Position = position;
-        this.Transitions = new List<Transition>();
+        this.Transitions = new Dictionary<Node, Transition>();
     }
 
     public Node(Vector3 position, Dictionary<Node, Transition> transitions) {
