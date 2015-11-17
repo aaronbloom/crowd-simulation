@@ -37,10 +37,10 @@ public class Graph {
         for (int a = 0; a < width; a++) {
             for (int b = 0; b < height; b++) {
                 if (a + 1 < width) { //node to the right
-                    nodes[a * b].addTransition(nodes[(a + 1) * b]);
+                    nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
                 }
-                if (a + 1 < height) { //node underneath
-                    nodes[a * b].addTransition(nodes[(a + 1) * b]);
+                if (b + 1 < height) { //node underneath
+                    nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
                 }
             }
         }

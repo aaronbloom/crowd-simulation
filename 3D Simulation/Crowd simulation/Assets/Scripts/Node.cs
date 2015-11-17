@@ -17,7 +17,7 @@ public class Node {
     }
 
     public void addTransition(Node target) {
-        if (hasTransition(target)) {
+        if (!hasTransition(target)) {
             var transition = new Transition(this, target);
             target.Transitions.Add(transition);
             Transitions.Add(transition);
