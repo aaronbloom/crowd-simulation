@@ -32,7 +32,13 @@ class Path {
         this.nodes = nodes;
     }
 
-    public static Path Navigate(Node startNode, Node goalNode) {
+    public List<Node> RemainingNodes {
+        get {
+            return nodes;
+        }
+    }
+
+    public static Path Navigate(Graph graph, Node startNode, Node goalNode) {
 
         List<Node> closedSet = new List<Node>();
         List<Node> openSet = new List<Node>();
@@ -45,6 +51,11 @@ class Path {
         Dictionary<Node, float> gScores = new Dictionary<Node, float>();
         Dictionary<Node, float> hScores = new Dictionary<Node, float>();
 
+        foreach(Node node in graph.Nodes) {
+            fScores.Add(node, 1);
+            gScores.Add(node, 1);
+            hScores.Add(node, 1);
+        }
         // <Node,Node> <child,parent>
         Dictionary<Node, Node> parents = new Dictionary<Node, Node>();  
 
@@ -62,6 +73,7 @@ class Path {
                 //See if we're at our destination
                 if (candidatePromisingNode == goalNode) {
                     //return the path to the goal from start
+                    parents.Add(candidatePromisingNode, mostPromisingNode);
                     return new Path(convertParentageToList(parents, goalNode));
                 }
                 //calculate heuristics for candiate node

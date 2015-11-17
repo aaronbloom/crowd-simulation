@@ -19,6 +19,19 @@ public class Graph {
         return new Graph(nodes);
     }
 
+    public Node FindClosestNode (Vector3 position) {
+        Node closestFound = null;
+        float closestDistance = float.MaxValue;
+        foreach (Node node in Nodes) {
+            float currentDistance = Vector3.Distance(position, node.Position);
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                closestFound = node;
+            }
+        }
+        return closestFound;
+    }
+
     private static List<Node> generateNodeGraph(int width, int height, float nodesPerMeter) {
         List<Node> nodes = new List<Node>();
         for (int a = 0; a < width; a++) {
@@ -45,6 +58,16 @@ public class Graph {
             }
         }
         return nodes;
+    }
+
+    public void DrawGraphGizmo() {
+        Gizmos.color = Color.blue;
+        foreach (Node node in Nodes) {
+            Gizmos.DrawSphere(node.Position, 1);
+            foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
+                Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
+            }
+        }
     }
 
 }
