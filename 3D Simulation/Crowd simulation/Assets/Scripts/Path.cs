@@ -3,38 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-class Path {
-
-    private List<Node> nodes;
-    //Removes the next node, returning it
-    public Node PopNode {
-        get {
-            Node n = PeakNode;
-            nodes.Remove(n);
-            return n;
-        }
-    }
-    //Returns the next node
-    public Node PeakNode {
-        get {
-            return nodes[0];
-        }
-    }
-    //Returns the Goal Node
-    public Node GoalNode {
-        get {
-            return nodes[nodes.Count - 1];
-        }
-    }
+class Path : Graph {
 
     //Constructs Path from ordered node list
-    public Path(List<Node> nodes) {
-        this.nodes = nodes;
+    public Path(List<Node> nodes) : base(nodes) {
     }
 
+    //TODO: Refactor out. Replace with Graph.Nodes    #!#    #!#    #!#    #!#
     public List<Node> RemainingNodes {
         get {
-            return nodes;
+            return Nodes;
         }
     }
 
@@ -88,7 +66,7 @@ class Path {
                 } else {
                     //this is the best route to the candidate node
                     //remove old entries
-                    if (!parents.ContainsKey(candidatePromisingNode)) parents.Remove(candidatePromisingNode);
+                    if (parents.ContainsKey(candidatePromisingNode)) parents.Remove(candidatePromisingNode);
                     //add parent for pathing
                     parents.Add(candidatePromisingNode, mostPromisingNode);
                     //add to open set
