@@ -97,7 +97,7 @@ class Path {
         return openSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < candidateF;
     }
     private static bool isBetterClosedPath(List<Node> closedSet, Dictionary<Node, float> fScores, Node candidatePromisingNode, float candidateF) {
-        return closedSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < f;
+        return closedSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < candidateF;
     }
 
     private static float calculateG(Node mostPromisingNode, Node candidatePromisingNode, Dictionary<Node, float> gScores) {
