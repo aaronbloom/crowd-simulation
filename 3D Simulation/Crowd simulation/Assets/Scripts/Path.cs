@@ -19,8 +19,6 @@ class Path : Graph {
 
     public static Path Navigate(Graph graph, Node startNode, Node goalNode) {
 
-        List<string> debugLog = new List<string>();
-
         Dictionary<Vector3, HeuristicalNode> closedSet = new Dictionary<Vector3, HeuristicalNode>();
         Dictionary<Vector3, HeuristicalNode> openSet = new Dictionary<Vector3, HeuristicalNode>();
 
@@ -37,7 +35,6 @@ class Path : Graph {
 
             //Choose most promising node
             HeuristicalNode mostPromising = lowestFScoreInSet(openSet.Values.ToList()); //needs renaming
-            debugLog.Add("Most promising so far : " + mostPromising.Node.Position.ToString());
 
             //Remove most promising node from open set
             openSet.Remove(mostPromising.Node.Position);
@@ -45,14 +42,11 @@ class Path : Graph {
             //Process Nodes which most Promising Node connects to
             foreach (Node candidatePromisingNode in mostPromising.Node.TransitionsTo) {
                 HeuristicalNode candidatePromising = new HeuristicalNode(candidatePromisingNode);
-                debugLog.Add("Investigating : " + candidatePromising.ToString());
 
                 //See if we're at our destination
                 if (candidatePromising.Node.Position == goal.Node.Position) {
                     //return the path to the goal from start
-                    debugLog.Add("Found Goal! : " + candidatePromising.ToString());
                     candidatePromising.Parent = mostPromising;
-                    System.IO.File.WriteAllLines(@"G:\WriteLines.txt", debugLog.ToArray());
                     return new Path(convertParentageToList(candidatePromising));
                 }
 
@@ -63,9 +57,9 @@ class Path : Graph {
 
                 //check this is the best route we know to the candidate
                 if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF) {
-                    debugLog.Add("Not interested : " + candidatePromising.ToString());
+                    //Not interested
                 } else if (closedSet.ContainsKey(candidatePromising.Node.Position) && closedSet[candidatePromising.Node.Position].ValueF < potentialF) {
-                    debugLog.Add("Not interested : " + candidatePromising.ToString());
+                    //Not interested
                 } else {
                     //this is the best route to the candidate node
                     candidatePromising.setF();
@@ -77,12 +71,6 @@ class Path : Graph {
                     if (openSet.ContainsKey(candidatePromising.Node.Position)) openSet.Remove(candidatePromising.Node.Position);
                     openSet.Add(candidatePromising.Node.Position, candidatePromising);
 
-                    debugLog.Add("Adding to Open Set");
-                    debugLog.Add(":: " + candidatePromisingNode.Position.ToString());
-                    debugLog.Add("p: " + mostPromising.ToString());
-                    debugLog.Add("g: " + candidatePromising.ValueG);
-                    debugLog.Add("h: " + candidatePromising.ValueH);
-                    debugLog.Add("f: " + candidatePromising.ValueF);
                 }
             }
             //all candidates processed, close node
