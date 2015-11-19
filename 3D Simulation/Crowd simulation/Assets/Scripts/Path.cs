@@ -21,133 +21,156 @@ class Path : Graph {
 
         List<string> debugLog = new List<string>();
 
-        List<Node> closedSet = new List<Node>();
-        List<Node> openSet = new List<Node>();
+        Dictionary<Vector3, HeuristicalNode> closedSet = new Dictionary<Vector3, HeuristicalNode>();
+        Dictionary<Vector3, HeuristicalNode> openSet = new Dictionary<Vector3, HeuristicalNode>();
 
+        HeuristicalNode start = new HeuristicalNode(startNode);
+        HeuristicalNode goal = new HeuristicalNode(goalNode);
+        
         //Special case for startNode
-        openSet.Add(startNode);
-
-        //Extension fields for Node
-        Dictionary<Node, float> fScores = new Dictionary<Node, float>();
-        Dictionary<Node, float> gScores = new Dictionary<Node, float>();
-        Dictionary<Node, float> hScores = new Dictionary<Node, float>();
-
-        foreach(Node node in graph.Nodes) {
-            fScores.Add(node, 0.1f);
-            gScores.Add(node, 0.1f);
-            hScores.Add(node, 0.1f);
-        }
-        // <Node,Node> <child,parent>
-        Dictionary<Node, Node> parents = new Dictionary<Node, Node>();  
-
-        //Special case for startNode
-        parents.Add(startNode, null);     
+        openSet.Add(start.Node.Position, start);
+        start.ValueF = 0;
+        start.Parent = null;
 
         //Process Open Set
-        while (openSet.Count > 0) {
+        while (openSet.Values.Count > 0) {
+
             //Choose most promising node
-            Node mostPromisingNode = lowestFScoreInOpenSet(fScores, openSet); //needs renaming
-            debugLog.Add("Most promising so far : " + mostPromisingNode.Position.ToString());
+            HeuristicalNode mostPromising = lowestFScoreInSet(openSet.Values.ToList()); //needs renaming
+            debugLog.Add("Most promising so far : " + mostPromising.Node.Position.ToString());
+
             //Remove most promising node from open set
-            openSet.Remove(mostPromisingNode);
+            openSet.Remove(mostPromising.Node.Position);
+
             //Process Nodes which most Promising Node connects to
-            foreach (var candidatePromisingNode in mostPromisingNode.TransitionsTo) {
-                debugLog.Add("Investigating : " + candidatePromisingNode.Position.ToString());
+            foreach (Node candidatePromisingNode in mostPromising.Node.TransitionsTo) {
+                HeuristicalNode candidatePromising = new HeuristicalNode(candidatePromisingNode);
+                debugLog.Add("Investigating : " + candidatePromising.ToString());
+
                 //See if we're at our destination
-                if (candidatePromisingNode == goalNode) {
+                if (candidatePromising.Node.Position == goal.Node.Position) {
                     //return the path to the goal from start
-                    debugLog.Add("Found Goal! : " + candidatePromisingNode.ToString());
-                    parents.Add(candidatePromisingNode, mostPromisingNode);
+                    debugLog.Add("Found Goal! : " + candidatePromising.ToString());
+                    candidatePromising.Parent = mostPromising;
                     System.IO.File.WriteAllLines(@"G:\WriteLines.txt", debugLog.ToArray());
-                    return new Path(convertParentageToList(parents, goalNode));
+                    return new Path(convertParentageToList(candidatePromising));
                 }
+
                 //calculate heuristics for candiate node
-                float candidateG = calculateG(mostPromisingNode, candidatePromisingNode, gScores);
-                float candidateH = calculateH(goalNode, candidatePromisingNode);
-                float candidateF = candidateG + candidateH;
+                candidatePromising.setG(mostPromising);
+                candidatePromising.setH(goal);
+                float potentialF = candidatePromising.calculateF();
+
                 //check this is the best route we know to the candidate
-                if (isBetterOpenPath(openSet, fScores, candidatePromisingNode, candidateF)) {
-                    debugLog.Add("Not interested : " + candidatePromisingNode.Position.ToString());
-                    //skip, already better path for this node in open list
-                } else if (isBetterClosedPath(closedSet, fScores, candidatePromisingNode, candidateF)) {
-                    debugLog.Add("Not interested : " + candidatePromisingNode.Position.ToString());
-                    //skip, already better path for this node in closed list
+                if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF) {
+                    debugLog.Add("Not interested : " + candidatePromising.ToString());
+                } else if (closedSet.ContainsKey(candidatePromising.Node.Position) && closedSet[candidatePromising.Node.Position].ValueF < potentialF) {
+                    debugLog.Add("Not interested : " + candidatePromising.ToString());
                 } else {
                     //this is the best route to the candidate node
-                    //remove old entries
-                    if (parents.ContainsKey(candidatePromisingNode)) parents.Remove(candidatePromisingNode);
-                    //add parent for pathing
-                    parents.Add(candidatePromisingNode, mostPromisingNode);
+                    candidatePromising.setF();
+
+                    //set parent for pathing
+                    candidatePromising.Parent = mostPromising;
+
                     //add to open set
-                    if(!openSet.Contains(candidatePromisingNode)) openSet.Add(candidatePromisingNode);
-                    //update stored node heuristics
+                    if (openSet.ContainsKey(candidatePromising.Node.Position)) openSet.Remove(candidatePromising.Node.Position);
+                    openSet.Add(candidatePromising.Node.Position, candidatePromising);
+
                     debugLog.Add("Adding to Open Set");
                     debugLog.Add(":: " + candidatePromisingNode.Position.ToString());
-                    debugLog.Add("p: " + mostPromisingNode.Position.ToString());
-                    debugLog.Add("g: " + candidateG);
-                    debugLog.Add("h: " + candidateH);
-                    debugLog.Add("f: " + candidateF);
-                    gScores[candidatePromisingNode] = candidateG;
-                    hScores[candidatePromisingNode] = candidateH;
-                    fScores[candidatePromisingNode] = candidateF;
+                    debugLog.Add("p: " + mostPromising.ToString());
+                    debugLog.Add("g: " + candidatePromising.ValueG);
+                    debugLog.Add("h: " + candidatePromising.ValueH);
+                    debugLog.Add("f: " + candidatePromising.ValueF);
                 }
             }
             //all candidates processed, close node
-            if (!closedSet.Contains(mostPromisingNode)) closedSet.Add(mostPromisingNode);
+            if (closedSet.ContainsKey(mostPromising.Node.Position)) closedSet.Remove(mostPromising.Node.Position);
+            closedSet.Add(mostPromising.Node.Position, mostPromising);
         }
         throw new InvalidOperationException("Specified goalNode was not in the same navigational Graph as startNode");
     }
 
-    private static bool isBetterOpenPath(List<Node> openSet, Dictionary<Node, float> fScores, Node candidatePromisingNode, float candidateF) {
-        return openSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < candidateF;
-    }
-    private static bool isBetterClosedPath(List<Node> closedSet, Dictionary<Node, float> fScores, Node candidatePromisingNode, float candidateF) {
-        return closedSet.Contains(candidatePromisingNode) && fScores[candidatePromisingNode] < candidateF;
-    }
-
-    private static float calculateG(Node mostPromisingNode, Node candidatePromisingNode, Dictionary<Node, float> gScores) {
-        return gScores[mostPromisingNode] + distanceBetweenNodes(candidatePromisingNode, mostPromisingNode);
-    }
-
-    private static float calculateH(Node goalNode, Node candidatePromisingNode) {
-        return distanceBetweenNodes(goalNode, candidatePromisingNode);
-    }
-
-    private static float calculateF(Node candidatePromisingNode, Dictionary<Node, float> gScores, Dictionary<Node, float> hScores) {
-        return gScores[candidatePromisingNode] + hScores[candidatePromisingNode];
-    }
-
-
     //Convert Dictionary Linkages to Linear Ordered List
-    private static List<Node> convertParentageToList(Dictionary<Node, Node> childParent, Node goal) {
+    private static List<Node> convertParentageToList(HeuristicalNode goal) {
         List<Node> list = new List<Node>();
-        List<String> slist = new List<String>();
-        list.Add(goal);
-        for(Node n = goal; n != null; n = childParent[n]) {
-            slist.Add(n.Position.ToString());
-            list.Add(n);
+        list.Add(goal.Node);
+        for (HeuristicalNode n = goal; n != null; n = n.Parent) {
+            list.Add(n.Node);
         }
         list.Reverse();
         return list;
     }
 
-    //Return linear distance between 2 nodes
-    private static float distanceBetweenNodes(Node a, Node b) {
-        return (a.Position - b.Position).magnitude;
-    }
-
     //Find the lowest scoring node in the provided set & dictionary.
-    private static Node lowestFScoreInOpenSet(Dictionary<Node, float> scores, List<Node> set) {
+    private static HeuristicalNode lowestFScoreInSet(List<HeuristicalNode> set) {
         float lowest = float.MaxValue;
-        Node winningNode = null;
+        HeuristicalNode winningNode = null;
         foreach (var node in set) {
-            var value = scores[node];
-            if (value < lowest) {
+            var value = node.ValueF;
+            if (value <= lowest) {
                 lowest = value;
                 winningNode = node;
             }
         }
         return winningNode;
+    }
+
+    //Extension for Node providing storage and calculation for pathing heuristics
+    private class HeuristicalNode {
+
+        public float ValueG { get; set; }
+        public float ValueH { get; set; }
+        public float ValueF { get; set; }
+        public HeuristicalNode Parent { get; set; }
+        public Node Node { get; set; }
+
+        public HeuristicalNode(Node node) {
+            ValueG = 0;
+            ValueH = 0;
+            ValueF = float.MaxValue;
+            Parent = null;
+            Node = node;
+        }
+
+        //calculates and sets heurisitics
+        public void setG(HeuristicalNode parentNode) {
+            ValueG = calculateG(parentNode);
+        }
+        public void setH(HeuristicalNode goalNode) {
+            ValueH = calculateH(goalNode);
+        }
+        public void setF() {
+            ValueF = calculateF();
+        }
+
+        //calculates G (Cost Complete)
+        public float calculateG(HeuristicalNode parentNode) {
+            return parentNode.ValueG + distanceBetween(this.Node, parentNode.Node);
+            //return distanceBetween(this.Node, startNode.Node);
+        }
+
+        //calculates H (Cost remaining [guessed])
+        public float calculateH(HeuristicalNode goalNode) {
+            return distanceBetween(this.Node, goalNode.Node);
+        }
+
+        //calculates F (Total Cost)
+        public float calculateF() {
+            return ValueG + ValueH;
+        }
+
+        //Returns position Vector as string
+        public override string ToString() {
+            return Node.Position.ToString() ?? "Null Node";
+        }
+
+        //Return linear distance between 2 nodes
+        private static float distanceBetween(Node a, Node b) {
+            return (a.Position - b.Position).magnitude;
+        }
+
     }
 
 }
