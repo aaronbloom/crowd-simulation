@@ -23,7 +23,7 @@ public class GoalSeekingBehaviour : BoidBehaviour {
                 this.target = path.FindClosestNode(boid.transform.position);
             }
             else {
-                if (Vector3.Distance(target.Position, this.boid.transform.position) < 5) {
+                if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
                     int index = path.RemainingNodes.IndexOf(this.target) + 1;
                     if (index < path.RemainingNodes.Count) {
                         this.target = path.RemainingNodes[index];
@@ -45,5 +45,10 @@ public class GoalSeekingBehaviour : BoidBehaviour {
         Vector3 acceleration = Vector3.zero;
         acceleration += MoveAlongPath();
         return acceleration;
+    }
+
+    public override void DrawGraphGizmo() {
+        Gizmos.color = Color.green;
+        path.DrawGraphGizmo();
     }
 }

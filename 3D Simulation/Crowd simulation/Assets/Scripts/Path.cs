@@ -17,6 +17,15 @@ class Path : Graph {
         }
     }
 
+    public void DrawGraphGizmo() {
+        foreach (Node node in Nodes) {
+            foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
+                Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
+            }
+        }
+        Gizmos.DrawSphere(Nodes[Nodes.Count-1].Position, 1);
+    }
+
     public static Path Navigate(Graph graph, Node startNode, Node goalNode) {
 
         Dictionary<Vector3, HeuristicalNode> closedSet = new Dictionary<Vector3, HeuristicalNode>();

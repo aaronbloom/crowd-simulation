@@ -24,6 +24,10 @@ public class Boid : MonoBehaviour {
         faceTravelDirection();
     }
 
+    void OnDrawGizmos() {
+        this.behaviour.DrawGraphGizmo();
+    }
+
     private void calculateNewPosition() {
         this.acceleration = calculateAcceleration(this.acceleration);
         this._velocity = calculateVelocity(this._velocity);

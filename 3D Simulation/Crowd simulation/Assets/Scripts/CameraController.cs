@@ -15,19 +15,11 @@ public class CameraController : MonoBehaviour {
     private float lookSpeed = 2f;
 
     private EnvironmentManager environmentManager;
-    Path path;
-    Node startNode;
-    System.Collections.Generic.List<Node> remainingNodes;
 
     // Use this for initialization
     void Start() {
         this.environmentManager = EnvironmentManager.Shared();
         transform.LookAt(environmentManager.CurrentEnvironment.EnvironmentCenter);
-        Graph graph = EnvironmentManager.Shared().CurrentEnvironment.graph;
-        startNode = graph.FindClosestNode(new Vector3(100, 0, 100));
-        var endNode = graph.FindClosestNode(Vector3.zero);
-        path = Path.Navigate(graph, startNode, endNode);
-        remainingNodes = path.RemainingNodes;
     }
 
     // Update is called once per frame
@@ -38,13 +30,8 @@ public class CameraController : MonoBehaviour {
     }
 
     void OnDrawGizmos() {
+        Gizmos.color = Color.blue;
         //this.environmentManager.CurrentEnvironment.graph.DrawGraphGizmo();
-        Gizmos.color = Color.green;
-        Node previousNode = startNode;
-        foreach (Node node in remainingNodes) {
-            Gizmos.DrawLine(previousNode.Position, node.Position);
-            previousNode = node;
-        }
     }
 
     private void checkKeypress() {

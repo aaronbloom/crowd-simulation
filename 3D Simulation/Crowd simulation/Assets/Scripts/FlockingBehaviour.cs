@@ -37,6 +37,10 @@ public class FlockingBehaviour : BoidBehaviour {
         return acceleration;
     }
 
+    public override void DrawGraphGizmo() {
+        throw new NotImplementedException();
+    }
+
     private List<Boid> FindBoidsWithinView() {
         GameObject[] boids = GameObject.FindGameObjectsWithTag(BoidTag);
         List<Boid> closeBoids = new List<Boid>();
