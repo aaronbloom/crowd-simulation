@@ -14,7 +14,7 @@ public class Graph {
         int graphWidthInNodes = (int) (dimensions.x * nodesPerMeter);
         int graphHeightInNodes = (int) (dimensions.y * nodesPerMeter);
 
-        List<Node> nodes = generateLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter);
+        List<Node> nodes = generateRandomlyLinkedLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter, 0.8f);
 
         return new Graph(nodes);
     }
@@ -49,11 +49,36 @@ public class Graph {
         //only need to look right and down per node to constuct full lattice
         for (int a = 0; a < width; a++) {
             for (int b = 0; b < height; b++) {
-                if (a + 1 < width) { //node to the right
-                    nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
+                if (a + 1 < width) {
+                    //node to the right
+                    nodes[(a*width) + b].addTransition(nodes[((a + 1)*width) + b]);
                 }
-                if (b + 1 < height) { //node underneath
-                    nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
+                if (b + 1 < height) {
+                    //node underneath
+                    nodes[(a*width) + b].addTransition(nodes[(a*width) + b + 1]);
+                }
+            }
+        }
+        return nodes;
+    }
+
+    private static List<Node> generateRandomlyLinkedLatticeGraph(int width, int height, float nodesPerMeter, float linkingProbability) {
+        List<Node> nodes = generateNodeGraph(width, height, nodesPerMeter);
+
+        //only need to look right and down per node to constuct full lattice
+        for (int a = 0; a < width; a++) {
+            for (int b = 0; b < height; b++) {
+                if (Random.Range(0f, 1f) < linkingProbability) {
+                    if (a + 1 < width) {
+                        //node to the right
+                        nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
+                    }
+                }
+                if (Random.Range(0f, 1f) < linkingProbability) {
+                    if (b + 1 < height) {
+                        //node underneath
+                        nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
+                    }
                 }
             }
         }
@@ -61,7 +86,6 @@ public class Graph {
     }
 
     public void DrawGraphGizmo() {
-        Gizmos.color = Color.blue;
         foreach (Node node in Nodes) {
             Gizmos.DrawSphere(node.Position, 1);
             foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
