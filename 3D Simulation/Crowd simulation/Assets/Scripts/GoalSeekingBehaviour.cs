@@ -13,6 +13,7 @@ public class GoalSeekingBehaviour : BoidBehaviour {
         this.boid = boid;
         this.MaxSpeed = 8.0f;
         this.MaxForce = 0.5f;
+        this.VelocityDamping = 0.5f;
     }
 
     public void Seek(Node goal, Graph graph) {

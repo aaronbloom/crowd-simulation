@@ -42,6 +42,7 @@ public class Boid : MonoBehaviour {
     }
 
     private Vector3 calculateVelocity(Vector3 velocity) {
+        velocity *= this.behaviour.VelocityDamping;
         velocity += acceleration;
         velocity = Vector3.ClampMagnitude(velocity, this.behaviour.MaxSpeed);
         velocity.y = 0;

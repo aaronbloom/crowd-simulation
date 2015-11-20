@@ -17,6 +17,7 @@ public class FlockingBehaviour : BoidBehaviour {
     public FlockingBehaviour(Boid boid, float viewingDistance, float minimumDistance) {
         this.MaxSpeed = 8.0f;
         this.MaxForce = 0.05f;
+        this.VelocityDamping = 1f;
         this.boid = boid;
         this.viewingDistance = viewingDistance;
         this.minimumDistance = minimumDistance;

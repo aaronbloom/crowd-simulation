@@ -6,6 +6,8 @@ public abstract class BoidBehaviour {
     public float MaxSpeed { get; protected set; }
     public float MaxForce { get; protected set; }
 
+    public float VelocityDamping { get; protected set; }
+
     public abstract Vector3 InitialVelocity();
 
     public abstract Vector3 updateAcceleration();
