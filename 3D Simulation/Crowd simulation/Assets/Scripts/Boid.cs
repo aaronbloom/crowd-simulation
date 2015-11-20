@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Boid : MonoBehaviour {
 
@@ -9,13 +10,15 @@ public class Boid : MonoBehaviour {
 
     private BoidBehaviour behaviour;
     private Vector3 acceleration;
-    private float visualRotationSpeed = 1f;
-    public static readonly float MaxSpeed = 8.0f;
-    public static readonly float MaxForce = 0.05f;
+
+    void Awake() {
+        this.behaviour = new GoalSeekingBehaviour(this);
+    }
 
     void Start() {
-        this._velocity = Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
-        this.behaviour = new FlockingBehaviour(this, 10, 6);
+        this._velocity = this.behaviour.InitialVelocity();
+        Graph graph = EnvironmentManager.Shared().CurrentEnvironment.graph;
+        ((GoalSeekingBehaviour) this.behaviour).Seek(graph.FindClosestNode(Vector3.zero), graph);
     }
 
     void Update() {
@@ -40,7 +43,7 @@ public class Boid : MonoBehaviour {
 
     private Vector3 calculateVelocity(Vector3 velocity) {
         velocity += acceleration;
-        velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
+        velocity = Vector3.ClampMagnitude(velocity, this.behaviour.MaxSpeed);
         velocity.y = 0;
         return velocity;
     }

@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 public class GoalSeekingBehaviour : BoidBehaviour {
 
-    public GoalSeekingBehaviour (Boid boid) {
-        this.boid = boid;
-    }
     private readonly Boid boid;
     private Node target;
     private Path path;
+
+    public GoalSeekingBehaviour (Boid boid) {
+        this.boid = boid;
+        this.MaxSpeed = 8.0f;
+        this.MaxForce = 0.5f;
+    }
 
     public void Seek(Node goal, Graph graph) {
         Node startNode = graph.FindClosestNode(boid.transform.position);
@@ -32,12 +35,16 @@ public class GoalSeekingBehaviour : BoidBehaviour {
                 }
                 Vector3 aim = this.target.Position - boid.transform.position;
                 aim.Normalize();
-                aim *= Boid.MaxSpeed;
+                aim *= MaxSpeed;
                 Vector3 steeringDirection = aim - boid.Velocity;
-                steeringDirection = Vector3.ClampMagnitude(steeringDirection, Boid.MaxForce);
+                steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
                 return steeringDirection;
             }
         }
+        return Vector3.zero;
+    }
+
+    public override Vector3 InitialVelocity() {
         return Vector3.zero;
     }
 

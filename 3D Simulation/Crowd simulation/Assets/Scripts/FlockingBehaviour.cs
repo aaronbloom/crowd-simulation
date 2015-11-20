@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Random = UnityEngine.Random;
 
 public class FlockingBehaviour : BoidBehaviour {
 
@@ -14,10 +15,16 @@ public class FlockingBehaviour : BoidBehaviour {
     private readonly float seperationFactor = 1.5f;
 
     public FlockingBehaviour(Boid boid, float viewingDistance, float minimumDistance) {
+        this.MaxSpeed = 8.0f;
+        this.MaxForce = 0.05f;
         this.boid = boid;
         this.viewingDistance = viewingDistance;
         this.minimumDistance = minimumDistance;
         this.environmentManager = EnvironmentManager.Shared();
+    }
+
+    public override Vector3 InitialVelocity() {
+        return Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
     }
 
     public override Vector3 updateAcceleration() {
@@ -64,9 +71,9 @@ public class FlockingBehaviour : BoidBehaviour {
             Vector3 averagePosition = getAveragePosition(boids);
             Vector3 aim = averagePosition - boid.transform.position;
             aim.Normalize();
-            aim *= Boid.MaxSpeed;
+            aim *= this.MaxSpeed;
             Vector3 steeringDirection = aim - boid.Velocity;
-            steeringDirection = Vector3.ClampMagnitude(steeringDirection, Boid.MaxForce);
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.MaxForce);
             return steeringDirection;
         }
         return Vector3.zero;
@@ -104,15 +111,15 @@ public class FlockingBehaviour : BoidBehaviour {
         return steeringDirection;
     }
 
-    private static Vector3 calculateAverageSteeringDirection(Vector3 steeringDirectionAggregator, int count) {
+    private Vector3 calculateAverageSteeringDirection(Vector3 steeringDirectionAggregator, int count) {
         Vector3 averageSteeringDirection = steeringDirectionAggregator;
         if (count > 0) {
             averageSteeringDirection /= count;
         }
         if (averageSteeringDirection.magnitude > 0) {
             averageSteeringDirection.Normalize();
-            averageSteeringDirection *= Boid.MaxSpeed;
-            averageSteeringDirection = Vector3.ClampMagnitude(steeringDirectionAggregator, Boid.MaxForce);
+            averageSteeringDirection *= MaxSpeed;
+            averageSteeringDirection = Vector3.ClampMagnitude(steeringDirectionAggregator, MaxForce);
         }
         return averageSteeringDirection;
     }
@@ -121,9 +128,9 @@ public class FlockingBehaviour : BoidBehaviour {
         if (boids.Count > 0) {
             Vector3 averageHeading = getAverageHeading(boids);
             averageHeading.Normalize();
-            averageHeading *= Boid.MaxSpeed;
+            averageHeading *= this.MaxSpeed;
             Vector3 steeringDirection = averageHeading - boid.Velocity;
-            steeringDirection = Vector3.ClampMagnitude(steeringDirection, Boid.MaxForce);
+            steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
             return steeringDirection;
         }
         return Vector3.zero;
@@ -145,8 +152,8 @@ public class FlockingBehaviour : BoidBehaviour {
             //if really close proximity to a plane boundary
             if (boundary.GetDistanceToPoint(boid.transform.position) < this.minimumDistance) {
                 Vector3 avoidDirection = boundary.normal;
-                avoidDirection *= Boid.MaxSpeed;
-                avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
+                avoidDirection *= MaxSpeed;
+                avoidDirection = Vector3.ClampMagnitude(avoidDirection, MaxForce);
                 steeringDirection += avoidDirection;
             }
 
@@ -156,8 +163,8 @@ public class FlockingBehaviour : BoidBehaviour {
             if (boundary.Raycast(direction, out distance)) {
                 if (distance < 35) {
                     Vector3 avoidDirection = boundary.normal;
-                    avoidDirection *= Boid.MaxSpeed;
-                    avoidDirection = Vector3.ClampMagnitude(avoidDirection, Boid.MaxForce);
+                    avoidDirection *= MaxSpeed;
+                    avoidDirection = Vector3.ClampMagnitude(avoidDirection, MaxForce);
                     steeringDirection += avoidDirection;
                 }
             }
