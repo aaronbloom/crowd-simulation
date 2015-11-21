@@ -8,7 +8,6 @@ public class FlockingBehaviour : BoidBehaviour {
 
     private static readonly string BoidTag = "Boid";
 
-    private Boid boid;
     private EnvironmentManager environmentManager;
     private float viewingDistance;
     private float minimumDistance;

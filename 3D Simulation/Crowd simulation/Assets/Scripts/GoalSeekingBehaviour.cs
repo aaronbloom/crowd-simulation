@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class GoalSeekingBehaviour : BoidBehaviour {
 
-    private readonly Boid boid;
     private Node target;
     private Path path;
 
@@ -27,19 +26,9 @@ public class GoalSeekingBehaviour : BoidBehaviour {
                 this.target = path.FindClosestNode(boid.transform.position);
             }
             else {
-                if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
-                    int index = path.RemainingNodes.IndexOf(this.target) + 1;
-                    if (index < path.RemainingNodes.Count) {
-                        this.target = path.RemainingNodes[index];
-                        if (this.target == null) return Vector3.zero;
-                    }
-                }
-                Vector3 aim = this.target.Position - boid.transform.position;
-                aim.Normalize();
-                aim *= MaxSpeed;
-                Vector3 steeringDirection = aim - boid.Velocity;
-                steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
-                return steeringDirection;
+                this.TargetNextNodeAlongPath();
+                if (this.target == null) return Vector3.zero;
+                return this.SteerTowardsPoint(this.target.Position);
             }
         }
         return Vector3.zero;
@@ -58,5 +47,14 @@ public class GoalSeekingBehaviour : BoidBehaviour {
     public override void DrawGraphGizmo() {
         Gizmos.color = Color.green;
         path.DrawGraphGizmo();
+    }
+
+    private void TargetNextNodeAlongPath() {
+        if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
+            int index = path.RemainingNodes.IndexOf(this.target) + 1;
+            if (index < path.RemainingNodes.Count) {
+                this.target = path.RemainingNodes[index];
+            }
+        }
     }
 }
