@@ -1,23 +1,35 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class UserInterfaceController : MonoBehaviour {
 
-	// Use this for initialization
+    private GameObject mainMenu;
+    private GameObject setupMenu;
+    private BootStrapper bootStrapper;
+
+    void Awake() {
+        mainMenu = GameObject.Find("MainMenu");
+        setupMenu = GameObject.Find("SetupMenu");
+    }
+
 	void Start () {
+	    mainMenu.SetActive(true);
+        setupMenu.SetActive(false);
+        bootStrapper = GameObject.Find("Bootstrapper").GetComponent<BootStrapper>();
+    }
 	
-	}
-	
-	// Update is called once per frame
 	void Update () {
 	
 	}
 
-    public void HideInterface() {
-        this.gameObject.SetActive(false);
+    public void NewSimulation() {
+        mainMenu.SetActive(false);
+        setupMenu.SetActive(true);
     }
 
-    public void ShowInterface() {
-        this.gameObject.SetActive(true);
+    public void StartSimulation() {
+        mainMenu.SetActive(false);
+        setupMenu.SetActive(false);
+        int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
+        bootStrapper.StartSimulation(numberOfBoids);
     }
 }
