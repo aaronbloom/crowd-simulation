@@ -21,6 +21,9 @@ class BootStrapper : MonoBehaviour {
     void Start() {
         initialise(Camera);
         boidManager = new BoidManager(boidPopulation);
+    }
+
+    public void StartSimulation() {
         boidManager.SpawnBoids();
     }
 
