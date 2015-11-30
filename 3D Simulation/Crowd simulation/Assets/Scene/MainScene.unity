@@ -1032,11 +1032,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-<<<<<<< HEAD
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
---- !u!1 &1252625358
-=======
   m_Father: {fileID: 1574427312}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
@@ -1078,7 +1073,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1492812215}
 --- !u!1 &1501755146
->>>>>>> features/CS-1--Create_a_user_interface
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1119,15 +1113,6 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 1252625358}
-  m_LocalRotation: {x: .408217937, y: -.234569728, z: .109381676, w: .875426054}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-=======
   m_GameObject: {fileID: 1501755146}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1182,7 +1167,6 @@ MonoBehaviour:
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
->>>>>>> features/CS-1--Create_a_user_interface
 --- !u!1 &1526612040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,11 +1194,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-<<<<<<< HEAD
-  m_RootOrder: 2
-=======
   m_RootOrder: 4
->>>>>>> features/CS-1--Create_a_user_interface
 --- !u!114 &1526612042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,8 +1206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea1747ade8408214ca849780ca98384d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-=======
 --- !u!1 &1574427311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,4 +1731,3 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1998700697}
->>>>>>> features/CS-1--Create_a_user_interface
