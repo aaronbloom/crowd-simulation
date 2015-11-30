@@ -5,10 +5,6 @@ class BootStrapper : MonoBehaviour {
     private static readonly string PrefabFilepath = "Prefabs/";
     private static readonly string Camera = "Camera";
 
-
-    //System properties
-    int boidPopulation = 100;
-
     //System Fields
     private BoidManager boidManager;
     private EnvironmentManager environmentManager;
@@ -20,7 +16,10 @@ class BootStrapper : MonoBehaviour {
 
     void Start() {
         initialise(Camera);
-        boidManager = new BoidManager(boidPopulation);
+    }
+
+    public void StartSimulation(int numberOfBoids) {
+        boidManager = new BoidManager(numberOfBoids);
         boidManager.SpawnBoids();
     }
 
