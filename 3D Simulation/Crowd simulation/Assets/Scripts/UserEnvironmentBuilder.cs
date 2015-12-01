@@ -49,4 +49,8 @@ public class UserEnvironmentBuilder : MonoBehaviour {
         var wallLocation = PositionToGridPosition(position, wallSize);
         MonoBehaviour.Instantiate(Resources.Load("Prefabs/Wall"), wallLocation, Quaternion.identity);
     }
+
+    void OnDestroy() {
+        GameObject.Destroy(ghostedItemCursor);
+    }
 }
