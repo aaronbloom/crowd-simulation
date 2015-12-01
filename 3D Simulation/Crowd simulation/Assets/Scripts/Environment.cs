@@ -17,7 +17,7 @@ public class Environment {
         Origin = Vector3.zero;
         Bounds = new Vector3(100, 50, 100); //width, height, length
         this.Boundaries = constructCuboidBoundary(this.Bounds, Origin);
-        this.graph = Graph.ConstructGraph(this, 0.8f);
+        this.graph = Graph.ConstructGraph(this, 1f);
     }
 
     public Vector2 GetFloorDimentions() {
