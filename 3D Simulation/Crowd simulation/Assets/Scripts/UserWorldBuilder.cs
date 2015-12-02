@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
+using Assets.Scripts.WorldObjects;
 
-public class UserEnvironmentBuilder : MonoBehaviour {
+public class UserWorldBuilder : MonoBehaviour {
 
     private Object ghostedItemCursor;
     private const float wallSize = 4;
+    private World world;
 
     void Start() {
         ghostedItemCursor = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WallCursor"));
+        world = BootStrapper.EnvironmentManager.CurrentEnvironment.World;
     }
 
     void Update() {
         UpdateCursorPosition();
 
         if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-            PlaceWall(MousePositionToGroundPosition());
+            Place<Wall>(MousePositionToGroundPosition());
         }
     }
 
@@ -45,12 +49,15 @@ public class UserEnvironmentBuilder : MonoBehaviour {
         return gridPosition;
     }
 
-    private static void PlaceWall(Vector3 position) {
-        var wallLocation = PositionToGridPosition(position, wallSize);
-        MonoBehaviour.Instantiate(Resources.Load("Prefabs/Wall"), wallLocation, Quaternion.identity);
+    private void Place<T>(Vector3 position) where T : WorldObject, new() {
+        var location = PositionToGridPosition(position, wallSize);
+        T worldObject = new T();
+        worldObject.GameObject = (GameObject) BootStrapper.Initialise("Wall", location, Quaternion.identity);
+        world.Objects.Add(worldObject);
     }
 
     void OnDestroy() {
         GameObject.Destroy(ghostedItemCursor);
     }
+
 }

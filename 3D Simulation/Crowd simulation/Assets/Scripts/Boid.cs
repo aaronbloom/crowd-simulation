@@ -17,7 +17,7 @@ public class Boid : MonoBehaviour {
 
     void Start() {
         this._velocity = this.behaviour.InitialVelocity();
-        Graph graph = EnvironmentManager.Shared().CurrentEnvironment.graph;
+        Graph graph = EnvironmentManager.Shared().CurrentEnvironment.Graph;
         ((GoalSeekingBehaviour) this.behaviour).Seek(graph.FindClosestNode(new Vector3(60,0,60)), graph);
     }
 

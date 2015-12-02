@@ -1,34 +1,34 @@
 ﻿using UnityEngine;
 
-class BootStrapper : MonoBehaviour {
+public class BootStrapper : MonoBehaviour {
 
     private static readonly string PrefabFilepath = "Prefabs/";
     private static readonly string Camera = "Camera";
 
     //System Fields
-    private BoidManager boidManager;
-    private EnvironmentManager environmentManager;
-    private CameraController cameraController;
+    public static BoidManager BoidManager { get; private set; }
+    public static EnvironmentManager EnvironmentManager { get; private set; }
+    public static CameraController CameraController { get; private set; }
 
     void Awake() {
-        environmentManager = new EnvironmentManager();
+        EnvironmentManager = new EnvironmentManager();
     }
 
     void Start() {
-        initialise(Camera);
+        Initialise(Camera);
     }
 
-    public void StartSimulation(int numberOfBoids) {
-        boidManager = new BoidManager(numberOfBoids);
-        boidManager.SpawnBoids();
+    public static void StartSimulation(int numberOfBoids) {
+        BoidManager = new BoidManager(numberOfBoids);
+        BoidManager.SpawnBoids();
     }
 
-    static void initialise(string prefabName) {
-        MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
+    public static Object Initialise(string prefabName) {
+        return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
     }
 
-    static void initialise(string prefabName, Vector3 position, Quaternion rotation) {
-        MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
+    public static Object Initialise(string prefabName, Vector3 position, Quaternion rotation) {
+        return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
     }
 
 }
