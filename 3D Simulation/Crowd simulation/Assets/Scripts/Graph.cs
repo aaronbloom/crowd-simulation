@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Assets.Scripts.WorldObjects;
 using UnityEngine;
 
 public class Graph {
@@ -10,7 +12,7 @@ public class Graph {
     }
 
     public static Graph ConstructGraph(Environment environment, float nodesPerMeter) {
-        Vector2 dimensions = environment.GetFloorDimentions();
+        Vector2 dimensions = environment.FloorDimentions;
         int graphWidthInNodes = (int) (dimensions.x * nodesPerMeter);
         int graphHeightInNodes = (int) (dimensions.y * nodesPerMeter);
 
@@ -30,6 +32,12 @@ public class Graph {
             }
         }
         return closestFound;
+    }
+
+    public void Cull(Wall collidable) {
+        Vector3 position = collidable.GameObject.transform.position;
+        Vector3 size = collidable.GameObject.transform.localScale;
+        Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
     }
 
     private static List<Node> generateNodeGraph(int width, int height, float nodesPerMeter) {
@@ -68,13 +76,13 @@ public class Graph {
         //only need to look right and down per node to constuct full lattice
         for (int a = 0; a < width; a++) {
             for (int b = 0; b < height; b++) {
-                if (Random.Range(0f, 1f) < linkingProbability) {
+                if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (a + 1 < width) {
                         //node to the right
                         nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
                     }
                 }
-                if (Random.Range(0f, 1f) < linkingProbability) {
+                if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (b + 1 < height) {
                         //node underneath
                         nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
