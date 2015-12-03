@@ -39,8 +39,8 @@ public class UserWorldBuilder {
         currentItem = objectName;
     }
 
-    public void destroy() {
-        GameObject.Destroy(ghostedItemCursor);
+    public void Destroy() {
+        Object.Destroy(ghostedItemCursor);
     }
 
     private static Vector3 MousePositionToGroundPosition() {

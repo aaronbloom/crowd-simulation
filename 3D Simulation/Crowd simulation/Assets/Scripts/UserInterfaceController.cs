@@ -8,7 +8,6 @@ public class UserInterfaceController : MonoBehaviour {
     private GameObject setupMenu;
     private GameObject environmentBuilderMenu;
     private UserWorldBuilder userWorldBuilder;
-    private BootStrapper bootStrapper;
 
     void Awake() {
         mainMenu = GameObject.Find("MainMenu");
@@ -20,7 +19,6 @@ public class UserInterfaceController : MonoBehaviour {
 	    mainMenu.SetActive(true);
         setupMenu.SetActive(false);
         environmentBuilderMenu.SetActive(false);
-        bootStrapper = GameObject.Find("Bootstrapper").GetComponent<BootStrapper>();
     }
 	
 	void Update () {
@@ -41,7 +39,7 @@ public class UserInterfaceController : MonoBehaviour {
     }
 
     public void StartSimulation() {
-        userWorldBuilder.destroy();
+        userWorldBuilder.Destroy();
         userWorldBuilder = null;
         mainMenu.SetActive(false);
         setupMenu.SetActive(false);
@@ -50,7 +48,7 @@ public class UserInterfaceController : MonoBehaviour {
         BootStrapper.StartSimulation(numberOfBoids);
     }
 
-    public void SetCurrentPlacementObject(String objectName) {
+    public void SetCurrentPlacementObject(string objectName) {
         userWorldBuilder.SetCurrentPlacementObject(objectName);
     }
 }
