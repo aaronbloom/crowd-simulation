@@ -7,9 +7,9 @@ using Object = UnityEngine.Object;
 
 public class UserWorldBuilder {
 
-    private Object ghostedItemCursor;
+    private readonly Object ghostedItemCursor;
     private const float cursorSize = 4;
-    private World world;
+    private readonly World world;
     private string currentItem;
 
     public UserWorldBuilder() {
