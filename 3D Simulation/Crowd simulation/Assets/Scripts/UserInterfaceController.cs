@@ -5,8 +5,8 @@ public class UserInterfaceController : MonoBehaviour {
     private GameObject mainMenu;
     private GameObject setupMenu;
     private GameObject environmentBuilderMenu;
+    private Object userWorldBuilder;
     private BootStrapper bootStrapper;
-    private Object userEnvironmentBuilder;
 
     void Awake() {
         mainMenu = GameObject.Find("MainMenu");
@@ -33,15 +33,15 @@ public class UserInterfaceController : MonoBehaviour {
     public void StartEnvironmentBuilder() {
         setupMenu.SetActive(false);
         environmentBuilderMenu.SetActive(true);
-        userEnvironmentBuilder = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UserEnvironmentBuilder"));
+        userWorldBuilder = BootStrapper.Initialise("UserWorldBuilder");
     }
 
     public void StartSimulation() {
-        GameObject.Destroy(userEnvironmentBuilder);
+        GameObject.Destroy(userWorldBuilder);
         mainMenu.SetActive(false);
         setupMenu.SetActive(false);
         environmentBuilderMenu.SetActive(false);
         int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
-        bootStrapper.StartSimulation(numberOfBoids);
+        BootStrapper.StartSimulation(numberOfBoids);
     }
 }

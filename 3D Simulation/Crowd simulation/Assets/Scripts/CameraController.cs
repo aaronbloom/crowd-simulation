@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour {
 
     void OnDrawGizmos() {
         Gizmos.color = Color.blue;
-        //this.environmentManager.CurrentEnvironment.graph.DrawGraphGizmo();
+        this.environmentManager.CurrentEnvironment.Graph.DrawGraphGizmo();
     }
 
     private void checkKeypress() {

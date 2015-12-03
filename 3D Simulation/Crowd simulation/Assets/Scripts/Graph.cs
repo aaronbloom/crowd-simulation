@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Assets.Scripts.WorldObjects;
 using UnityEngine;
 
 public class Graph {
@@ -10,11 +12,11 @@ public class Graph {
     }
 
     public static Graph ConstructGraph(Environment environment, float nodesPerMeter) {
-        Vector2 dimensions = environment.GetFloorDimentions();
+        Vector2 dimensions = environment.FloorDimentions;
         int graphWidthInNodes = (int) (dimensions.x * nodesPerMeter);
         int graphHeightInNodes = (int) (dimensions.y * nodesPerMeter);
 
-        List<Node> nodes = generateRandomlyLinkedLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter, 0.8f);
+        List<Node> nodes = generateLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter);
 
         return new Graph(nodes);
     }
@@ -30,6 +32,26 @@ public class Graph {
             }
         }
         return closestFound;
+    }
+
+    public void Cull(Wall collidable) {
+        Vector3 position = ZeroY(collidable.GameObject.transform.position);
+        Vector3 size = ZeroY(collidable.GameObject.transform.localScale);
+        List<Node> culled = new List<Node>();
+        foreach (Node node in Nodes) {
+            if((position - node.Position).magnitude <= (size/2).magnitude) {
+                culled.Add(node);
+            }
+        }
+        foreach(Node node in culled) {
+            node.Disconnect();
+            Nodes.Remove(node);
+        }
+        //Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
+    }
+
+    private Vector3 ZeroY(Vector3 vector) {
+        return new Vector3(vector.x, 0, vector.z);
     }
 
     private static List<Node> generateNodeGraph(int width, int height, float nodesPerMeter) {
@@ -51,11 +73,11 @@ public class Graph {
             for (int b = 0; b < height; b++) {
                 if (a + 1 < width) {
                     //node to the right
-                    nodes[(a*width) + b].addTransition(nodes[((a + 1)*width) + b]);
+                    nodes[(a*width) + b].AddTransition(nodes[((a + 1)*width) + b]);
                 }
                 if (b + 1 < height) {
                     //node underneath
-                    nodes[(a*width) + b].addTransition(nodes[(a*width) + b + 1]);
+                    nodes[(a*width) + b].AddTransition(nodes[(a*width) + b + 1]);
                 }
             }
         }
@@ -68,16 +90,16 @@ public class Graph {
         //only need to look right and down per node to constuct full lattice
         for (int a = 0; a < width; a++) {
             for (int b = 0; b < height; b++) {
-                if (Random.Range(0f, 1f) < linkingProbability) {
+                if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (a + 1 < width) {
                         //node to the right
-                        nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
+                        nodes[(a * width) + b].AddTransition(nodes[((a + 1) * width) + b]);
                     }
                 }
-                if (Random.Range(0f, 1f) < linkingProbability) {
+                if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (b + 1 < height) {
                         //node underneath
-                        nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
+                        nodes[(a * width) + b].AddTransition(nodes[(a * width) + b + 1]);
                     }
                 }
             }
@@ -87,7 +109,7 @@ public class Graph {
 
     public void DrawGraphGizmo() {
         foreach (Node node in Nodes) {
-            Gizmos.DrawSphere(node.Position, 1);
+            //Gizmos.DrawSphere(node.Position, 1);
             foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
                 Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
             }
