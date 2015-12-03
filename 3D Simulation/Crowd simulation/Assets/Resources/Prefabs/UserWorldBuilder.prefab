@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 467974}
   - 114: {fileID: 11487920}
   m_Layer: 0
-  m_Name: UserEnvironmentBuilder
+  m_Name: UserWorldBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

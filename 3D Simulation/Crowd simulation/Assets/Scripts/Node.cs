@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class Node {
 
@@ -22,7 +23,7 @@ public class Node {
         this.Transitions = transitions;
     }
 
-    public void addTransition(Node target) {
+    public void AddTransition(Node target) {
         if (!hasTransition(target)) {
             var transition = new Transition(this, target);
             target.Transitions.Add(this, transition);
@@ -30,10 +31,29 @@ public class Node {
         }
     }
 
+    private void removeTransition(Transition transition) {
+        Node otherNode;
+        if (transition.Nodes[0] == this) {
+            otherNode = transition.Nodes[1];
+        } else {
+            otherNode = transition.Nodes[0];
+        }
+        otherNode.Transitions.Remove(this);
+        this.Transitions.Remove(otherNode);
+    }
+
     private bool hasTransition(Node target) {
         foreach (var transition in Transitions.Values) {
             if (transition.Nodes[0] == target || transition.Nodes[1] == target) return true;
         }
         return false;
+    }
+
+    internal void Disconnect() {
+        //Avoid out of sync error by storing in list
+        List<Transition> transitions = Transitions.Values.ToList<Transition>();
+        foreach(Transition t in transitions) {
+            removeTransition(t);
+        }
     }
 }

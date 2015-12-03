@@ -38,13 +38,18 @@ public class Graph {
         Vector3 position = new Vector3(collidable.GameObject.transform.position.x,0, collidable.GameObject.transform.position.z);
         Vector3 size = new Vector3(collidable.GameObject.transform.localScale.x,0, collidable.GameObject.transform.localScale.z);
         List<Node> culled = new List<Node>();
-        foreach(Node node in Nodes) {
+        int i = 0;
+        int c = 0;
+        foreach (Node node in Nodes) {
+            i++;
             if((position - node.Position).magnitude <= (size/2).magnitude) {
-                Console.WriteLine("Size: "+size.ToString()+", Position: ,"+position.ToString()+" Node Position: " + node.Position.ToString());
                 culled.Add(node);
+                c++;
             }
         }
+        Console.WriteLine(i + c);
         foreach(Node node in culled) {
+            node.Disconnect();
             Nodes.Remove(node);
         }
         //Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
@@ -69,11 +74,11 @@ public class Graph {
             for (int b = 0; b < height; b++) {
                 if (a + 1 < width) {
                     //node to the right
-                    nodes[(a*width) + b].addTransition(nodes[((a + 1)*width) + b]);
+                    nodes[(a*width) + b].AddTransition(nodes[((a + 1)*width) + b]);
                 }
                 if (b + 1 < height) {
                     //node underneath
-                    nodes[(a*width) + b].addTransition(nodes[(a*width) + b + 1]);
+                    nodes[(a*width) + b].AddTransition(nodes[(a*width) + b + 1]);
                 }
             }
         }
@@ -89,13 +94,13 @@ public class Graph {
                 if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (a + 1 < width) {
                         //node to the right
-                        nodes[(a * width) + b].addTransition(nodes[((a + 1) * width) + b]);
+                        nodes[(a * width) + b].AddTransition(nodes[((a + 1) * width) + b]);
                     }
                 }
                 if (UnityEngine.Random.Range(0f, 1f) < linkingProbability) {
                     if (b + 1 < height) {
                         //node underneath
-                        nodes[(a * width) + b].addTransition(nodes[(a * width) + b + 1]);
+                        nodes[(a * width) + b].AddTransition(nodes[(a * width) + b + 1]);
                     }
                 }
             }

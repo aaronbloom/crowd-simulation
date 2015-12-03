@@ -4,7 +4,7 @@ using System.Collections;
 public class BoidManager {
 
     private const int boidHeight = 2;
-    private static readonly string BoidPrefab = "Prefabs/CylinderBoid";
+    private static readonly string BoidPrefab = "CylinderBoid";
 
     private int NumberOfBoids;
     private Quaternion rotation;
@@ -26,7 +26,7 @@ public class BoidManager {
     private void spawnBoid(System.Random random) {
         Vector3 positionOffset = generateRandomPosition(random);
         Vector3 position = Vector3.zero + positionOffset;
-        Object.Instantiate(Resources.Load(BoidPrefab), position, rotation);
+        BootStrapper.Initialise(BoidPrefab, position, rotation);
     }
 
     private Vector3 generateRandomPosition(System.Random random) {
