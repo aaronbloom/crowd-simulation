@@ -35,8 +35,8 @@ public class Graph {
     }
 
     public void Cull(Wall collidable) {
-        Vector3 position = new Vector3(collidable.GameObject.transform.position.x,0, collidable.GameObject.transform.position.z);
-        Vector3 size = new Vector3(collidable.GameObject.transform.localScale.x,0, collidable.GameObject.transform.localScale.z);
+        Vector3 position = ZeroY(collidable.GameObject.transform.position);
+        Vector3 size = ZeroY(collidable.GameObject.transform.localScale);
         List<Node> culled = new List<Node>();
         foreach (Node node in Nodes) {
             if((position - node.Position).magnitude <= (size/2).magnitude) {
@@ -48,6 +48,10 @@ public class Graph {
             Nodes.Remove(node);
         }
         //Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
+    }
+
+    private Vector3 ZeroY(Vector3 vector) {
+        return new Vector3(vector.x, 0, vector.z);
     }
 
     private static List<Node> generateNodeGraph(int width, int height, float nodesPerMeter) {
