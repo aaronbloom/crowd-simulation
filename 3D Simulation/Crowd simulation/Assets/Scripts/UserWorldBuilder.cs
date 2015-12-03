@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 public class UserWorldBuilder {
 
     private Object ghostedItemCursor;
-    private const float wallSize = 4;
+    private const float cursorSize = 4;
     private World world;
     private string currentItem;
 
@@ -25,8 +25,8 @@ public class UserWorldBuilder {
                 case "Wall":
                     Place<Wall>(MousePositionToGroundPosition());
                     break;
-                case "EntranceExit":
-                    Place<Goal>(MousePositionToGroundPosition());
+                case "Entrance":
+                    Place<Entrance>(MousePositionToGroundPosition());
                     break;
                 case "Goal":
                     Place<Goal>(MousePositionToGroundPosition());
@@ -36,7 +36,6 @@ public class UserWorldBuilder {
     }
 
     public void SetCurrentPlacementObject(string objectName) {
-        Debug.Log(objectName);
         currentItem = objectName;
     }
 
@@ -56,7 +55,7 @@ public class UserWorldBuilder {
     }
 
     private void UpdateCursorPosition() {
-        ((GameObject) ghostedItemCursor).transform.position = PositionToGridPosition(MousePositionToGroundPosition(), wallSize);
+        ((GameObject) ghostedItemCursor).transform.position = PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
     }
 
     private static Vector3 PositionToGridPosition(Vector3 position, float objectSize) {
@@ -71,8 +70,8 @@ public class UserWorldBuilder {
     }
 
     private void Place<T>(Vector3 position) where T : WorldObject, new() {
-        var location = PositionToGridPosition(position, wallSize);
         T worldObject = new T();
+        var location = PositionToGridPosition(position, worldObject.Size);
         worldObject.GameObject = (GameObject) BootStrapper.Initialise(
             worldObject.Identifier,
             location + worldObject.InitialPositionOffSet,
