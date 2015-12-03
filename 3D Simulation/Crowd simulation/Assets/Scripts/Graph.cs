@@ -38,16 +38,11 @@ public class Graph {
         Vector3 position = new Vector3(collidable.GameObject.transform.position.x,0, collidable.GameObject.transform.position.z);
         Vector3 size = new Vector3(collidable.GameObject.transform.localScale.x,0, collidable.GameObject.transform.localScale.z);
         List<Node> culled = new List<Node>();
-        int i = 0;
-        int c = 0;
         foreach (Node node in Nodes) {
-            i++;
             if((position - node.Position).magnitude <= (size/2).magnitude) {
                 culled.Add(node);
-                c++;
             }
         }
-        Console.WriteLine(i + c);
         foreach(Node node in culled) {
             node.Disconnect();
             Nodes.Remove(node);
