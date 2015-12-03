@@ -20,6 +20,7 @@ public class BootStrapper : MonoBehaviour {
 
     public static void StartSimulation(int numberOfBoids) {
         EnvironmentManager.CurrentEnvironment.Build();
+
         BoidManager = new BoidManager(numberOfBoids);
         BoidManager.SpawnBoids();
     }

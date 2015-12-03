@@ -23,7 +23,7 @@ class Path : Graph {
                 Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
             }
         }
-        Gizmos.DrawSphere(Nodes[Nodes.Count-1].Position, 1);
+        //Gizmos.DrawSphere(Nodes[Nodes.Count-1].Position, 1);
     }
 
     public static Path Navigate(Graph graph, Node startNode, Node goalNode) {

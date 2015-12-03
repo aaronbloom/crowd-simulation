@@ -16,7 +16,7 @@ public class Graph {
         int graphWidthInNodes = (int) (dimensions.x * nodesPerMeter);
         int graphHeightInNodes = (int) (dimensions.y * nodesPerMeter);
 
-        List<Node> nodes = generateRandomlyLinkedLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter, 0.8f);
+        List<Node> nodes = generateLatticeGraph(graphWidthInNodes, graphHeightInNodes, nodesPerMeter);
 
         return new Graph(nodes);
     }
@@ -35,9 +35,19 @@ public class Graph {
     }
 
     public void Cull(Wall collidable) {
-        Vector3 position = collidable.GameObject.transform.position;
-        Vector3 size = collidable.GameObject.transform.localScale;
-        Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
+        Vector3 position = new Vector3(collidable.GameObject.transform.position.x,0, collidable.GameObject.transform.position.z);
+        Vector3 size = new Vector3(collidable.GameObject.transform.localScale.x,0, collidable.GameObject.transform.localScale.z);
+        List<Node> culled = new List<Node>();
+        foreach(Node node in Nodes) {
+            if((position - node.Position).magnitude <= (size/2).magnitude) {
+                Console.WriteLine("Size: "+size.ToString()+", Position: ,"+position.ToString()+" Node Position: " + node.Position.ToString());
+                culled.Add(node);
+            }
+        }
+        foreach(Node node in culled) {
+            Nodes.Remove(node);
+        }
+        //Nodes.RemoveAll(node => (position - node.Position).magnitude < (size/2).magnitude);
     }
 
     private static List<Node> generateNodeGraph(int width, int height, float nodesPerMeter) {
@@ -95,7 +105,7 @@ public class Graph {
 
     public void DrawGraphGizmo() {
         foreach (Node node in Nodes) {
-            Gizmos.DrawSphere(node.Position, 1);
+            //Gizmos.DrawSphere(node.Position, 1);
             foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
                 Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
             }
