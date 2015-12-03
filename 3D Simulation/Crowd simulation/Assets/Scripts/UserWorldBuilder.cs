@@ -1,25 +1,47 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
 using Assets.Scripts.WorldObjects;
+using Object = UnityEngine.Object;
 
-public class UserWorldBuilder : MonoBehaviour {
+public class UserWorldBuilder {
 
     private Object ghostedItemCursor;
     private const float wallSize = 4;
     private World world;
+    private string currentItem;
 
-    void Start() {
+    public UserWorldBuilder() {
         ghostedItemCursor = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WallCursor"));
         world = BootStrapper.EnvironmentManager.CurrentEnvironment.World;
     }
 
-    void Update() {
+    public void Update() {
         UpdateCursorPosition();
 
         if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-            Place<Wall>(MousePositionToGroundPosition());
+            switch (currentItem) {
+                case "Wall":
+                    Place<Wall>(MousePositionToGroundPosition());
+                    break;
+                case "EntranceExit":
+                    Place<Goal>(MousePositionToGroundPosition());
+                    break;
+                case "Goal":
+                    Place<Goal>(MousePositionToGroundPosition());
+                    break;
+            }
         }
+    }
+
+    public void SetCurrentPlacementObject(string objectName) {
+        Debug.Log(objectName);
+        currentItem = objectName;
+    }
+
+    public void destroy() {
+        GameObject.Destroy(ghostedItemCursor);
     }
 
     private static Vector3 MousePositionToGroundPosition() {
@@ -35,7 +57,6 @@ public class UserWorldBuilder : MonoBehaviour {
 
     private void UpdateCursorPosition() {
         ((GameObject) ghostedItemCursor).transform.position = PositionToGridPosition(MousePositionToGroundPosition(), wallSize);
-
     }
 
     private static Vector3 PositionToGridPosition(Vector3 position, float objectSize) {
@@ -52,12 +73,11 @@ public class UserWorldBuilder : MonoBehaviour {
     private void Place<T>(Vector3 position) where T : WorldObject, new() {
         var location = PositionToGridPosition(position, wallSize);
         T worldObject = new T();
-        worldObject.GameObject = (GameObject) BootStrapper.Initialise("Wall", location, Quaternion.identity);
+        worldObject.GameObject = (GameObject) BootStrapper.Initialise(
+            worldObject.Identifier,
+            location + worldObject.InitialPositionOffSet,
+            worldObject.InitialRotationOffSet
+            );
         world.Objects.Add(worldObject);
     }
-
-    void OnDestroy() {
-        GameObject.Destroy(ghostedItemCursor);
-    }
-
 }

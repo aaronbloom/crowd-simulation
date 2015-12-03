@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class UserInterfaceController : MonoBehaviour {
 
     private GameObject mainMenu;
     private GameObject setupMenu;
     private GameObject environmentBuilderMenu;
-    private Object userWorldBuilder;
+    private UserWorldBuilder userWorldBuilder;
     private BootStrapper bootStrapper;
 
     void Awake() {
@@ -22,7 +24,9 @@ public class UserInterfaceController : MonoBehaviour {
     }
 	
 	void Update () {
-	
+	    if (userWorldBuilder != null) {
+	        userWorldBuilder.Update();
+	    }
 	}
 
     public void NewSimulation() {
@@ -33,15 +37,20 @@ public class UserInterfaceController : MonoBehaviour {
     public void StartEnvironmentBuilder() {
         setupMenu.SetActive(false);
         environmentBuilderMenu.SetActive(true);
-        userWorldBuilder = BootStrapper.Initialise("UserWorldBuilder");
+        userWorldBuilder = new UserWorldBuilder();
     }
 
     public void StartSimulation() {
-        GameObject.Destroy(userWorldBuilder);
+        userWorldBuilder.destroy();
+        userWorldBuilder = null;
         mainMenu.SetActive(false);
         setupMenu.SetActive(false);
         environmentBuilderMenu.SetActive(false);
         int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
         BootStrapper.StartSimulation(numberOfBoids);
+    }
+
+    public void SetCurrentPlacementObject(String objectName) {
+        userWorldBuilder.SetCurrentPlacementObject(objectName);
     }
 }
