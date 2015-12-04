@@ -19,13 +19,9 @@ public class UserWorldBuilder {
         cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
     }
 
-    public void Update() {
-        UpdateCursorPosition();
-
-        if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-            if (currentItem != null) {
-                Place(DetermineObject(currentItem), MousePositionToGroundPosition());
-            }
+    public void PlaceWorldObject() {
+        if (currentItem != null) {
+            Place(DetermineObject(currentItem), MousePositionToGroundPosition());
         }
     }
 
@@ -33,6 +29,13 @@ public class UserWorldBuilder {
         currentItem = objectName;
         ghostedItemCursor = WorldObjectInitialise(DetermineObject(currentItem), MousePositionToGroundPosition());
         ghostedItemCursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
+    }
+
+    public void UpdateCursorPosition() {
+        if (ghostedItemCursor != null) {
+            ghostedItemCursor.GameObject.transform.position
+                = PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
+        }
     }
 
     public void Destroy() {
@@ -62,13 +65,6 @@ public class UserWorldBuilder {
             return ray.GetPoint(distance);
         }
         return Vector3.zero;
-    }
-
-    private void UpdateCursorPosition() {
-        if (ghostedItemCursor != null) {
-            ghostedItemCursor.GameObject.transform.position
-                = PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
-        }
     }
 
     private static Vector3 PositionToGridPosition(Vector3 position, float objectSize) {

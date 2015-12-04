@@ -23,7 +23,10 @@ public class UserInterfaceController : MonoBehaviour {
 	
 	void Update () {
 	    if (userWorldBuilder != null) {
-	        userWorldBuilder.Update();
+            userWorldBuilder.UpdateCursorPosition();
+            if (Input.GetMouseButtonDown(0)) { //left mouse clicked
+                userWorldBuilder.PlaceWorldObject();
+            }
 	    }
 	}
 
