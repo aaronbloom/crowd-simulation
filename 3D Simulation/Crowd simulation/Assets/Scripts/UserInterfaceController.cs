@@ -49,7 +49,7 @@ public class UserInterfaceController : MonoBehaviour {
         HideMenu(setupMenu);
         HideMenu(environmentBuilderMenu);
         int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
-        BootStrapper.StartSimulation(numberOfBoids);
+        GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
     }
 
     public void SetCurrentPlacementObject(string objectName) {

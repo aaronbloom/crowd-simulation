@@ -64,7 +64,7 @@ public class GoalSeekingBehaviour : BoidBehaviour {
                 this.target = path.Nodes[index];
             } else {
                 //Goal Found
-                if (UnityEngine.Random.Range(0, 10) < 3) {
+                if (UnityEngine.Random.Range(0, 10) < 0) {
                     switchBehaviourToLoiter();
                 } else {
                     chooseNewGoal();
