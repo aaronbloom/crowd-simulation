@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public class UserInterfaceController : MonoBehaviour {
@@ -16,9 +17,9 @@ public class UserInterfaceController : MonoBehaviour {
     }
 
 	void Start () {
-	    mainMenu.SetActive(true);
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(false);
+        ShowMenu(mainMenu);
+        HideMenu(setupMenu);
+        HideMenu(environmentBuilderMenu);
     }
 	
 	void Update () {
@@ -31,27 +32,43 @@ public class UserInterfaceController : MonoBehaviour {
 	}
 
     public void NewSimulation() {
-        mainMenu.SetActive(false);
-        setupMenu.SetActive(true);
+        HideMenu(mainMenu);
+        ShowMenu(setupMenu);
     }
 
     public void StartEnvironmentBuilder() {
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(true);
+        HideMenu(setupMenu);
+        ShowMenu(environmentBuilderMenu);
         userWorldBuilder = new UserWorldBuilder();
     }
 
     public void StartSimulation() {
         userWorldBuilder.Destroy();
         userWorldBuilder = null;
-        mainMenu.SetActive(false);
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(false);
+        HideMenu(mainMenu);
+        HideMenu(setupMenu);
+        HideMenu(environmentBuilderMenu);
         int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
         BootStrapper.StartSimulation(numberOfBoids);
     }
 
     public void SetCurrentPlacementObject(string objectName) {
         userWorldBuilder.SetCurrentPlacementObject(objectName);
+    }
+
+    private void HideMenu(GameObject menu) {
+        menu.SetActive(false);
+        CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
+        if (canvasGroup != null) {
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    private void ShowMenu(GameObject menu) {
+        menu.SetActive(true);
+        CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
+        if (canvasGroup != null) {
+            canvasGroup.blocksRaycasts = true;
+        }
     }
 }

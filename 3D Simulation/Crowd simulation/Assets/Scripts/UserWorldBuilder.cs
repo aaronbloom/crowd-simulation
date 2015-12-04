@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using Assets.Scripts;
 using Assets.Scripts.WorldObjects;
-using Environment = System.Environment;
 using Object = UnityEngine.Object;
 
 public class UserWorldBuilder {
@@ -21,12 +18,15 @@ public class UserWorldBuilder {
 
     public void PlaceWorldObject() {
         if (currentItem != null) {
-            Place(DetermineObject(currentItem), MousePositionToGroundPosition());
+            if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
+                Place(DetermineObject(currentItem), MousePositionToGroundPosition());
+            }
         }
     }
 
     public void SetCurrentPlacementObject(string objectName) {
         currentItem = objectName;
+        Destroy();
         ghostedItemCursor = WorldObjectInitialise(DetermineObject(currentItem), MousePositionToGroundPosition());
         ghostedItemCursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
     }
