@@ -8,12 +8,14 @@ using Object = UnityEngine.Object;
 public class UserWorldBuilder {
 
     private WorldObject ghostedItemCursor;
+    private readonly Material cursorMaterial;
     private const float cursorSize = 4;
     private readonly World world;
     private string currentItem;
 
     public UserWorldBuilder() {
         world = BootStrapper.EnvironmentManager.CurrentEnvironment.World;
+        cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
     }
 
     public void Update() {
@@ -29,6 +31,7 @@ public class UserWorldBuilder {
     public void SetCurrentPlacementObject(string objectName) {
         currentItem = objectName;
         ghostedItemCursor = WorldObjectInitialise(DetermineObject(currentItem), MousePositionToGroundPosition());
+        ghostedItemCursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
     }
 
     public void Destroy() {
