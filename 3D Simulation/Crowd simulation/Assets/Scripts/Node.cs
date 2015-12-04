@@ -56,4 +56,8 @@ public class Node {
             removeTransition(t);
         }
     }
+
+    public static float distanceBetween(Node a, Node b) {
+        return (a.Position - b.Position).magnitude;
+    }
 }
