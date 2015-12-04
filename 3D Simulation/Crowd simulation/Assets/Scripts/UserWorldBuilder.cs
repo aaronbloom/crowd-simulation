@@ -7,13 +7,12 @@ using Object = UnityEngine.Object;
 
 public class UserWorldBuilder {
 
-    private readonly Object ghostedItemCursor;
+    private WorldObject ghostedItemCursor;
     private const float cursorSize = 4;
     private readonly World world;
     private string currentItem;
 
     public UserWorldBuilder() {
-        ghostedItemCursor = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WallCursor"));
         world = BootStrapper.EnvironmentManager.CurrentEnvironment.World;
     }
 
@@ -21,26 +20,33 @@ public class UserWorldBuilder {
         UpdateCursorPosition();
 
         if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-            switch (currentItem) {
-                case "Wall":
-                    Place<Wall>(MousePositionToGroundPosition());
-                    break;
-                case "Entrance":
-                    Place<Entrance>(MousePositionToGroundPosition());
-                    break;
-                case "Goal":
-                    Place<Goal>(MousePositionToGroundPosition());
-                    break;
+            if (currentItem != null) {
+                Place(DetermineObject(currentItem), MousePositionToGroundPosition());
             }
         }
     }
 
     public void SetCurrentPlacementObject(string objectName) {
         currentItem = objectName;
+        ghostedItemCursor = WorldObjectInitialise(DetermineObject(currentItem), MousePositionToGroundPosition());
     }
 
     public void Destroy() {
-        Object.Destroy(ghostedItemCursor);
+        if (ghostedItemCursor != null) {
+            Object.Destroy(ghostedItemCursor.GameObject);
+        }
+    }
+
+    private WorldObject DetermineObject(string objectName) {
+        switch (currentItem) {
+            case "Wall":
+                return new Wall();
+            case "Entrance":
+                return new Entrance();
+            case "Goal":
+                return new Goal();
+        }
+        return null;
     }
 
     private static Vector3 MousePositionToGroundPosition() {
@@ -55,7 +61,10 @@ public class UserWorldBuilder {
     }
 
     private void UpdateCursorPosition() {
-        ((GameObject) ghostedItemCursor).transform.position = PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
+        if (ghostedItemCursor != null) {
+            ghostedItemCursor.GameObject.transform.position
+                = PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
+        }
     }
 
     private static Vector3 PositionToGridPosition(Vector3 position, float objectSize) {
@@ -69,14 +78,17 @@ public class UserWorldBuilder {
         return gridPosition;
     }
 
-    private void Place<T>(Vector3 position) where T : WorldObject, new() {
-        T worldObject = new T();
+    private void Place(WorldObject worldObject, Vector3 position) {
         var location = PositionToGridPosition(position, worldObject.Size);
-        worldObject.GameObject = (GameObject) BootStrapper.Initialise(
+        world.Objects.Add(WorldObjectInitialise(worldObject, location));
+    }
+
+    private WorldObject WorldObjectInitialise(WorldObject worldObject, Vector3 position) {
+        worldObject.GameObject = (GameObject)BootStrapper.Initialise(
             worldObject.Identifier,
-            location + worldObject.InitialPositionOffSet,
+            position + worldObject.InitialPositionOffSet,
             worldObject.InitialRotationOffSet
             );
-        world.Objects.Add(worldObject);
+        return worldObject;
     }
 }
