@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Assets.Scripts.WorldObjects;
 
 public class GoalSeekingBehaviour : BoidBehaviour {
 
@@ -18,6 +19,12 @@ public class GoalSeekingBehaviour : BoidBehaviour {
     public void Seek(Node goal, Graph graph) {
         Node startNode = graph.FindClosestNode(boid.transform.position);
         path = Path.Navigate(graph, startNode, goal);
+    }
+
+    public void Seek(Goal goal, Graph graph) {
+        Node startNode = graph.FindClosestNode(boid.transform.position);
+        Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
+        path = Path.Navigate(graph, startNode, goalNode);
     }
 
     private Vector3 MoveAlongPath() {
@@ -52,9 +59,24 @@ public class GoalSeekingBehaviour : BoidBehaviour {
     private void TargetNextNodeAlongPath() {
         if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
             int index = path.RemainingNodes.IndexOf(this.target) + 1;
-            if (index < path.RemainingNodes.Count) {
+            if (index < path.RemainingNodes.Count - 1) {
                 this.target = path.RemainingNodes[index];
+            } else {
+                //Goal Found
+                chooseNewGoal();
             }
         }
     }
+
+    public void chooseNewGoal() {
+        //Do something more intelligent here.
+        List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
+        if(goals.Count > 0) {
+            Goal targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)];
+            Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
+        } else {
+            //loiter
+        }
+    }
+
 }
