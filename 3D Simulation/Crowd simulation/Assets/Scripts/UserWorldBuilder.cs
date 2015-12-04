@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
 using Assets.Scripts.WorldObjects;
+using Environment = System.Environment;
 using Object = UnityEngine.Object;
 
 public class UserWorldBuilder {
@@ -78,7 +79,16 @@ public class UserWorldBuilder {
         gridPosition *= objectSize;
         gridPosition += Vector3.one * (objectSize / 2);
         gridPosition.y = objectSize / 2; // so it sits at ground level
-        return gridPosition;
+        Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
+        Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
+        return ConstrainVector(gridPosition, origin, bounds);
+    }
+
+    private static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds) {
+        position.x = Mathf.Clamp(position.x, origin.x, origin.x + bounds.x);
+        position.y = Mathf.Clamp(position.y, origin.y, origin.y + bounds.y);
+        position.z = Mathf.Clamp(position.z, origin.z, origin.z + bounds.z);
+        return position;
     }
 
     private void Place(WorldObject worldObject, Vector3 position) {
