@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.WorldObjects;
+using Assets.Scripts;
 
 public class GoalSeekingBehaviour : BoidBehaviour {
 
@@ -58,12 +59,16 @@ public class GoalSeekingBehaviour : BoidBehaviour {
 
     private void TargetNextNodeAlongPath() {
         if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
-            int index = path.RemainingNodes.IndexOf(this.target) + 1;
-            if (index < path.RemainingNodes.Count - 1) {
-                this.target = path.RemainingNodes[index];
+            int index = path.Nodes.IndexOf(this.target) + 1;
+            if (index < path.Nodes.Count - 1) {
+                this.target = path.Nodes[index];
             } else {
                 //Goal Found
-                chooseNewGoal();
+                if (UnityEngine.Random.Range(0, 10) < 3) {
+                    switchBehaviourToLoiter();
+                } else {
+                    chooseNewGoal();
+                }
             }
         }
     }
@@ -75,8 +80,12 @@ public class GoalSeekingBehaviour : BoidBehaviour {
             Goal targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)];
             Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
         } else {
-            //loiter
+            switchBehaviourToLoiter();
         }
+    }
+
+    public void switchBehaviourToLoiter() {
+        boid.behaviour = new LoiteringBehaviour(boid, path.Nodes[path.Nodes.Count - 2]);
     }
 
 }

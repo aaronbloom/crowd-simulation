@@ -8,7 +8,7 @@ public class Boid : MonoBehaviour {
         get { return _velocity; }
     }
 
-    private BoidBehaviour behaviour;
+    public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
     private Vector3 acceleration;
 
     void Awake() {
