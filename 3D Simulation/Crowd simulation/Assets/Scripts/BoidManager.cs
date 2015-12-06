@@ -27,16 +27,18 @@ public class BoidManager {
     }
 
     private void spawnBoid() {
-        Vector3 positionOffset = FindRandomEntrancePosition();
-        Vector3 position = Vector3.zero + positionOffset;
-        bool isOverLapping = false;
-        foreach (var boid in boids) {
-            if (Vector3.Distance(position, boid.transform.position) < 2) {
-                isOverLapping = true;
+        if (EntranceAvaliable()) {
+            Vector3 positionOffset = FindRandomEntrancePosition();
+            Vector3 position = Vector3.zero + positionOffset;
+            bool isOverLapping = false;
+            foreach (var boid in boids) {
+                if (Vector3.Distance(position, boid.transform.position) < 2) {
+                    isOverLapping = true;
+                }
             }
-        }
-        if (!isOverLapping) {
-            boids.Add((GameObject) BootStrapper.Initialise(BoidPrefab, position, rotation));
+            if (!isOverLapping) {
+                boids.Add((GameObject) BootStrapper.Initialise(BoidPrefab, position, rotation));
+            }
         }
     }
 
@@ -61,5 +63,9 @@ public class BoidManager {
             return position;
         }
         return Vector3.zero;
+    }
+
+    private bool EntranceAvaliable() {
+        return EnvironmentManager.CurrentEnvironment.World.Entrances.Count > 0;
     }
 }
