@@ -8,7 +8,7 @@ public class Boid : MonoBehaviour {
         get { return _velocity; }
     }
 
-    private BoidBehaviour behaviour;
+    public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
     private Vector3 acceleration;
 
     void Awake() {
@@ -18,7 +18,7 @@ public class Boid : MonoBehaviour {
     void Start() {
         this._velocity = this.behaviour.InitialVelocity();
         Graph graph = BootStrapper.EnvironmentManager.CurrentEnvironment.Graph;
-        ((GoalSeekingBehaviour) this.behaviour).Seek(graph.FindClosestNode(new Vector3(60,0,60)), graph);
+        ((GoalSeekingBehaviour)this.behaviour).chooseNewGoal();
     }
 
     void Update() {

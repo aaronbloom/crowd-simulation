@@ -10,13 +10,6 @@ class Path : Graph {
     public Path(List<Node> nodes) : base(nodes) {
     }
 
-    //TODO: Refactor out. Replace with Graph.Nodes    #!#    #!#    #!#    #!#
-    public List<Node> RemainingNodes {
-        get {
-            return Nodes;
-        }
-    }
-
     public void DrawGraphGizmo() {
         foreach (Node node in Nodes) {
             foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
@@ -24,6 +17,30 @@ class Path : Graph {
             }
         }
         //Gizmos.DrawSphere(Nodes[Nodes.Count-1].Position, 1);
+    }
+
+    public static Path Loiter(Graph graph, Node loiterNode, int maxLoiterDist, int minLoiterNodes, int maxLoiterNodes) {
+
+        List<Node> path = new List<Node>();
+
+        Node currNode = loiterNode;
+        path.Add(loiterNode);
+        int nodesToLoiter = UnityEngine.Random.Range(minLoiterNodes, maxLoiterNodes);
+        for (; nodesToLoiter > 0; nodesToLoiter--) {
+            List<Node> potentialNodes = new List<Node>(currNode.TransitionsTo);
+            while (potentialNodes.Count > 0) {
+                int index = (int)UnityEngine.Random.Range(0, potentialNodes.Count);
+                Node potentialNode = potentialNodes[index];
+                if (Node.distanceBetween(potentialNode, loiterNode) < maxLoiterDist) {
+                    path.Add(potentialNode);
+                    potentialNodes.Clear();
+                } else {
+                    potentialNodes.RemoveAt(index);
+                }
+            }
+        }
+
+        return new Path(path);
     }
 
     public static Path Navigate(Graph graph, Node startNode, Node goalNode) {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class BootStrapper : MonoBehaviour {
 
@@ -18,11 +19,11 @@ public class BootStrapper : MonoBehaviour {
         Initialise(Camera);
     }
 
-    public static void StartSimulation(int numberOfBoids) {
+    public void StartSimulation(int numberOfBoids) {
         EnvironmentManager.CurrentEnvironment.Build();
 
         BoidManager = new BoidManager(numberOfBoids);
-        BoidManager.SpawnBoids();
+        StartCoroutine("BoidSpawningTimer");
     }
 
     public static Object Initialise(string prefabName) {
@@ -31,6 +32,13 @@ public class BootStrapper : MonoBehaviour {
 
     public static Object Initialise(string prefabName, Vector3 position, Quaternion rotation) {
         return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
+    }
+
+    private IEnumerator BoidSpawningTimer() {
+        while (true) {
+            yield return new WaitForSeconds(BoidManager.SpawningIntervalSeconds); //wait
+            BoidManager.AttemptBoidSpawn();
+        }
     }
 
 }

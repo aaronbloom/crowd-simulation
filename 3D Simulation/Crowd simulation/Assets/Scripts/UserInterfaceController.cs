@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class UserInterfaceController : MonoBehaviour {
 
     private GameObject mainMenu;
     private GameObject setupMenu;
     private GameObject environmentBuilderMenu;
-    private Object userWorldBuilder;
-    private BootStrapper bootStrapper;
+    private UserWorldBuilder userWorldBuilder;
 
     void Awake() {
         mainMenu = GameObject.Find("MainMenu");
@@ -15,33 +17,58 @@ public class UserInterfaceController : MonoBehaviour {
     }
 
 	void Start () {
-	    mainMenu.SetActive(true);
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(false);
-        bootStrapper = GameObject.Find("Bootstrapper").GetComponent<BootStrapper>();
+        ShowMenu(mainMenu);
+        HideMenu(setupMenu);
+        HideMenu(environmentBuilderMenu);
     }
 	
 	void Update () {
-	
+	    if (userWorldBuilder != null) {
+            userWorldBuilder.UpdateCursorPosition();
+            if (Input.GetMouseButtonDown(0)) { //left mouse clicked
+                userWorldBuilder.PlaceWorldObject();
+            }
+	    }
 	}
 
     public void NewSimulation() {
-        mainMenu.SetActive(false);
-        setupMenu.SetActive(true);
+        HideMenu(mainMenu);
+        ShowMenu(setupMenu);
     }
 
     public void StartEnvironmentBuilder() {
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(true);
-        userWorldBuilder = BootStrapper.Initialise("UserWorldBuilder");
+        HideMenu(setupMenu);
+        ShowMenu(environmentBuilderMenu);
+        userWorldBuilder = new UserWorldBuilder();
     }
 
     public void StartSimulation() {
-        GameObject.Destroy(userWorldBuilder);
-        mainMenu.SetActive(false);
-        setupMenu.SetActive(false);
-        environmentBuilderMenu.SetActive(false);
+        userWorldBuilder.Destroy();
+        userWorldBuilder = null;
+        HideMenu(mainMenu);
+        HideMenu(setupMenu);
+        HideMenu(environmentBuilderMenu);
         int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
-        BootStrapper.StartSimulation(numberOfBoids);
+        GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
+    }
+
+    public void SetCurrentPlacementObject(string objectName) {
+        userWorldBuilder.SetCurrentPlacementObject(objectName);
+    }
+
+    private void HideMenu(GameObject menu) {
+        menu.SetActive(false);
+        CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
+        if (canvasGroup != null) {
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    private void ShowMenu(GameObject menu) {
+        menu.SetActive(true);
+        CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
+        if (canvasGroup != null) {
+            canvasGroup.blocksRaycasts = true;
+        }
     }
 }
