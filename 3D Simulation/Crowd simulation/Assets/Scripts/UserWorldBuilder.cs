@@ -89,7 +89,10 @@ public class UserWorldBuilder {
 
     private void Place(WorldObject worldObject, Vector3 position) {
         var location = PositionToGridPosition(position, worldObject.Size);
-        world.Objects.Add(WorldObjectInitialise(worldObject, location));
+        if (!world.AddObject(WorldObjectInitialise(worldObject, location))) {
+            Debug.Log("Could not add new world object - Already occupied");
+            worldObject.Destroy();
+        }
     }
 
     private WorldObject WorldObjectInitialise(WorldObject worldObject, Vector3 position) {

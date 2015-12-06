@@ -39,5 +39,22 @@ namespace Assets.Scripts {
             return Objects.OfType<T>().ToList();
         }
 
+        public bool AddObject(WorldObject worldObject) {
+            bool alreadyOccupied = AlreadyOccupied(worldObject.GameObject.transform.position);
+            if (!alreadyOccupied) {
+                Objects.Add(worldObject);
+            }
+            return !alreadyOccupied;
+        }
+
+        public bool AlreadyOccupied(Vector3 location) {
+            foreach (WorldObject worldObject in Objects) {
+                if (worldObject.WithinBounds(location)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

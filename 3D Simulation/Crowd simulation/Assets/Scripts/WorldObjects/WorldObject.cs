@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking.Match;
+using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.WorldObjects {
     public abstract class WorldObject {
@@ -26,6 +28,18 @@ namespace Assets.Scripts.WorldObjects {
         protected WorldObject() {
             InitialPositionOffSet = Vector3.zero;
             InitialRotationOffSet = Quaternion.identity;
+        }
+
+        //basic withinbounds checker, override for complex world objects
+        public bool WithinBounds(Vector3 position) {
+            Vector3 gameObjectPosition = GameObject.transform.position;
+            gameObjectPosition.y = 0;
+            position.y = 0;
+            return gameObjectPosition == position;
+        }
+
+        public void Destroy() {
+            Object.Destroy(GameObject);
         }
     }
 }
