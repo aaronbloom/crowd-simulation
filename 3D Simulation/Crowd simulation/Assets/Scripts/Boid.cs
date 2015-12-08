@@ -1,30 +1,59 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Boid : MonoBehaviour {
 
-    private BoidBehaviour behaviour;
-    public Vector3 velocity;
+    private Vector3 _velocity;
+    public Vector3 Velocity {
+        get { return _velocity; }
+    }
+
+    public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
     private Vector3 acceleration;
-    public float maxSpeed = 8.0f;
-    public float maxForce = 0.05f;
-    
-	// Use this for initialization
-	void Start () {
-        this.velocity = Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
-        this.behaviour = new FlockingBehaviour(this, 20, 5);
-	}
 
-    // Update is called once per frame
-    void Update () {
-        this.acceleration += this.behaviour.updateAcceleration();
+    void Awake() {
+        this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
+    }
 
-        this.velocity += acceleration;
-        this.velocity = Vector3.ClampMagnitude(this.velocity, maxSpeed);
-        this.transform.position += (this.velocity * Time.deltaTime);
-        this.acceleration = Vector3.zero; //reset acceleration
+    void Start() {
+        this._velocity = this.behaviour.InitialVelocity();
+        Graph graph = BootStrapper.EnvironmentManager.CurrentEnvironment.Graph;
+        ((GoalSeekingBehaviour)this.behaviour).chooseNewGoal();
+    }
 
-        //Set boid to face direction of travel
-        this.transform.rotation = Quaternion.LookRotation(this.velocity);
+    void Update() {
+        calculateNewPosition();
+        resetAcceleration();
+        faceTravelDirection();
+    }
+
+    void OnDrawGizmos() {
+        this.behaviour.DrawGraphGizmo();
+    }
+
+    private void calculateNewPosition() {
+        this.acceleration = calculateAcceleration(this.acceleration);
+        this._velocity = calculateVelocity(this._velocity);
+        this.transform.position += (this._velocity * Time.deltaTime);
+    }
+
+    private Vector3 calculateAcceleration(Vector3 acceleration) {
+        return acceleration += this.behaviour.updateAcceleration();
+    }
+
+    private Vector3 calculateVelocity(Vector3 velocity) {
+        velocity *= this.behaviour.VelocityDamping;
+        velocity += acceleration;
+        velocity = Vector3.ClampMagnitude(velocity, this.behaviour.MaxSpeed);
+        velocity.y = 0;
+        return velocity;
+    }
+
+    private void resetAcceleration() {
+        this.acceleration = Vector3.zero;
+    }
+
+    private void faceTravelDirection() {
+        this.transform.rotation = Quaternion.LookRotation(this._velocity);
     }
 }

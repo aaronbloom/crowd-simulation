@@ -1,32 +1,71 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using Assets.Scripts.WorldObjects;
 
-public class BoidManager : MonoBehaviour {
+public class BoidManager {
 
+    private const int boidHeight = 2;
+    private static readonly string BoidPrefab = "CylinderBoid";
+
+    private int NumberOfBoids;
+    private Quaternion rotation;
     private EnvironmentManager EnvironmentManager;
-    public int NumberOfBoids = 1;
+    private readonly List<GameObject> boids;
+    public static readonly float SpawningIntervalSeconds = 0.5f;
 
-    private void SpawnBoids () {
-        System.Random random = new System.Random();
+    public BoidManager(int numOfBoids) {
+        EnvironmentManager = EnvironmentManager.Shared();
+        NumberOfBoids = numOfBoids;
+        rotation = Quaternion.identity;
+        boids = new List<GameObject>(NumberOfBoids);
+    }
 
-        for (int i = 0; i < NumberOfBoids; i++)
-        {
-            Vector3 positionOffset = new Vector3(
-                random.Next(0, (int)EnvironmentManager.Bounds.x),
-                random.Next(0, (int)EnvironmentManager.Bounds.y),
-                random.Next(0, (int)EnvironmentManager.Bounds.z));
-            Instantiate(Resources.Load("Prefabs/CylinderBoid"), transform.position + positionOffset, transform.rotation);
+    public void AttemptBoidSpawn() {
+        for (int i = 0; i < NumberOfBoids - boids.Count; i++) {
+            spawnBoid();
         }
     }
 
-    // Use this for initialization
-    void Start () {
-        EnvironmentManager = FindObjectOfType(typeof(EnvironmentManager)) as EnvironmentManager;
-        SpawnBoids();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    private void spawnBoid() {
+        if (EntranceAvaliable()) {
+            Vector3 positionOffset = FindRandomEntrancePosition();
+            Vector3 position = Vector3.zero + positionOffset;
+            bool isOverLapping = false;
+            foreach (var boid in boids) {
+                if (Vector3.Distance(position, boid.transform.position) < 2) {
+                    isOverLapping = true;
+                }
+            }
+            if (!isOverLapping) {
+                boids.Add((GameObject) BootStrapper.Initialise(BoidPrefab, position, rotation));
+            }
+        }
+    }
+
+    private Vector3 generateRandomPosition() {
+        Vector3 environmentBounds = EnvironmentManager.CurrentEnvironment.Bounds;
+        int xLimit = (int)environmentBounds.x;
+        int zLimit = (int)environmentBounds.z;
+
+        return new Vector3(Random.Range(0, xLimit), boidHeight, Random.Range(0, zLimit));
+    }
+
+    private Vector3 FindRandomEntrancePosition() {
+        List<Entrance> entrances = EnvironmentManager.CurrentEnvironment.World.Entrances;
+        if (entrances.Count > 0) {
+            Entrance entrance = entrances[Random.Range(0, entrances.Count)];
+            float halfEntranceSize = entrance.Size/2;
+            Vector3 internalOffSet = new Vector3(
+                Random.Range(-halfEntranceSize, halfEntranceSize),
+                boidHeight, //spawn on ground
+                Random.Range(-halfEntranceSize, halfEntranceSize));
+            Vector3 position = entrance.GameObject.transform.position + internalOffSet;
+            return position;
+        }
+        return Vector3.zero;
+    }
+
+    private bool EntranceAvaliable() {
+        return EnvironmentManager.CurrentEnvironment.World.Entrances.Count > 0;
+    }
 }
