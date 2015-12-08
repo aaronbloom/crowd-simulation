@@ -95,8 +95,12 @@ public class Graph {
             thisNode.AddTransition(bottomNeighbour);
         }
         if (nodeX + 1 < width && nodeY + 1 < height) {
-            Node diagonalNeighbour = nodes[((nodeX + 1) * width) + nodeY + 1];
-            thisNode.AddTransition(diagonalNeighbour);
+            Node bottomRightNeighbour = nodes[((nodeX + 1) * width) + nodeY + 1];
+            thisNode.AddTransition(bottomRightNeighbour);
+        }
+        if (nodeX - 1 > 0 && nodeY + 1 < height) {
+            Node bottomLeftNeighbour = nodes[((nodeX - 1) * width) + nodeY + 1];
+            thisNode.AddTransition(bottomLeftNeighbour);
         }
     }
 
