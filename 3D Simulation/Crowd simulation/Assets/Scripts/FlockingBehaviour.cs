@@ -11,13 +11,13 @@ public class FlockingBehaviour : BoidBehaviour {
     private EnvironmentManager environmentManager;
     private float viewingDistance;
     private float minimumDistance;
-    public float SeperationFactor { get; protected set; }
+    public float SeparationFactor { get; protected set; }
 
     public FlockingBehaviour(Boid boid, float viewingDistance, float minimumDistance) {
         this.MaxSpeed = 8.0f;
         this.MaxForce = 0.05f;
         this.VelocityDamping = 1f;
-        this.SeperationFactor = 1.5f;
+        this.SeparationFactor = 1.5f;
         this.boid = boid;
         this.viewingDistance = viewingDistance;
         this.minimumDistance = minimumDistance;
@@ -37,7 +37,7 @@ public class FlockingBehaviour : BoidBehaviour {
         Vector3 boundaryAvoidance = PlaneAvoidance();
 
         Vector3 acceleration = Vector3.zero;
-        acceleration += seperationDirection * SeperationFactor;
+        acceleration += seperationDirection * SeparationFactor;
         acceleration += alignmentDirection;
         acceleration += cohesionDirection;
         acceleration += boundaryAvoidance;

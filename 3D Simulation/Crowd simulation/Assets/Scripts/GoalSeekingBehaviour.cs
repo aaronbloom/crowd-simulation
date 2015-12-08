@@ -15,7 +15,7 @@ public class GoalSeekingBehaviour : FlockingBehaviour {
         this.MaxSpeed = 9.0f;
         this.MaxForce = 2.0f;
         this.VelocityDamping = 0.2f;
-        this.SeperationFactor = 0.9f;
+        this.SeparationFactor = 0.9f;
     }
 
     public void Seek(Node goal, Graph graph) {
@@ -53,7 +53,7 @@ public class GoalSeekingBehaviour : FlockingBehaviour {
         Vector3 seperationDirection = Separation(boids);
 
         Vector3 acceleration = Vector3.zero;
-        acceleration += seperationDirection * SeperationFactor;
+        acceleration += seperationDirection * SeparationFactor;
         acceleration += MoveAlongPath();
         return acceleration;
     }
