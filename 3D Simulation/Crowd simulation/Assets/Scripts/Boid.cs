@@ -12,7 +12,7 @@ public class Boid : MonoBehaviour {
     private Vector3 acceleration;
 
     void Awake() {
-        this.behaviour = new GoalSeekingBehaviour(this);
+        this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
     }
 
     void Start() {

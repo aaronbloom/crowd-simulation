@@ -11,12 +11,13 @@ public class FlockingBehaviour : BoidBehaviour {
     private EnvironmentManager environmentManager;
     private float viewingDistance;
     private float minimumDistance;
-    private readonly float seperationFactor = 1.5f;
+    public float SeparationFactor { get; protected set; }
 
     public FlockingBehaviour(Boid boid, float viewingDistance, float minimumDistance) {
         this.MaxSpeed = 8.0f;
         this.MaxForce = 0.05f;
         this.VelocityDamping = 1f;
+        this.SeparationFactor = 1.5f;
         this.boid = boid;
         this.viewingDistance = viewingDistance;
         this.minimumDistance = minimumDistance;
@@ -36,7 +37,7 @@ public class FlockingBehaviour : BoidBehaviour {
         Vector3 boundaryAvoidance = PlaneAvoidance();
 
         Vector3 acceleration = Vector3.zero;
-        acceleration += seperationDirection * seperationFactor;
+        acceleration += seperationDirection * SeparationFactor;
         acceleration += alignmentDirection;
         acceleration += cohesionDirection;
         acceleration += boundaryAvoidance;
@@ -48,7 +49,7 @@ public class FlockingBehaviour : BoidBehaviour {
         throw new NotImplementedException();
     }
 
-    private List<Boid> FindBoidsWithinView() {
+    protected List<Boid> FindBoidsWithinView() {
         GameObject[] boids = GameObject.FindGameObjectsWithTag(BoidTag);
         List<Boid> closeBoids = new List<Boid>();
         foreach (GameObject otherBoid in boids) {
@@ -66,7 +67,7 @@ public class FlockingBehaviour : BoidBehaviour {
         return distance < this.viewingDistance && distance != 0;
     }
 
-    private Vector3 Cohesion(List<Boid> boids) {
+    protected Vector3 Cohesion(List<Boid> boids) {
         if (boids.Count > 0) {
             Vector3 averagePosition = getAveragePosition(boids);
             Vector3 aim = averagePosition - boid.transform.position;
@@ -89,7 +90,7 @@ public class FlockingBehaviour : BoidBehaviour {
         return averagePosition / boids.Count;
     }
 
-    private Vector3 Separation(List<Boid> boids) {
+    protected Vector3 Separation(List<Boid> boids) {
         Vector3 steeringDirectionAggregator = Vector3.zero;
         int count = 0;
         foreach (Boid otherBoid in boids) {
@@ -124,7 +125,7 @@ public class FlockingBehaviour : BoidBehaviour {
         return averageSteeringDirection;
     }
 
-    private Vector3 Alignment(List<Boid> boids) {
+    protected Vector3 Alignment(List<Boid> boids) {
         if (boids.Count > 0) {
             Vector3 averageHeading = getAverageHeading(boids);
             averageHeading.Normalize();
@@ -145,7 +146,7 @@ public class FlockingBehaviour : BoidBehaviour {
         return averageHeading;
     }
 
-    private Vector3 PlaneAvoidance() {
+    protected Vector3 PlaneAvoidance() {
         Plane[] boundaries = environmentManager.CurrentEnvironment.Boundaries;
         Vector3 steeringDirection = Vector3.zero;
         foreach (Plane boundary in boundaries) {

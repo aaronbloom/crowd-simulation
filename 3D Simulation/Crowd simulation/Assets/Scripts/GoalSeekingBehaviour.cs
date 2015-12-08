@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using Assets.Scripts.WorldObjects;
 using Assets.Scripts;
 
-public class GoalSeekingBehaviour : BoidBehaviour {
+public class GoalSeekingBehaviour : FlockingBehaviour {
 
     private Node target;
     private Path path;
 
-    public GoalSeekingBehaviour (Boid boid) {
+    public GoalSeekingBehaviour (Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
         this.boid = boid;
-        this.MaxSpeed = 8.0f;
-        this.MaxForce = 0.5f;
-        this.VelocityDamping = 0.5f;
+        this.MaxSpeed = 9.0f;
+        this.MaxForce = 2.0f;
+        this.VelocityDamping = 0.2f;
+        this.SeparationFactor = 0.9f;
     }
 
     public void Seek(Node goal, Graph graph) {
@@ -47,7 +48,12 @@ public class GoalSeekingBehaviour : BoidBehaviour {
     }
 
     public override Vector3 updateAcceleration() {
+        List<Boid> boids = FindBoidsWithinView();
+
+        Vector3 seperationDirection = Separation(boids);
+
         Vector3 acceleration = Vector3.zero;
+        acceleration += seperationDirection * SeparationFactor;
         acceleration += MoveAlongPath();
         return acceleration;
     }
