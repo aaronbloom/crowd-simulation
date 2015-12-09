@@ -37,7 +37,10 @@ public class UserInterfaceController : MonoBehaviour {
     }
 
     public void StartEnvironmentBuilder() {
-        EnvironmentManager.Shared().InitialiseEnvironment(new Vector3(40, 50, 40));
+        int environmentHeight = 50;
+        int environmentSize = setupMenu.GetComponent<MenuControlController>().EnvironmentSizeValue;
+        Vector3 bounds = new Vector3(environmentSize, environmentHeight, environmentSize);
+        EnvironmentManager.Shared().InitialiseEnvironment(bounds);
         HideMenu(setupMenu);
         ShowMenu(environmentBuilderMenu);
         userWorldBuilder = new UserWorldBuilder();
@@ -49,7 +52,7 @@ public class UserInterfaceController : MonoBehaviour {
         HideMenu(mainMenu);
         HideMenu(setupMenu);
         HideMenu(environmentBuilderMenu);
-        int numberOfBoids = setupMenu.GetComponent<SliderController>().Value;
+        int numberOfBoids = setupMenu.GetComponent<MenuControlController>().NumberOfBoidsValue;
         GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
     }
 
