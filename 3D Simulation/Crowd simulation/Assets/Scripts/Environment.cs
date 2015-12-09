@@ -21,15 +21,23 @@ public class Environment {
     }
 
 
-    public Environment() {
+    public Environment(Vector3 bounds) {
         this.Origin = Vector3.zero;
-        this.Bounds = new Vector3(100, 50, 100); //width, height, length
+        this.Bounds = bounds; //width, height, length
+        CreateGroundArea(bounds);
         this.Boundaries = constructCuboidBoundary(this.Bounds, Origin);
         this.World = new World();
     }
 
     public void Build() {
         constructNavMesh();
+    }
+
+    private void CreateGroundArea(Vector3 bounds) {
+        Vector3 position = bounds*0.5f;
+        position.y = 0.1f; //set to ground level
+        GameObject groundArea = (GameObject) BootStrapper.Initialise("GroundQuad", position, Quaternion.Euler(90, 0, 0));
+        groundArea.transform.localScale = new Vector3(bounds.x, bounds.z, bounds.y); //swapped axis due to quad rotation
     }
 
     private void constructNavMesh() {

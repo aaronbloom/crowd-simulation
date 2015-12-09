@@ -9,7 +9,10 @@ public class EnvironmentManager {
     // Setup the static instance of this EnvironmentManager
     public EnvironmentManager() {
         initSingleton();
-        CurrentEnvironment = new Environment();
+    }
+
+    public void InitialiseEnvironment(Vector3 bounds) {
+        CurrentEnvironment = new Environment(bounds);
     }
 
     private void initSingleton() {

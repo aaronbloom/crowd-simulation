@@ -37,6 +37,7 @@ public class UserInterfaceController : MonoBehaviour {
     }
 
     public void StartEnvironmentBuilder() {
+        EnvironmentManager.Shared().InitialiseEnvironment(new Vector3(40, 50, 40));
         HideMenu(setupMenu);
         ShowMenu(environmentBuilderMenu);
         userWorldBuilder = new UserWorldBuilder();
