@@ -16,7 +16,7 @@ public class BootStrapper : MonoBehaviour {
     }
 
     void Start() {
-        Initialise(Camera);
+        CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
     }
 
     public void StartSimulation(int numberOfBoids) {

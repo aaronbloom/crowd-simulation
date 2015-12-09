@@ -44,6 +44,7 @@ public class UserInterfaceController : MonoBehaviour {
         HideMenu(setupMenu);
         ShowMenu(environmentBuilderMenu);
         userWorldBuilder = new UserWorldBuilder();
+        BootStrapper.CameraController.LookAtEnvironmentCenter();
     }
 
     public void StartSimulation() {

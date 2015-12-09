@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start() {
         this.environmentManager = EnvironmentManager.Shared();
-        transform.LookAt(environmentManager.CurrentEnvironment.EnvironmentCenter);
     }
 
     // Update is called once per frame
@@ -32,6 +31,14 @@ public class CameraController : MonoBehaviour {
     void OnDrawGizmos() {
         Gizmos.color = Color.blue;
         this.environmentManager.CurrentEnvironment.Graph.DrawGraphGizmo();
+    }
+
+    public void LookAt(Vector3 position) {
+        transform.LookAt(position);
+    }
+
+    public void LookAtEnvironmentCenter() {
+        LookAt(environmentManager.CurrentEnvironment.EnvironmentCenter);
     }
 
     private void checkKeypress() {
