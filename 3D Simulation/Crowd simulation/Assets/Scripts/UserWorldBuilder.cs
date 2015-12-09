@@ -77,13 +77,13 @@ public class UserWorldBuilder {
         gridPosition.y = objectSize / 2; // so it sits at ground level
         Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
         Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
-        return ConstrainVector(gridPosition, origin, bounds);
+        return ConstrainVector(gridPosition, origin, bounds, objectSize / 2);
     }
 
-    private static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds) {
-        position.x = Mathf.Clamp(position.x, origin.x, origin.x + bounds.x);
-        position.y = Mathf.Clamp(position.y, origin.y, origin.y + bounds.y);
-        position.z = Mathf.Clamp(position.z, origin.z, origin.z + bounds.z);
+    private static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, float halfObjectSize) {
+        position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize, origin.x + bounds.x - halfObjectSize);
+        position.y = Mathf.Clamp(position.y, origin.y + halfObjectSize, origin.y + bounds.y - halfObjectSize);
+        position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize, origin.z + bounds.z - halfObjectSize);
         return position;
     }
 
