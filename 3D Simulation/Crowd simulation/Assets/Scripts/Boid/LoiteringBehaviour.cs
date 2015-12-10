@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Assets.Scripts.Environment.Navigation;
 using UnityEngine;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts.Boid {
     public class LoiteringBehaviour : BoidBehaviour {
 
         private Node home;
         private Node target;
         private Path path;
 
-        public LoiteringBehaviour(Boid boid, Node home) {
+        public LoiteringBehaviour(global::Assets.Scripts.Boid.Boid boid, Node home) {
             this.boid = boid;
             this.MaxSpeed = 8.0f;
             this.MaxForce = 0.5f;

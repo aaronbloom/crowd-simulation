@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.WorldObjects {
+namespace Assets.Scripts.Environment.World.Objects {
     public class Entrance : WorldObject {
 
         public Entrance() : base() {

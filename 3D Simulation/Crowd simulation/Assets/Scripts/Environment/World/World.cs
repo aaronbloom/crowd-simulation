@@ -1,11 +1,9 @@
-﻿using Assets.Scripts.WorldObjects;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts.Environment.World {
     public class World {
 
         public List<WorldObject> Objects { get; private set; }
@@ -58,3 +56,4 @@ namespace Assets.Scripts {
 
     }
 }
+

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Networking.Match;
 using Object = UnityEngine.Object;
 
-namespace Assets.Scripts.WorldObjects {
+namespace Assets.Scripts.Environment.World.Objects {
     public abstract class WorldObject {
         private string _identifer = String.Empty;
 
