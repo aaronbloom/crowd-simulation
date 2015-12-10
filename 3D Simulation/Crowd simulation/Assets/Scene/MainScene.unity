@@ -848,7 +848,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 299127745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a1c128170136cc4b90cd930b2b40c26, type: 3}
+  m_Script: {fileID: 11500000, guid: 628fcc43ba97fda40b659213e7c6367b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &323153571
@@ -1801,12 +1801,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1100753524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b1fb94759e87349acb2212fa9f094d, type: 3}
+  m_Script: {fileID: 11500000, guid: dc06fea706a564f46b293145687f2896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NumberOfBoidsSliderText: {fileID: 1801696246}
   NumberOfBoidsValue: 40
-  EnvironmentSizeValue: 1
 --- !u!1 &1139108536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,7 +3639,6 @@ GameObject:
   - 224: {fileID: 2012645720}
   - 222: {fileID: 2012645723}
   - 114: {fileID: 2012645722}
-  - 114: {fileID: 2012645721}
   m_Layer: 5
   m_Name: ObjectsMenu
   m_TagString: Untagged
@@ -3666,20 +3664,6 @@ RectTransform:
   m_AnchoredPosition: {x: -568, y: -20}
   m_SizeDelta: {x: 200, y: 359}
   m_Pivot: {x: .5, y: .5}
---- !u!114 &2012645721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2012645719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b1fb94759e87349acb2212fa9f094d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NumberOfBoidsSliderText: {fileID: 0}
-  NumberOfBoidsValue: 0
-  EnvironmentSizeValue: 0
 --- !u!114 &2012645722
 MonoBehaviour:
   m_ObjectHideFlags: 0
