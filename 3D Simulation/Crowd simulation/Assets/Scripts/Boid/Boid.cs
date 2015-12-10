@@ -10,10 +10,13 @@ namespace Assets.Scripts.Boid {
         }
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
+        private BoidProperties properties; 
         private Vector3 acceleration;
 
         void Awake() {
             this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
+            this.properties = new BoidProperties();
+            Debug.LogWarning(properties.Gender.ToString());
         }
 
         void Start() {
