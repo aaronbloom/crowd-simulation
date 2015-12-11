@@ -44,7 +44,7 @@ namespace Assets.Scripts.Environment {
 
         private void constructNavMesh() {
             this.Graph = Graph.ConstructGraph(this, 1f);
-            foreach (var collidable in World.Walls) {
+            foreach (var collidable in World.Collidables) {
                 this.Graph.Cull(collidable);
             }
         }

@@ -1,4 +1,5 @@
 ﻿namespace Assets.Scripts.Environment.World.Objects {
-    interface Collidable {
+    public interface Collidable  {
+        WorldObject getObject();
     }
 }

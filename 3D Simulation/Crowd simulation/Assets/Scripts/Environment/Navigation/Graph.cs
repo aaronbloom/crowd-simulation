@@ -34,9 +34,10 @@ namespace Assets.Scripts.Environment.Navigation {
             return closestFound;
         }
 
-        public void Cull(Wall collidable) {
-            Vector3 position = ZeroY(collidable.GameObject.transform.position);
-            Vector3 size = ZeroY(collidable.GameObject.transform.localScale);
+        public void Cull(Collidable collidable) {
+            WorldObject obj = collidable.getObject();
+            Vector3 position = ZeroY(obj.GameObject.transform.position);
+            Vector3 size = ZeroY(obj.GameObject.transform.localScale);
             List<Node> culled = getCulledNodes(position, size);
             removeCulledNodes(culled);
         }

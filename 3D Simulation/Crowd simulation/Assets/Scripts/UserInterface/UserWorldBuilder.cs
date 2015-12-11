@@ -53,6 +53,8 @@ namespace Assets.Scripts.UserInterface {
                     return new Entrance();
                 case "Goal":
                     return new Goal();
+                case "Toilet":
+                    return new Toilet();
             }
             return null;
         }
