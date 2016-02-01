@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Analysis;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
@@ -13,19 +14,27 @@ namespace Assets.Scripts.Boid {
         private Quaternion rotation;
         private EnvironmentManager EnvironmentManager;
         private readonly List<GameObject> boids;
+        private HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
+        public static readonly float HeatMapCaptureIntervalSeconds = 2f;
 
         public BoidManager(int numOfBoids) {
             EnvironmentManager = EnvironmentManager.Shared();
             NumberOfBoids = numOfBoids;
             rotation = Quaternion.identity;
             boids = new List<GameObject>(NumberOfBoids);
+            heatMap = new HeatMap(boids);
         }
 
         public void AttemptBoidSpawn() {
             for (int i = 0; i < NumberOfBoids - boids.Count; i++) {
                 spawnBoid();
             }
+        }
+
+        public void CaptureAnalysisData() {
+            heatMap.Update();
+            heatMap.PrintMap();
         }
 
         private void spawnBoid() {

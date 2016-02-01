@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Boid;
 using Assets.Scripts.Camera;
 using Assets.Scripts.Environment;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
@@ -28,6 +30,7 @@ namespace Assets.Scripts {
 
             BoidManager = new BoidManager(numberOfBoids);
             StartCoroutine("BoidSpawningTimer");
+            StartCoroutine("BoidHeatMap");
         }
 
         public static Object Initialise(string prefabName) {
@@ -45,6 +48,14 @@ namespace Assets.Scripts {
             }
         }
 
+        private IEnumerator BoidHeatMap()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
+                BoidManager.CaptureAnalysisData();
+            }
+        }
     }
 }
 
