@@ -22,9 +22,7 @@ namespace Assets.Scripts.Analysis {
         private void addToMap(Vector3 position) {
             var x = (int) (position.x/resolution);
             var z = (int) (position.z/resolution);
-            Debug.Log(x);
             map[x, z]++;
-            //Debug.Log(map[x, z]);
         }
 
         public void Update() {
@@ -34,16 +32,15 @@ namespace Assets.Scripts.Analysis {
             }
         }
 
-        public void PrintMap() {
-            string mapString = "";
+        public float[,] Map() {
+            float[,] outputMap = {};
             for (int x = 0; x < width; x++) {
                 for (int z = 0; z < length; z++)
                 {
-                    mapString += (map[x,z] / mappingCount) + ",";
+                    outputMap[x, z] = (map[x,z] / mappingCount);
                 }
-                mapString += "/";
             }
-            Debug.Log(mapString);
+            return outputMap;
         }
 
     }

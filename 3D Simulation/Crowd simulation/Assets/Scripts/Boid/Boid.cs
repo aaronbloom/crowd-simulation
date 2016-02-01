@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Environment.Navigation;
+﻿using System;
+using Assets.Scripts.Environment.Navigation;
 using UnityEngine;
 
 namespace Assets.Scripts.Boid {
@@ -23,7 +24,9 @@ namespace Assets.Scripts.Boid {
         }
 
         void Update() {
-            calculateNewPosition();
+            if (!BootStrapper.Pause) {
+                calculateNewPosition();
+            }
             resetAcceleration();
             faceTravelDirection();
         }

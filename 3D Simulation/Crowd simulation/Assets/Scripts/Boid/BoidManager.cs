@@ -34,7 +34,6 @@ namespace Assets.Scripts.Boid {
 
         public void CaptureAnalysisData() {
             heatMap.Update();
-            heatMap.PrintMap();
         }
 
         private void spawnBoid() {
