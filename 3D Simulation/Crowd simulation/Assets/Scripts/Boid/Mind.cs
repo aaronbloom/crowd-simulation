@@ -8,8 +8,8 @@ namespace Assets.Scripts.Boid
 {
     class Mind
     {
-        public MindState State { get; private set; }
         public Goal Goal { get; private set; }
+        public Need currentNeed { get; private set; }
         private Boid boid;
 
         private Need drinkNeed;
@@ -19,14 +19,24 @@ namespace Assets.Scripts.Boid
         public Mind(Boid boid)
         {
             this.boid = boid;
+            drinkNeed = new Need(MindState.Thirsty, 1);
+            toiletNeed = new Need(MindState.Incontenent, 1);
+            danceNeed = new Need(MindState.Dancey, 2);
             evaluatePriorities();
         }
 
         private void evaluatePriorities()
         {
-            drinkNeed = new Need(MindState.Thirsty, 1);
-            toiletNeed = new Need(MindState.Incontenent, 1);
-            danceNeed = new Need(MindState.Dancey, 2);
+            if (drinkNeed.Value > currentNeed.Value) currentNeed = drinkNeed;
+            if (toiletNeed.Value > currentNeed.Value) currentNeed = toiletNeed;
+            if (danceNeed.Value > currentNeed.Value) currentNeed = danceNeed;
+        }
+
+        private void desireNeeds()
+        {
+            drinkNeed.Desire();
+            toiletNeed.Desire();
+            danceNeed.Desire();
         }
 
     }
