@@ -36,6 +36,10 @@ namespace Assets.Scripts.Boid {
             heatMap.Update();
         }
 
+        public void DisplayHeatMap() {
+            heatMap.Display();
+        }
+
         private void spawnBoid() {
             if (EntranceAvaliable()) {
                 Vector3 positionOffset = FindRandomEntrancePosition();

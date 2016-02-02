@@ -38,7 +38,8 @@ namespace Assets.Scripts {
 
         public void StopSimulation() {
             Pause = true;
-            Time.timeScale = 0;
+            BoidManager.DisplayHeatMap();
+            //Time.timeScale = 0;
         }
 
         public static Object Initialise(string prefabName) {
@@ -60,8 +61,8 @@ namespace Assets.Scripts {
         {
             while (true)
             {
-                yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
                 BoidManager.CaptureAnalysisData();
+                yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
             }
         }
     }

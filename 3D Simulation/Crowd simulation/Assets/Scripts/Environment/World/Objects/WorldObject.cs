@@ -37,5 +37,15 @@ namespace Assets.Scripts.Environment.World.Objects {
         public void Destroy() {
             Object.Destroy(GameObject);
         }
+
+        public static WorldObject Initialise(WorldObject worldObject, Vector3 position)
+        {
+            worldObject.GameObject = (GameObject)BootStrapper.Initialise(
+                worldObject.Identifier,
+                position + worldObject.InitialPositionOffSet,
+                worldObject.InitialRotationOffSet
+                );
+            return worldObject;
+        }
     }
 }
