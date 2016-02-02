@@ -6,7 +6,7 @@ using Assets.Scripts.Environment.World.Objects;
 namespace Assets.Scripts.Analysis {
     public class HeatMap {
         private readonly List<GameObject> boids;
-        private float[,] map;
+        private readonly float[,] map;
         private readonly int width;
         private readonly int length;
 
@@ -57,7 +57,6 @@ namespace Assets.Scripts.Analysis {
             var displayMap = Map();
             for (int x = 0; x < width; x++) {
                 for (int z = 0; z < length; z++) {
-
                     Vector3 position = new Vector3((x*HeatMapTile.TileSize) + halfTileSize, 0, (z*HeatMapTile.TileSize) + halfTileSize);
                     HeatMapTile heatMapTile = new HeatMapTile();
                     BootStrapper.EnvironmentManager.CurrentEnvironment.World.AddObject(

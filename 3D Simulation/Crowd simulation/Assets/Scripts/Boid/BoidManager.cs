@@ -8,13 +8,13 @@ namespace Assets.Scripts.Boid {
     public class BoidManager {
 
         private const int boidHeight = 2;
-        private static readonly string BoidPrefab = "CylinderBoid";
+        private const string BoidPrefab = "CylinderBoid";
 
-        private int NumberOfBoids;
-        private Quaternion rotation;
-        private EnvironmentManager EnvironmentManager;
+        private readonly int NumberOfBoids;
+        private readonly Quaternion rotation;
+        private readonly EnvironmentManager EnvironmentManager;
         private readonly List<GameObject> boids;
-        private HeatMap heatMap;
+        private readonly HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
 
