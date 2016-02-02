@@ -16,7 +16,7 @@ namespace Assets.Scripts.Boid {
         private readonly List<GameObject> boids;
         private HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
-        public static readonly float HeatMapCaptureIntervalSeconds = 2f;
+        public static readonly float HeatMapCaptureIntervalSeconds = 1f;
 
         public BoidManager(int numOfBoids) {
             EnvironmentManager = EnvironmentManager.Shared();
