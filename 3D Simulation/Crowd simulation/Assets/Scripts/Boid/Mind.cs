@@ -9,7 +9,7 @@ namespace Assets.Scripts.Boid
     class Mind
     {
         public Goal Goal { get; private set; }
-        public Need currentNeed { get; private set; }
+        public Need CurrentNeed { get; private set; }
         private Boid boid;
 
         private Need drinkNeed;
@@ -19,17 +19,18 @@ namespace Assets.Scripts.Boid
         public Mind(Boid boid)
         {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, 1);
-            toiletNeed = new Need(MindState.Incontenent, 1);
-            danceNeed = new Need(MindState.Dancey, 2);
+            drinkNeed = new Need(MindState.Thirsty, 1, 20);
+            toiletNeed = new Need(MindState.Incontenent, 1, 20);
+            danceNeed = new Need(MindState.Dancey, 2, 20);
             evaluatePriorities();
         }
 
         private void evaluatePriorities()
         {
-            if (drinkNeed.Value > currentNeed.Value) currentNeed = drinkNeed;
-            if (toiletNeed.Value > currentNeed.Value) currentNeed = toiletNeed;
-            if (danceNeed.Value > currentNeed.Value) currentNeed = danceNeed;
+            if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
+            if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
+            if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
+            if (CurrentNeed.Satisfied) CurrentNeed = null;
         }
 
         private void desireNeeds()
@@ -39,22 +40,38 @@ namespace Assets.Scripts.Boid
             danceNeed.Desire();
         }
 
+        public void Think()
+        {
+            desireNeeds();
+            MindState currMindState = CurrentNeed.MindState;
+            evaluatePriorities();
+            if (CurrentNeed.MindState != currMindState)
+            {
+                //Needs have changed - update behaviours
+
+            }
+        }
+
     }
 
     class Need
     {
+        public MindState MindState { get; private set; }
         public int Value { get; private set; }
         public int Max { get; private set; }
         public int Min { get; private set; }
+        public bool Satisfied => Value < satisfactionThreshold;
         private readonly int increment;
-        public MindState StateTag { get; private set; }
+        private readonly int satisfactionThreshold;
+        
 
-        public Need(MindState stateTag, int increment)
+        public Need(MindState mindState, int increment, int satisfactionThreshold)
         {
             this.Max = 500;
             this.Min = 0;
             this.increment = increment;
-            this.StateTag = stateTag;
+            this.satisfactionThreshold = satisfactionThreshold;
+            this.MindState = mindState;
         }
 
         public void Desire()
