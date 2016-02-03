@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Environment.Navigation;
+﻿using System;
+using Assets.Scripts.Environment.Navigation;
 using UnityEngine;
 
 namespace Assets.Scripts.Boid {
@@ -10,10 +11,15 @@ namespace Assets.Scripts.Boid {
         }
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
+        private BoidProperties properties; 
         private Vector3 acceleration;
 
         void Awake() {
             this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
+            this.properties = new BoidProperties();
+
+            MeshRenderer boidRenderer = this.GetComponent<MeshRenderer>();
+            boidRenderer.material.mainTexture = Resources.Load("Texture/Boid/" + properties.Gender.ToString()) as Texture;
         }
 
         void Start() {
@@ -23,7 +29,9 @@ namespace Assets.Scripts.Boid {
         }
 
         void Update() {
-            calculateNewPosition();
+            if (!BootStrapper.Pause) {
+                calculateNewPosition();
+            }
             resetAcceleration();
             faceTravelDirection();
         }

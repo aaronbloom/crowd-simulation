@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Environment.Navigation;
 using Assets.Scripts.Environment.World;
-
+using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment {
@@ -35,6 +35,38 @@ namespace Assets.Scripts.Environment {
             constructNavMesh();
         }
 
+        public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, float halfObjectSize)
+        {
+            position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize, origin.x + bounds.x - halfObjectSize);
+            position.y = Mathf.Clamp(position.y, origin.y + halfObjectSize, origin.y + bounds.y - halfObjectSize);
+            position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize, origin.z + bounds.z - halfObjectSize);
+            return position;
+        }
+
+        public void Place(WorldObject worldObject, Vector3 position)
+        {
+            var location = PositionToGridPosition(position, worldObject.Size);
+            if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
+            {
+                Debug.Log("Could not add new world object - Already occupied");
+                worldObject.Destroy();
+            }
+        }
+
+        public static Vector3 PositionToGridPosition(Vector3 position, float objectSize)
+        {
+            var gridPosition = position;
+            gridPosition -= Vector3.one * (objectSize / 2);
+            gridPosition /= objectSize;
+            gridPosition = new Vector3(Mathf.Round(gridPosition.x), Mathf.Round(gridPosition.y), Mathf.Round(gridPosition.z));
+            gridPosition *= objectSize;
+            gridPosition += Vector3.one * (objectSize / 2);
+            gridPosition.y = objectSize / 2; // so it sits at ground level
+            Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
+            Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
+            return ConstrainVector(gridPosition, origin, bounds, objectSize / 2);
+        }
+
         private void CreateGroundArea(Vector3 bounds) {
             Vector3 position = bounds * 0.5f;
             position.y = 0.1f; //set to ground level
@@ -44,7 +76,7 @@ namespace Assets.Scripts.Environment {
 
         private void constructNavMesh() {
             this.Graph = Graph.ConstructGraph(this, 1f);
-            foreach (var collidable in World.Walls) {
+            foreach (var collidable in World.Collidables) {
                 this.Graph.Cull(collidable);
             }
         }

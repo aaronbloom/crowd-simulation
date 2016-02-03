@@ -29,6 +29,30 @@ namespace Assets.Scripts.Environment.World {
             }
         }
 
+        public List<Toilet> Toilets {
+            get {
+                return ObjectSublist<Toilet>();
+            }
+        }
+
+        public List<Stage> Stages {
+            get {
+                return ObjectSublist<Stage>();
+            }
+        }
+
+        public List<Bar> Bars {
+            get {
+                return ObjectSublist<Bar>();
+            }
+        }
+
+        public List<Collidable> Collidables {
+            get {
+                return Objects.OfType<Collidable>().ToList();
+            }
+        }
+
         public World() {
             Objects = new List<WorldObject>();
         }
