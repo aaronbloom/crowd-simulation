@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Boid;
 using Assets.Scripts.Camera;
 using Assets.Scripts.Environment;
 using UnityEngine;
+using UnityEngineInternal;
+using Object = UnityEngine.Object;
 
 namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
@@ -14,8 +17,10 @@ namespace Assets.Scripts {
         public static BoidManager BoidManager { get; private set; }
         public static EnvironmentManager EnvironmentManager { get; private set; }
         public static CameraController CameraController { get; private set; }
+        public static bool Pause { get; private set; }
 
         void Awake() {
+            Pause = false;
             EnvironmentManager = new EnvironmentManager();
         }
 
@@ -28,6 +33,13 @@ namespace Assets.Scripts {
 
             BoidManager = new BoidManager(numberOfBoids);
             StartCoroutine("BoidSpawningTimer");
+            StartCoroutine("BoidHeatMap");
+        }
+
+        public void StopSimulation() {
+            Pause = true;
+            BoidManager.DisplayHeatMap();
+            //Time.timeScale = 0;
         }
 
         public static Object Initialise(string prefabName) {
@@ -45,6 +57,14 @@ namespace Assets.Scripts {
             }
         }
 
+        private IEnumerator BoidHeatMap()
+        {
+            while (true)
+            {
+                BoidManager.CaptureAnalysisData();
+                yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
+            }
+        }
     }
 }
 

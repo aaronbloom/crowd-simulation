@@ -8,18 +8,21 @@ namespace Assets.Scripts.UserInterface
         private GameObject mainMenu;
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
+        private GameObject simulationMenu;
         private UserWorldBuilder userWorldBuilder;
 
         void Awake() {
             mainMenu = GameObject.Find("MainMenu");
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
+            simulationMenu = GameObject.Find("SimulationMenu");
         }
 
         void Start () {
             ShowMenu(mainMenu);
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
+            HideMenu(simulationMenu);
         }
 	
         void Update () {
@@ -55,6 +58,12 @@ namespace Assets.Scripts.UserInterface
             HideMenu(environmentBuilderMenu);
             int numberOfBoids = setupMenu.GetComponent<MenuControlController>().NumberOfBoidsValue;
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
+            ShowMenu(simulationMenu);
+        }
+
+        public void StopSimulation() {
+            HideMenu(simulationMenu);
+            GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
         }
 
         public void SetCurrentPlacementObject(string objectName) {
