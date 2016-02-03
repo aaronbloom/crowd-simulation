@@ -78,13 +78,28 @@ namespace Assets.Scripts.Boid {
             }
         }
 
-        public void chooseNewGoal() {
-            //Do something more intelligent here.
+        public void chooseNewGoal()
+        {
+            //Do something more intelligent here.            
             List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
-            if(goals.Count > 0) {
-                Goal targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)];
+            if (goals.Count > 0)
+            {
+                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
-            } else {
+            }
+            else {
+                switchBehaviourToLoiter();
+            }
+        }
+
+        public void ChooseClosestFromList(List<Goal> goals)
+        {
+            if (goals.Count > 0)
+            {
+                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
+                Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
+            }
+            else {
                 switchBehaviourToLoiter();
             }
         }
