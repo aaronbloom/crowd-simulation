@@ -51,10 +51,12 @@ namespace Assets.Scripts.UserInterface {
                     return new Wall();
                 case "Entrance":
                     return new Entrance();
-                case "Goal":
-                    return new Goal();
                 case "Toilet":
                     return new Toilet();
+                case "Stage":
+                    return new Stage();
+                case "Bar":
+                    return new Bar();
             }
             return null;
         }

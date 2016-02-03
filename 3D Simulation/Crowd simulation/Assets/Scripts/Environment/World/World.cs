@@ -35,6 +35,18 @@ namespace Assets.Scripts.Environment.World {
             }
         }
 
+        public List<Stage> Stages {
+            get {
+                return ObjectSublist<Stage>();
+            }
+        }
+
+        public List<Bar> Bars {
+            get {
+                return ObjectSublist<Bar>();
+            }
+        }
+
         public List<Collidable> Collidables {
             get {
                 return Objects.OfType<Collidable>().ToList();
