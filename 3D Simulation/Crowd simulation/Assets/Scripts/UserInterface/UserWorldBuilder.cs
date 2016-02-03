@@ -9,17 +9,31 @@ namespace Assets.Scripts.UserInterface {
         private readonly Material cursorMaterial;
         private const float cursorSize = 4;
         private string currentItem;
+        private Vector3 startPlacement;
+        private bool startedPlacement = false;
 
         public UserWorldBuilder() {
             cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
         }
 
-        public void PlaceWorldObject() {
+        public void StartPlaceWorldObject() {
             if (currentItem != null) {
                 if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
-                    BootStrapper.EnvironmentManager.CurrentEnvironment.Place(DetermineObject(currentItem), MousePositionToGroundPosition());
+                    startPlacement = MousePositionToGroundPosition();
+                    startedPlacement = true;
                 }
             }
+        }
+
+        public void EndPlaceWorldObject() {
+            if (currentItem != null) {
+                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
+                    if (startedPlacement) {
+                        PlaceLine(startPlacement, MousePositionToGroundPosition());
+                    }
+                }
+            }
+            startedPlacement = false;
         }
 
         public void SetCurrentPlacementObject(string objectName) {
@@ -39,6 +53,25 @@ namespace Assets.Scripts.UserInterface {
         public void Destroy() {
             if (ghostedItemCursor != null) {
                 Object.Destroy(ghostedItemCursor.GameObject);
+            }
+        }
+
+        private void PlaceLine(Vector3 start, Vector3 end) {
+            Vector3 step;
+            var xDiff = start.x - end.x;
+            var zDiff = start.z - end.z;
+            float largerDiff;
+            if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
+                step = new Vector3(-Mathf.Sign(xDiff), 0, 0);
+                largerDiff = Mathf.Abs(xDiff);
+            } else {
+                step = new Vector3(0, 0, -Mathf.Sign(zDiff));
+                largerDiff = Mathf.Abs(zDiff);
+            }
+            Vector3 position = start;
+            for (int i = 0; i <= largerDiff; i++) {
+                position += step;
+                BootStrapper.EnvironmentManager.CurrentEnvironment.Place(DetermineObject(currentItem), position);
             }
         }
 
