@@ -60,7 +60,12 @@ namespace Assets.Scripts.Boid
         public int Value { get; private set; }
         public int Max { get; private set; }
         public int Min { get; private set; }
-        public bool Satisfied => Value < satisfactionThreshold;
+
+        public bool Satisfied
+        {
+            get { return Value < satisfactionThreshold; }
+        }
+
         private readonly int increment;
         private readonly int satisfactionThreshold;
         
