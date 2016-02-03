@@ -58,13 +58,13 @@ namespace Assets.Scripts.Boid
             switch (mindState)
             {
                 case MindState.Thirsty:
-
+                    startThirstAction();
                     break;
                 case MindState.Dancey:
-
+                    startDanceAction();
                     break;
                 case MindState.Incontenent:
-
+                    startToiletAction();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Boid
             
         }
 
-        private void startHungerAction()
+        private void startToiletAction()
         {
 
         }
