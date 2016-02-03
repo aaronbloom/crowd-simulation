@@ -25,12 +25,13 @@ namespace Assets.Scripts.Boid
             evaluatePriorities();
         }
 
-        private void evaluatePriorities()
+        private MindState evaluatePriorities()
         {
             if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
             if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
             if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
             if (CurrentNeed.Satisfied) CurrentNeed = null;
+            return CurrentNeed.MindState;
         }
 
         private void desireNeeds()
@@ -43,15 +44,47 @@ namespace Assets.Scripts.Boid
         public void Think()
         {
             desireNeeds();
-            MindState currMindState = CurrentNeed.MindState;
-            evaluatePriorities();
-            if (CurrentNeed.MindState != currMindState)
+            MindState oldMindState = CurrentNeed.MindState;
+            MindState newMindState = evaluatePriorities();
+            if (newMindState != oldMindState)
             {
                 //Needs have changed - update behaviours
-
+                startNewProcess(newMindState);
             }
         }
 
+        private void startNewProcess(MindState mindState)
+        {
+            switch (mindState)
+            {
+                case MindState.Thirsty:
+
+                    break;
+                case MindState.Dancey:
+
+                    break;
+                case MindState.Incontenent:
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void startThirstAction()
+        {
+            
+        }
+
+        private void startHungerAction()
+        {
+
+        }
+
+        private void startDanceAction()
+        {
+
+        }
     }
 
     class Need
@@ -60,6 +93,7 @@ namespace Assets.Scripts.Boid
         public int Value { get; private set; }
         public int Max { get; private set; }
         public int Min { get; private set; }
+        public System.Type SatisfactionType;
 
         public bool Satisfied
         {
@@ -68,7 +102,7 @@ namespace Assets.Scripts.Boid
 
         private readonly int increment;
         private readonly int satisfactionThreshold;
-        
+
 
         public Need(MindState mindState, int increment, int satisfactionThreshold)
         {
@@ -92,6 +126,8 @@ namespace Assets.Scripts.Boid
 
     enum MindState
     {
-        Thirsty, Dancey, Incontenent
+        Thirsty,
+        Dancey,
+        Incontenent
     }
 }
