@@ -5,8 +5,8 @@ namespace Assets.Scripts.Environment.World.Objects {
     public class Toilet : WorldObject, Collidable {
 
         public Toilet() : base() {
-            this.Identifier = "Toilet";
-            this.InitialRotationOffSet = Quaternion.Euler(-90, 0, 180);
+            this.Identifier = "obj_potty2";
+            this.InitialRotationOffSet = Quaternion.Euler(0, 0, 0);
             this.Size = 4;
         }
 

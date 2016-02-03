@@ -2,12 +2,14 @@
 using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
     public class BoidManager {
 
         private const int boidHeight = 2;
-        private static readonly string BoidPrefab = "CylinderBoid";
+        private static readonly string[] MalePrefab = {"chr_mike", "chr_bro", "chr_beardo2"};
+        private static readonly string[] FemalePrefab = {"chr_brookie", "chr_brookie", "chr_goth2"};
 
         private int NumberOfBoids;
         private Quaternion rotation;
@@ -39,7 +41,11 @@ namespace Assets.Scripts.Boid {
                     }
                 }
                 if (!isOverLapping) {
-                    boids.Add((GameObject) BootStrapper.Initialise(BoidPrefab, position, rotation));
+                    BoidProperties boidProperties = new BoidProperties();
+                    Gender boidGender = boidProperties.Gender;
+                    int index = Random.Range(0, 3);
+                    string boidPrefab = boidGender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
+                    boids.Add((GameObject) BootStrapper.Initialise(boidPrefab, position, rotation));
                 }
             }
         }
