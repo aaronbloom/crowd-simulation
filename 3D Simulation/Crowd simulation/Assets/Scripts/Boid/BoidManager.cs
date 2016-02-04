@@ -45,7 +45,7 @@ namespace Assets.Scripts.Boid {
                     Gender boidGender = boidProperties.Gender;
                     int index = Random.Range(0, 3);
                     string boidPrefab = boidGender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
-                    boids.Add((GameObject) BootStrapper.Initialise(boidPrefab, position, rotation));
+                    boids.Add((GameObject) BootStrapper.Initialise("mmmm/" + boidPrefab, position, rotation));
                 }
             }
         }
