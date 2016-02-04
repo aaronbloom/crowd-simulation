@@ -13,6 +13,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses
         public ToiletProcess(Boid boid, Need toSatisfy) : base()
         {
             owner = boid;
+            ownerDesire = toSatisfy;
             processList.Add((Action) navigateToToilet);
             processList.Add((Action) continueWalkToToilet);
             processList.Add((Action) reachToilet);

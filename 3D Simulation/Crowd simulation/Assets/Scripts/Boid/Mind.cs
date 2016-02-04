@@ -66,13 +66,13 @@ namespace Assets.Scripts.Boid
             switch (mindState)
             {
                 case MindState.Thirsty:
-                    thoughtProcess = new BarProcess();
+                    thoughtProcess = new BarProcess(boid, drinkNeed);
                     break;
                 case MindState.Dancey:
-                    thoughtProcess = new DanceProcess();
+                    thoughtProcess = new DanceProcess(boid, danceNeed);
                     break;
                 case MindState.Incontenent:
-                    thoughtProcess = new ToiletProcess();
+                    thoughtProcess = new ToiletProcess(boid, toiletNeed);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -87,7 +87,6 @@ namespace Assets.Scripts.Boid
         public int Value { get; private set; }
         public int Max { get; private set; }
         public int Min { get; private set; }
-        public System.Type SatisfactionType;
 
         public bool Satisfied
         {
@@ -100,7 +99,7 @@ namespace Assets.Scripts.Boid
 
         public Need(MindState mindState, int increment, int satisfactionThreshold)
         {
-            this.Max = 500;
+            this.Max = 5000000;
             this.Min = 0;
             this.increment = increment;
             this.satisfactionThreshold = satisfactionThreshold;

@@ -13,6 +13,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses
         public DanceProcess(Boid boid, Need toSatisfy) : base()
         {
             owner = boid;
+            ownerDesire = toSatisfy;
             processList.Add((Action) navigateToStage);
             processList.Add((Action) continueWalkToStage);
             processList.Add((Action) reachStage);

@@ -13,6 +13,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses
         public BarProcess(Boid boid, Need toSatisfy) : base()
         {
             owner = boid;
+            ownerDesire = toSatisfy;
             processList.Add((Action)navigateToBar);
             processList.Add((Action)continueWalkToBar);
             processList.Add((Action)reachBar);
