@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.Boid.ThoughtProcesses;
 using Assets.Scripts.Environment.World.Objects;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
 
@@ -21,20 +22,21 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, 1, 20);
-            toiletNeed = new Need(MindState.Incontenent, 1, 20);
-            danceNeed = new Need(MindState.Dancey, 2, 20);
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(2,4), 2000);
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, 0.5f), 2000);
+            danceNeed = new Need(MindState.Dancey, Random.Range(1, 5), 2000);
 
             CurrentNeed = danceNeed;
             startNewProcess(CurrentNeed.MindState);
         }
 
         private MindState evaluatePriorities() {
-            //if (CurrentNeed == null) CurrentNeed = danceNeed;
-            if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
-            if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
-            if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
-            //if (CurrentNeed.Satisfied) CurrentNeed = null;
+            if (CurrentNeed.Satisfied)
+            {
+                if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
+                if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
+                if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
+            }
             return CurrentNeed.MindState;
 
         }
@@ -76,19 +78,19 @@ namespace Assets.Scripts.Boid {
 
     class Need {
         public MindState MindState { get; private set; }
-        public int Value { get; private set; }
-        public int Max { get; private set; }
-        public int Min { get; private set; }
+        public float Value { get; private set; }
+        public float Max { get; private set; }
+        public float Min { get; private set; }
 
         public bool Satisfied {
             get { return Value < satisfactionThreshold; }
         }
 
-        private readonly int increment;
-        private readonly int satisfactionThreshold;
+        private readonly float increment;
+        private readonly float satisfactionThreshold;
 
 
-        public Need(MindState mindState, int increment, int satisfactionThreshold) {
+        public Need(MindState mindState, float increment, float satisfactionThreshold) {
             this.Max = 5000000;
             this.Min = 0;
             this.increment = increment;
@@ -103,6 +105,17 @@ namespace Assets.Scripts.Boid {
         public void Satisfy() {
             Value = Min;
         }
+
+        public void Satisfy(int val) {
+            Value-= val;
+            if (Value < 0) Value = 0;
+        }
+
+        public void SatisfyPercent(float perc)
+        {
+            Value = (int) (Value * perc);
+        }
+
     }
 
     enum MindState {

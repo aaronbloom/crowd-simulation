@@ -32,8 +32,8 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private void reachStage() {
             //probably change this to some loiter behaviour
             //satisfy slowly
-            ownerDesire.Satisfy();
-            NextStep();
+            ownerDesire.Satisfy(20);
+            //NextStep();
         }
     }
 }
