@@ -5,13 +5,14 @@ using UnityEngine;
 namespace Assets.Scripts.Boid {
     public class Boid : MonoBehaviour {
 
+        private Mind mind;
         private Vector3 _velocity;
         public Vector3 Velocity {
             get { return _velocity; }
         }
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
-        private BoidProperties properties; 
+        private BoidProperties properties;
         private Vector3 acceleration;
 
         void Awake() {
@@ -20,15 +21,16 @@ namespace Assets.Scripts.Boid {
 
             MeshRenderer boidRenderer = this.GetComponent<MeshRenderer>();
             boidRenderer.material.mainTexture = Resources.Load("Texture/Boid/" + properties.Gender.ToString()) as Texture;
+            mind = new Mind(this);
         }
 
         void Start() {
             this._velocity = this.behaviour.InitialVelocity();
             Graph graph = BootStrapper.EnvironmentManager.CurrentEnvironment.Graph;
-            ((GoalSeekingBehaviour)this.behaviour).chooseNewGoal();
         }
 
         void Update() {
+            mind.Think();
             if (!BootStrapper.Pause) {
                 calculateNewPosition();
             }

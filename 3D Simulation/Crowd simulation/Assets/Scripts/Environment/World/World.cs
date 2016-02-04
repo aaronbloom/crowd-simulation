@@ -7,66 +7,50 @@ namespace Assets.Scripts.Environment.World {
     public class World {
 
         public List<WorldObject> Objects { get; private set; }
-        public List<Goal> Goals {
-            get {
-                return ObjectSublist<Goal>();
-            }
-        }
-        public List<Entrance> Entrances {
-            get {
-                return ObjectSublist<Entrance>();
-            }
-        }
-        public List<Exit> Exits {
-            get {
-                return ObjectSublist<Exit>();
-            }
-        }
-
-        public List<Wall> Walls {
-            get {
-                return ObjectSublist<Wall>();
-            }
-        }
-
-        public List<Toilet> Toilets {
-            get {
-                return ObjectSublist<Toilet>();
-            }
-        }
-
-        public List<Stage> Stages {
-            get {
-                return ObjectSublist<Stage>();
-            }
-        }
-
-        public List<Bar> Bars {
-            get {
-                return ObjectSublist<Bar>();
-            }
-        }
-
-        public List<Collidable> Collidables {
-            get {
-                return Objects.OfType<Collidable>().ToList();
-            }
-        }
+        public List<Goal> Goals;
+        public List<Entrance> Entrances;
+        public List<Exit> Exits;
+        public List<Wall> Walls;
+        public List<Toilet> Toilets;
+        public List<Stage> Stages;
+        public List<Bar> Bars;
+        public List<Collidable> Collidables;
 
         public World() {
             Objects = new List<WorldObject>();
         }
-        
+
         public List<T> ObjectSublist<T>() where T : WorldObject {
             return Objects.OfType<T>().ToList();
+        }
+
+        //MUST be called if list contents are changed!
+        public void updateSublists() {
+            Goals = ObjectSublist<Goal>();
+            Entrances = ObjectSublist<Entrance>();
+            Exits = ObjectSublist<Exit>();
+            Walls = ObjectSublist<Wall>();
+            Toilets = ObjectSublist<Toilet>();
+            Stages = ObjectSublist<Stage>();
+            Bars = ObjectSublist<Bar>();
+            Collidables = Objects.OfType<Collidable>().ToList();
         }
 
         public bool AddObject(WorldObject worldObject) {
             bool alreadyOccupied = AlreadyOccupied(worldObject.GameObject.transform.position);
             if (!alreadyOccupied) {
                 Objects.Add(worldObject);
+                updateSublists();
             }
             return !alreadyOccupied;
+        }
+
+        public bool RemoveObject(WorldObject worldObject) {
+            bool success = Objects.Remove(worldObject);
+            if (success) {
+                updateSublists();
+            }
+            return success;
         }
 
         public bool AlreadyOccupied(Vector3 location) {

@@ -9,12 +9,13 @@ namespace Assets.Scripts.Boid {
         private Node target;
         private Path path;
 
-        public GoalSeekingBehaviour (global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
+        public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
             this.MaxForce = 2.0f;
             this.VelocityDamping = 0.2f;
             this.SeparationFactor = 0.9f;
+            BehaviourComplete = false;
         }
 
         public void Seek(Node goal, Graph graph) {
@@ -26,14 +27,14 @@ namespace Assets.Scripts.Boid {
             Node startNode = graph.FindClosestNode(boid.transform.position);
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
+            BehaviourComplete = false;
         }
 
         private Vector3 MoveAlongPath() {
             if (path != null) {
                 if (this.target == null) {
                     this.target = path.FindClosestNode(boid.transform.position);
-                }
-                else {
+                } else {
                     this.TargetNextNodeAlongPath();
                     if (this.target == null) return Vector3.zero;
                     return this.SteerTowardsPoint(this.target.Position);
@@ -69,23 +70,28 @@ namespace Assets.Scripts.Boid {
                     this.target = path.Nodes[index];
                 } else {
                     //Goal Found
-                    if (UnityEngine.Random.Range(0, 10) < 0) {
-                        switchBehaviourToLoiter();
-                    } else {
-                        chooseNewGoal();
-                    }
+                    BehaviourComplete = true;
                 }
             }
         }
 
         public void chooseNewGoal() {
-            //Do something more intelligent here.
+            //Do something more intelligent here.            
             List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
-            if(goals.Count > 0) {
-                Goal targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)];
+            if (goals.Count > 0) {
+                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
             } else {
-                switchBehaviourToLoiter();
+                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
+            }
+        }
+
+        public void ChooseClosestFromList<T>(List<T> goals) where T : Goal {
+            if (goals.Count > 0) {
+                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
+                Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
+            } else {
+                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
 
