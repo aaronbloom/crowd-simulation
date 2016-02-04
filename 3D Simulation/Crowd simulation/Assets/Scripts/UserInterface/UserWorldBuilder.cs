@@ -1,11 +1,13 @@
-﻿using Assets.Scripts.Environment.World.Objects;
+﻿using System;
+using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
 
-        private WorldObject ghostedItemCursor;
+        private WorldObject primaryCursor;
+        private WorldObject secondCursor;
         private readonly Material cursorMaterial;
         private const float cursorSize = 4;
         private string currentItem;
@@ -29,7 +31,7 @@ namespace Assets.Scripts.UserInterface {
             if (currentItem != null) {
                 if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
                     if (startedPlacement) {
-                        PlaceLine(startPlacement, MousePositionToGroundPosition());
+                        PlaceLine(startPlacement, MousePositionToGroundPosition(), currentItem);
                     }
                 }
             }
@@ -38,45 +40,75 @@ namespace Assets.Scripts.UserInterface {
 
         public void SetCurrentPlacementObject(string objectName) {
             currentItem = objectName;
-            Destroy();
-            ghostedItemCursor = WorldObject.Initialise(DetermineObject(currentItem), MousePositionToGroundPosition());
-            ghostedItemCursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
+            DestroyCursors();
+            primaryCursor = NewCursor(DetermineObject(currentItem));
         }
 
         public void UpdateCursorPosition() {
-            if (ghostedItemCursor != null) {
-                ghostedItemCursor.GameObject.transform.position
-                    = Environment.Environment.PositionToGridPosition(MousePositionToGroundPosition(), cursorSize);
+            if (primaryCursor != null) {
+                if (secondCursor != null) { Object.Destroy(secondCursor.GameObject); }
+                if (startedPlacement) {
+                    secondCursor = NewCursor(DetermineObject(currentItem));
+                    Vector3 mousePosition = MousePositionToGroundPosition();
+
+                    Vector3 secondCursorPosition;
+                    var xDiff = startPlacement.x - mousePosition.x;
+                    var zDiff = startPlacement.z - mousePosition.z;
+                    if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
+                        secondCursorPosition = startPlacement + new Vector3(-xDiff, 0, 0);
+                    } else {
+                        secondCursorPosition = startPlacement + new Vector3(0, 0, -zDiff);
+                    }
+
+                    secondCursor.GameObject.transform.position 
+                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, cursorSize);
+                } else {
+                    if (primaryCursor.GameObject != null) {
+                        primaryCursor.GameObject.transform.position
+                            = Environment.Environment.PositionToGridPosition(MousePositionToGroundPosition(),
+                                cursorSize);
+                    }
+                }
             }
         }
 
-        public void Destroy() {
-            if (ghostedItemCursor != null) {
-                Object.Destroy(ghostedItemCursor.GameObject);
+        public void DestroyCursors() {
+            if (primaryCursor != null) {
+                    Object.Destroy(primaryCursor.GameObject);
             }
         }
 
-        private void PlaceLine(Vector3 start, Vector3 end) {
+        private WorldObject NewCursor(WorldObject worldObject) {
+            var cursor = WorldObject.Initialise(worldObject, MousePositionToGroundPosition());
+            cursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
+            return cursor;
+        }
+
+        private WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
             Vector3 step;
             var xDiff = start.x - end.x;
             var zDiff = start.z - end.z;
-            float largerDiff;
+            int largerDiff;
             if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
                 step = new Vector3(-Mathf.Sign(xDiff), 0, 0);
-                largerDiff = Mathf.Abs(xDiff);
+                largerDiff = (int) Mathf.Abs(xDiff);
             } else {
                 step = new Vector3(0, 0, -Mathf.Sign(zDiff));
-                largerDiff = Mathf.Abs(zDiff);
+                largerDiff = (int) Mathf.Abs(zDiff);
             }
             Vector3 position = start;
+            WorldObject[] createdWorldObjects = new WorldObject[largerDiff + 1];
             for (int i = 0; i <= largerDiff; i++) {
                 position += step;
-                BootStrapper.EnvironmentManager.CurrentEnvironment.Place(DetermineObject(currentItem), position);
+                var currentWorldObject = DetermineObject(objectName);
+                createdWorldObjects[i] = currentWorldObject;
+                BootStrapper.EnvironmentManager.CurrentEnvironment.Place(currentWorldObject, position);
             }
+            return createdWorldObjects;
         }
 
-        private WorldObject DetermineObject(string objectName) {
-            switch (currentItem) {
+        private static WorldObject DetermineObject(string objectName) {
+            switch (objectName) {
                 case "Wall":
                     return new Wall();
                 case "Entrance":

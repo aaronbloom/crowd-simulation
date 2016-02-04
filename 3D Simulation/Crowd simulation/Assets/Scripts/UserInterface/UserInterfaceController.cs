@@ -56,7 +56,7 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void StartSimulation() {
-            userWorldBuilder.Destroy();
+            userWorldBuilder.DestroyCursors();
             userWorldBuilder = null;
             HideMenu(mainMenu);
             HideMenu(setupMenu);
