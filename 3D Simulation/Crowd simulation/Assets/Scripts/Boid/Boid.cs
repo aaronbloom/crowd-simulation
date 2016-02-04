@@ -19,8 +19,6 @@ namespace Assets.Scripts.Boid {
             this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
             this.properties = new BoidProperties();
 
-            MeshRenderer boidRenderer = this.GetComponent<MeshRenderer>();
-            boidRenderer.material.mainTexture = Resources.Load("Texture/Boid/" + properties.Gender.ToString()) as Texture;
             mind = new Mind(this);
         }
 
