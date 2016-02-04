@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
-    public abstract class BoidBehaviour {
+    public abstract class BoidBehaviour
+    {
 
         protected global::Assets.Scripts.Boid.Boid boid;
 
         public float MaxSpeed { get; protected set; }
         public float MaxForce { get; protected set; }
+        public bool BehaviourComplete { get; protected set; }
 
         public float VelocityDamping { get; protected set; }
 

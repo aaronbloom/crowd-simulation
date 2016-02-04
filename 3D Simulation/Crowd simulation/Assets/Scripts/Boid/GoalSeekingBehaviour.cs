@@ -8,7 +8,6 @@ namespace Assets.Scripts.Boid {
 
         private Node target;
         private Path path;
-        public bool GoalReached { get; private set; }
 
         public GoalSeekingBehaviour (global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
@@ -16,7 +15,7 @@ namespace Assets.Scripts.Boid {
             this.MaxForce = 2.0f;
             this.VelocityDamping = 0.2f;
             this.SeparationFactor = 0.9f;
-            GoalReached = false;
+            BehaviourComplete = false;
         }
 
         public void Seek(Node goal, Graph graph) {
@@ -28,7 +27,7 @@ namespace Assets.Scripts.Boid {
             Node startNode = graph.FindClosestNode(boid.transform.position);
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
-            GoalReached = false;
+            BehaviourComplete = false;
         }
 
         private Vector3 MoveAlongPath() {
@@ -72,7 +71,7 @@ namespace Assets.Scripts.Boid {
                     this.target = path.Nodes[index];
                 } else {
                     //Goal Found
-                    GoalReached = true;
+                    BehaviourComplete = true;
                 }
             }
         }
@@ -88,7 +87,7 @@ namespace Assets.Scripts.Boid {
             }
             else
             {
-                GoalReached = true; //Maybe really bad to say the goal is reached when there was never a goal?
+                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
 
@@ -100,7 +99,7 @@ namespace Assets.Scripts.Boid {
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
             }
             else {
-                GoalReached = true; //Maybe really bad to say the goal is reached when there was never a goal?
+                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
 
