@@ -19,14 +19,13 @@ namespace Assets.Scripts.Environment.World {
         public World() {
             Objects = new List<WorldObject>();
         }
-        
+
         public List<T> ObjectSublist<T>() where T : WorldObject {
             return Objects.OfType<T>().ToList();
         }
 
         //MUST be called if list contents are changed!
-        public void updateSublists()
-        {
+        public void updateSublists() {
             Goals = ObjectSublist<Goal>();
             Entrances = ObjectSublist<Entrance>();
             Exits = ObjectSublist<Exit>();
@@ -46,11 +45,9 @@ namespace Assets.Scripts.Environment.World {
             return !alreadyOccupied;
         }
 
-        public bool RemoveObject(WorldObject worldObject)
-        {
+        public bool RemoveObject(WorldObject worldObject) {
             bool success = Objects.Remove(worldObject);
-            if (success)
-            {
+            if (success) {
                 updateSublists();
             }
             return success;

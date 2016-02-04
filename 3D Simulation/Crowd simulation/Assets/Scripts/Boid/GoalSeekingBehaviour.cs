@@ -9,7 +9,7 @@ namespace Assets.Scripts.Boid {
         private Node target;
         private Path path;
 
-        public GoalSeekingBehaviour (global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
+        public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
             this.MaxForce = 2.0f;
@@ -34,8 +34,7 @@ namespace Assets.Scripts.Boid {
             if (path != null) {
                 if (this.target == null) {
                     this.target = path.FindClosestNode(boid.transform.position);
-                }
-                else {
+                } else {
                     this.TargetNextNodeAlongPath();
                     if (this.target == null) return Vector3.zero;
                     return this.SteerTowardsPoint(this.target.Position);
@@ -76,29 +75,22 @@ namespace Assets.Scripts.Boid {
             }
         }
 
-        public void chooseNewGoal()
-        {
+        public void chooseNewGoal() {
             //Do something more intelligent here.            
             List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
-            if (goals.Count > 0)
-            {
+            if (goals.Count > 0) {
                 Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
-            }
-            else
-            {
+            } else {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
 
-        public void ChooseClosestFromList<T>(List<T> goals) where T : Goal
-        {
-            if (goals.Count > 0)
-            {
+        public void ChooseClosestFromList<T>(List<T> goals) where T : Goal {
+            if (goals.Count > 0) {
                 Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
-            }
-            else {
+            } else {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }

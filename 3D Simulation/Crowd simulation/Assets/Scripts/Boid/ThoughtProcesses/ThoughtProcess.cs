@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Boid
-{
-    class ThoughtProcess
-    {
+namespace Assets.Scripts.Boid {
+    class ThoughtProcess {
+
         protected int processStep;
         protected List<object> processList;
 
-        public ThoughtProcess()
-        {
+        public ThoughtProcess() {
             processStep = 0;
             processList = new List<object>();
         }
 
-        public void NextStep()
-        {
+        public void NextStep() {
             processStep++;
         }
 
-        public void RunCurrentProcess()
-        {
-            if (processStep < processList.Count)
-            {
+        public void RunCurrentProcess() {
+            if (processStep < processList.Count) {
                 //perform current step in process flow
                 callProcess(processStep);
-            }
-            else
-            {
+            } else {
                 //reached end of process flow
                 //boid should now have satisfied need
                 //in which case mind will discard this process
@@ -39,9 +32,8 @@ namespace Assets.Scripts.Boid
             }
         }
 
-        private void callProcess(int step)
-        {
-            ((Action) processList[step])();
+        private void callProcess(int step) {
+            ((Action)processList[step])();
         }
     }
 }

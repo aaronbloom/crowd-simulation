@@ -5,10 +5,10 @@ using System.Text;
 using Assets.Scripts.Boid.ThoughtProcesses;
 using Assets.Scripts.Environment.World.Objects;
 
-namespace Assets.Scripts.Boid
-{
-    class Mind
-    {
+namespace Assets.Scripts.Boid {
+
+    class Mind {
+
         public Goal Goal { get; private set; }
         public Need CurrentNeed { get; private set; }
 
@@ -19,8 +19,7 @@ namespace Assets.Scripts.Boid
         private Need toiletNeed;
         private Need danceNeed;
 
-        public Mind(Boid boid)
-        {
+        public Mind(Boid boid) {
             this.boid = boid;
             drinkNeed = new Need(MindState.Thirsty, 1, 20);
             toiletNeed = new Need(MindState.Incontenent, 1, 20);
@@ -30,8 +29,7 @@ namespace Assets.Scripts.Boid
             startNewProcess(CurrentNeed.MindState);
         }
 
-        private MindState evaluatePriorities()
-        {
+        private MindState evaluatePriorities() {
             //if (CurrentNeed == null) CurrentNeed = danceNeed;
             if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
             if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
@@ -41,30 +39,25 @@ namespace Assets.Scripts.Boid
 
         }
 
-        private void desireNeeds()
-        {
+        private void desireNeeds() {
             drinkNeed.Desire();
             toiletNeed.Desire();
             danceNeed.Desire();
         }
 
-        public void Think()
-        {
+        public void Think() {
             desireNeeds();
             MindState oldMindState = CurrentNeed.MindState;
             MindState newMindState = evaluatePriorities();
-            if (newMindState != oldMindState)
-            {
+            if (newMindState != oldMindState) {
                 //Needs have changed - update behaviours
                 startNewProcess(newMindState);
             }
             thoughtProcess.RunCurrentProcess();
         }
 
-        private void startNewProcess(MindState mindState)
-        {
-            switch (mindState)
-            {
+        private void startNewProcess(MindState mindState) {
+            switch (mindState) {
                 case MindState.Thirsty:
                     thoughtProcess = new BarProcess(boid, drinkNeed);
                     break;
@@ -81,15 +74,13 @@ namespace Assets.Scripts.Boid
 
     }
 
-    class Need
-    {
+    class Need {
         public MindState MindState { get; private set; }
         public int Value { get; private set; }
         public int Max { get; private set; }
         public int Min { get; private set; }
 
-        public bool Satisfied
-        {
+        public bool Satisfied {
             get { return Value < satisfactionThreshold; }
         }
 
@@ -97,8 +88,7 @@ namespace Assets.Scripts.Boid
         private readonly int satisfactionThreshold;
 
 
-        public Need(MindState mindState, int increment, int satisfactionThreshold)
-        {
+        public Need(MindState mindState, int increment, int satisfactionThreshold) {
             this.Max = 5000000;
             this.Min = 0;
             this.increment = increment;
@@ -106,19 +96,16 @@ namespace Assets.Scripts.Boid
             this.MindState = mindState;
         }
 
-        public void Desire()
-        {
+        public void Desire() {
             if (Value < Max) Value += increment;
         }
 
-        public void Satisfy()
-        {
+        public void Satisfy() {
             Value = Min;
         }
     }
 
-    enum MindState
-    {
+    enum MindState {
         Thirsty,
         Dancey,
         Incontenent

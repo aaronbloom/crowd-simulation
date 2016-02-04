@@ -3,8 +3,7 @@ using Assets.Scripts.Environment.Navigation;
 using UnityEngine;
 
 namespace Assets.Scripts.Boid {
-    public class Boid : MonoBehaviour
-    {
+    public class Boid : MonoBehaviour {
 
         private Mind mind;
         private Vector3 _velocity;
@@ -13,7 +12,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
-        private BoidProperties properties; 
+        private BoidProperties properties;
         private Vector3 acceleration;
 
         void Awake() {
