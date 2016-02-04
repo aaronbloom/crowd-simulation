@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Boid.ThoughtProcesses;
 using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid
@@ -10,7 +11,9 @@ namespace Assets.Scripts.Boid
     {
         public Goal Goal { get; private set; }
         public Need CurrentNeed { get; private set; }
+
         private Boid boid;
+        private ThoughtProcess thoughtProcess;
 
         private Need drinkNeed;
         private Need toiletNeed;
@@ -51,6 +54,7 @@ namespace Assets.Scripts.Boid
                 //Needs have changed - update behaviours
                 startNewProcess(newMindState);
             }
+            thoughtProcess.RunCurrentProcess();
         }
 
         private void startNewProcess(MindState mindState)
@@ -73,17 +77,17 @@ namespace Assets.Scripts.Boid
 
         private void startThirstAction()
         {
-            
+            thoughtProcess = new BarProcess();
         }
 
         private void startToiletAction()
         {
-
+            thoughtProcess = new ToiletProcess();
         }
 
         private void startDanceAction()
         {
-
+            thoughtProcess = new DanceProcess();
         }
     }
 
