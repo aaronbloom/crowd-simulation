@@ -25,16 +25,20 @@ namespace Assets.Scripts.Boid
             drinkNeed = new Need(MindState.Thirsty, 1, 20);
             toiletNeed = new Need(MindState.Incontenent, 1, 20);
             danceNeed = new Need(MindState.Dancey, 2, 20);
-            evaluatePriorities();
+
+            CurrentNeed = danceNeed;
+            startNewProcess(CurrentNeed.MindState);
         }
 
         private MindState evaluatePriorities()
         {
+            //if (CurrentNeed == null) CurrentNeed = danceNeed;
             if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
             if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
             if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
-            if (CurrentNeed.Satisfied) CurrentNeed = null;
+            //if (CurrentNeed.Satisfied) CurrentNeed = null;
             return CurrentNeed.MindState;
+
         }
 
         private void desireNeeds()
@@ -62,33 +66,19 @@ namespace Assets.Scripts.Boid
             switch (mindState)
             {
                 case MindState.Thirsty:
-                    startThirstAction();
+                    thoughtProcess = new BarProcess();
                     break;
                 case MindState.Dancey:
-                    startDanceAction();
+                    thoughtProcess = new DanceProcess();
                     break;
                 case MindState.Incontenent:
-                    startToiletAction();
+                    thoughtProcess = new ToiletProcess();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void startThirstAction()
-        {
-            thoughtProcess = new BarProcess();
-        }
-
-        private void startToiletAction()
-        {
-            thoughtProcess = new ToiletProcess();
-        }
-
-        private void startDanceAction()
-        {
-            thoughtProcess = new DanceProcess();
-        }
     }
 
     class Need
