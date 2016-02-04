@@ -42,6 +42,7 @@ namespace Assets.Scripts.Boid {
                 }
                 if (!isOverLapping) {
                     BoidProperties boidProperties = new BoidProperties();
+                    position.y = 0.1f;
                     Gender boidGender = boidProperties.Gender;
                     int index = Random.Range(0, 3);
                     string boidPrefab = boidGender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
