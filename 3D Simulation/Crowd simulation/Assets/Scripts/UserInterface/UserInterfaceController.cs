@@ -29,7 +29,12 @@ namespace Assets.Scripts.UserInterface
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
                 if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-                    userWorldBuilder.PlaceWorldObject();
+                    Debug.Log("Mouse down");
+                    userWorldBuilder.StartPlaceWorldObject();
+                }
+                if (Input.GetMouseButtonUp(0)) {
+                    Debug.Log("Mouse up");
+                    userWorldBuilder.EndPlaceWorldObject();
                 }
             }
         }
@@ -51,7 +56,7 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void StartSimulation() {
-            userWorldBuilder.Destroy();
+            userWorldBuilder.DestroyCursors();
             userWorldBuilder = null;
             HideMenu(mainMenu);
             HideMenu(setupMenu);
