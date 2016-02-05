@@ -12,6 +12,7 @@ namespace Assets.Scripts.UserInterface {
         private string currentItem;
         private Vector3 startPlacement;
         private bool startedPlacement = false;
+        private readonly Vector3 cursorHeight = new Vector3(0, 0.2f, 0);
 
         public UserWorldBuilder() {
             cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
@@ -60,12 +61,13 @@ namespace Assets.Scripts.UserInterface {
                     }
 
                     secondCursor.GameObject.transform.position 
-                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, primaryCursor.Size);
+                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, primaryCursor.Size) + cursorHeight;
                 } else {
                     if (primaryCursor.GameObject != null) {
                         primaryCursor.GameObject.transform.position
-                            = Environment.Environment.PositionToGridPosition(MousePositionToGroundPosition(),
-                                primaryCursor.Size);
+                            = Environment.Environment.PositionToGridPosition(
+                                MousePositionToGroundPosition(),
+                                primaryCursor.Size) + cursorHeight;
                     }
                 }
             }

@@ -38,7 +38,7 @@ namespace Assets.Scripts.Environment {
         public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, Vector3 halfObjectSize)
         {
             position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize.x, origin.x + bounds.x - halfObjectSize.x);
-            position.y = Mathf.Clamp(position.y, origin.y + halfObjectSize.z, origin.y + bounds.y - halfObjectSize.y);
+            position.y = Mathf.Clamp(position.y, origin.y, origin.y + bounds.y - halfObjectSize.y);
             position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize.z, origin.z + bounds.z - halfObjectSize.z);
             return position;
         }
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Environment {
 
         private void CreateGroundArea(Vector3 bounds) {
             Vector3 position = bounds * 0.5f;
-            position.y = 0.1f; //set to ground level
+            position.y = 0; //set to ground level
             GameObject groundArea = (GameObject)BootStrapper.Initialise("GroundQuad", position, Quaternion.Euler(90, 0, 0));
             groundArea.transform.localScale = new Vector3(bounds.x, bounds.z, bounds.y); //swapped axis due to quad rotation
         }
