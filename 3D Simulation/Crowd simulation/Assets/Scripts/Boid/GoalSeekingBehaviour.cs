@@ -8,13 +8,14 @@ namespace Assets.Scripts.Boid {
 
         private Node target;
         private Path path;
+        private const float goalMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
-            this.MaxForce = 2.0f;
-            this.VelocityDamping = 0.2f;
-            this.SeparationFactor = 0.9f;
+            this.MaxForce = 2.4f;
+            this.VelocityDamping = 0.4f;
+            this.SeparationFactor = 1.2f;
             BehaviourComplete = false;
         }
 
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Boid {
         }
 
         private void TargetNextNodeAlongPath() {
-            if (Vector3.Distance(target.Position, this.boid.transform.position) < 2) {
+            if (Vector3.Distance(target.Position, this.boid.transform.position) < goalMinimumDistance) {
                 int index = path.Nodes.IndexOf(this.target) + 1;
                 if (index < path.Nodes.Count - 1) {
                     this.target = path.Nodes[index];

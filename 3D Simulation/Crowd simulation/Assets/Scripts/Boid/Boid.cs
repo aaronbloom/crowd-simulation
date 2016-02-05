@@ -11,12 +11,16 @@ namespace Assets.Scripts.Boid {
             get { return _velocity; }
         }
 
+        public float viewingDistance = 20f;
+        public float minimumDistance = 4.5f;
+
+
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
         private BoidProperties properties;
         private Vector3 acceleration;
 
         void Awake() {
-            this.behaviour = new GoalSeekingBehaviour(this, 10f, 2.5f);
+            this.behaviour = new GoalSeekingBehaviour(this, viewingDistance, minimumDistance);
             this.properties = new BoidProperties();
 
             mind = new Mind(this);

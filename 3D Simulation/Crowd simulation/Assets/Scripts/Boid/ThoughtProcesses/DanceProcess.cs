@@ -17,7 +17,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToStage() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, 10f, 2.5f); //fekin magic numbers, thanks Aaron
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
             gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
             owner.behaviour = gsb;
             NextStep();
