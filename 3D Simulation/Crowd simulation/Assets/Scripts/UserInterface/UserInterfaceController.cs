@@ -11,17 +11,15 @@ namespace Assets.Scripts.UserInterface
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
         private GameObject simulationMenu;
-        private GameObject boidInformationWindow;
+        private BoidInformationWindow boidInformationWindow;
         private UserWorldBuilder userWorldBuilder;
-
-        private Boid.Boid currentBoid;
 
         void Awake() {
             mainMenu = GameObject.Find("MainMenu");
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
             simulationMenu = GameObject.Find("SimulationMenu");
-            boidInformationWindow = GameObject.Find("BoidInformationWindow");
+            boidInformationWindow = new BoidInformationWindow();
         }
 
         void Start () {
@@ -29,7 +27,6 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
             HideMenu(simulationMenu);
-            HideMenu(boidInformationWindow);
         }
 	
         void Update () {
@@ -46,28 +43,10 @@ namespace Assets.Scripts.UserInterface
             }
 
             if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-                RaycastHit lhit;
-                Ray lray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                Debug.Log("Doing ray test");
-                if (Physics.Raycast(lray, out lhit, 100)) {
-                    Debug.Log("Hit something: " + lhit.transform.tag);
-                    if (lhit.transform.tag == "Boid") {
-                        ShowMenu(boidInformationWindow);
-                        currentBoid = lhit.transform.GetComponent<Boid.Boid>();
-                    }
-                    else {
-                        currentBoid = null;
-                        HideMenu(boidInformationWindow);
-                    }
-                }
+                boidInformationWindow.FindBoid(Input.mousePosition);
             }
 
-            if (currentBoid != null) {
-                GameObject.Find("ThirstText").GetComponent<Text>().text = "Thirst: " + currentBoid.Thirst;
-                GameObject.Find("ToiletNeedText").GetComponent<Text>().text = "Toilet need: " + currentBoid.ToiletNeed;
-                GameObject.Find("DanceNeedText").GetComponent<Text>().text = "Dance need: " + currentBoid.DanceNeed;
-            }
+            boidInformationWindow.Update();
         }
 
         public void NewSimulation() {
@@ -106,7 +85,7 @@ namespace Assets.Scripts.UserInterface
             userWorldBuilder.SetCurrentPlacementObject(objectName);
         }
 
-        private void HideMenu(GameObject menu) {
+        public static void HideMenu(GameObject menu) {
             menu.SetActive(false);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
             if (canvasGroup != null) {
@@ -114,7 +93,7 @@ namespace Assets.Scripts.UserInterface
             }
         }
 
-        private void ShowMenu(GameObject menu) {
+        public static void ShowMenu(GameObject menu) {
             menu.SetActive(true);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
             if (canvasGroup != null) {
