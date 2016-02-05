@@ -29,7 +29,7 @@ GameObject:
   - 114: {fileID: 11407852}
   m_Layer: 0
   m_Name: chr_mike
-  m_TagString: Untagged
+  m_TagString: Boid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,7 +70,7 @@ Transform:
   m_GameObject: {fileID: 112214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.5, y: 2.2, z: 1.5}
   m_Children:
   - {fileID: 412212}
   - {fileID: 412216}
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d961f4e704848e14a8cbcddb32373792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewingDistance: 10
+  minimumDistance: 5.5
 --- !u!136 &13612216
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -177,15 +179,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Boid
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
