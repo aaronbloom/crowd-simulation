@@ -45,7 +45,7 @@ namespace Assets.Scripts.Environment {
 
         public void Place(WorldObject worldObject, Vector3 position)
         {
-            var location = PositionToGridPosition(position, worldObject.Size);
+            var location = PositionToGridPosition(position, Mathf.Min(worldObject.Size.x, worldObject.Size.z));
             if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
             {
                 Debug.Log("Could not add new world object - Already occupied");
@@ -53,18 +53,18 @@ namespace Assets.Scripts.Environment {
             }
         }
 
-        public static Vector3 PositionToGridPosition(Vector3 position, float objectSize)
+        public static Vector3 PositionToGridPosition(Vector3 position, float snapSize)
         {
             var gridPosition = position;
-            gridPosition -= Vector3.one * (objectSize / 2);
-            gridPosition /= objectSize;
+            gridPosition -= Vector3.one * (snapSize / 2);
+            gridPosition /= snapSize;
             gridPosition = new Vector3(Mathf.Round(gridPosition.x), Mathf.Round(gridPosition.y), Mathf.Round(gridPosition.z));
-            gridPosition *= objectSize;
-            gridPosition += Vector3.one * (objectSize / 2);
-            gridPosition.y = objectSize / 2; // so it sits at ground level
+            gridPosition *= snapSize;
+            gridPosition += Vector3.one * (snapSize / 2);
+            gridPosition.y = snapSize / 2; // so it sits at ground level
             Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
             Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
-            return ConstrainVector(gridPosition, origin, bounds, objectSize / 2);
+            return ConstrainVector(gridPosition, origin, bounds, snapSize / 2);
         }
 
         private void CreateGroundArea(Vector3 bounds) {

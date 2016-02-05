@@ -17,7 +17,7 @@ namespace Assets.Scripts.Environment.World.Objects {
 
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
-        public float Size { get; protected set; }
+        public Vector3 Size { get; protected set; }
 
         public GameObject GameObject { get; set; }
 
