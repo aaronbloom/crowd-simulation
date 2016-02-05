@@ -12,6 +12,9 @@ namespace Assets.Scripts.Boid {
 
         public Goal Goal { get; private set; }
         public Need CurrentNeed { get; private set; }
+        public float Thirst { get { return drinkNeed.Value; } }
+        public float ToiletNeed { get { return toiletNeed.Value; } }
+        public float DanceNeed { get { return danceNeed.Value; } }
 
         private Boid boid;
         private ThoughtProcess thoughtProcess;

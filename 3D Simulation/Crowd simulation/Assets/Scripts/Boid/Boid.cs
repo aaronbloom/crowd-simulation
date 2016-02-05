@@ -6,6 +6,9 @@ namespace Assets.Scripts.Boid {
     public class Boid : MonoBehaviour {
 
         private Mind mind;
+        public float Thirst { get { return mind.Thirst; } }
+        public float ToiletNeed { get { return mind.ToiletNeed; } }
+        public float DanceNeed { get { return mind.DanceNeed; } }
         private Vector3 _velocity;
         public Vector3 Velocity {
             get { return _velocity; }

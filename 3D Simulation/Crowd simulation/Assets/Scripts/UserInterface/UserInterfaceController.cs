@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
+using Assets.Scripts.Boid;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface
 {
@@ -9,13 +11,17 @@ namespace Assets.Scripts.UserInterface
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
         private GameObject simulationMenu;
+        private GameObject boidInformationWindow;
         private UserWorldBuilder userWorldBuilder;
+
+        private Boid.Boid currentBoid;
 
         void Awake() {
             mainMenu = GameObject.Find("MainMenu");
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
             simulationMenu = GameObject.Find("SimulationMenu");
+            boidInformationWindow = GameObject.Find("BoidInformationWindow");
         }
 
         void Start () {
@@ -23,6 +29,7 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
             HideMenu(simulationMenu);
+            HideMenu(boidInformationWindow);
         }
 	
         void Update () {
@@ -36,6 +43,30 @@ namespace Assets.Scripts.UserInterface
                     Debug.Log("Mouse up");
                     userWorldBuilder.EndPlaceWorldObject();
                 }
+            }
+
+            if (Input.GetMouseButtonDown(0)) { //left mouse clicked
+                RaycastHit lhit;
+                Ray lray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                Debug.Log("Doing ray test");
+                if (Physics.Raycast(lray, out lhit, 100)) {
+                    Debug.Log("Hit something: " + lhit.transform.tag);
+                    if (lhit.transform.tag == "Boid") {
+                        ShowMenu(boidInformationWindow);
+                        currentBoid = lhit.transform.GetComponent<Boid.Boid>();
+                    }
+                    else {
+                        currentBoid = null;
+                        HideMenu(boidInformationWindow);
+                    }
+                }
+            }
+
+            if (currentBoid != null) {
+                GameObject.Find("ThirstText").GetComponent<Text>().text = "Thirst: " + currentBoid.Thirst;
+                GameObject.Find("ToiletNeedText").GetComponent<Text>().text = "Toilet need: " + currentBoid.ToiletNeed;
+                GameObject.Find("DanceNeedText").GetComponent<Text>().text = "Dance need: " + currentBoid.DanceNeed;
             }
         }
 
