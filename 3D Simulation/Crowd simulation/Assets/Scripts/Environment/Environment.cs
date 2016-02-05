@@ -35,17 +35,17 @@ namespace Assets.Scripts.Environment {
             constructNavMesh();
         }
 
-        public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, float halfObjectSize)
+        public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, Vector3 halfObjectSize)
         {
-            position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize, origin.x + bounds.x - halfObjectSize);
-            position.y = Mathf.Clamp(position.y, origin.y + halfObjectSize, origin.y + bounds.y - halfObjectSize);
-            position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize, origin.z + bounds.z - halfObjectSize);
+            position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize.x, origin.x + bounds.x - halfObjectSize.x);
+            position.y = Mathf.Clamp(position.y, origin.y + halfObjectSize.z, origin.y + bounds.y - halfObjectSize.y);
+            position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize.z, origin.z + bounds.z - halfObjectSize.z);
             return position;
         }
 
         public void Place(WorldObject worldObject, Vector3 position)
         {
-            var location = PositionToGridPosition(position, Mathf.Min(worldObject.Size.x, worldObject.Size.z));
+            var location = PositionToGridPosition(position, worldObject.Size);
             if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
             {
                 Debug.Log("Could not add new world object - Already occupied");
@@ -53,18 +53,18 @@ namespace Assets.Scripts.Environment {
             }
         }
 
-        public static Vector3 PositionToGridPosition(Vector3 position, float snapSize)
+        public static Vector3 PositionToGridPosition(Vector3 position, Vector3 objectSize)
         {
             var gridPosition = position;
-            gridPosition -= Vector3.one * (snapSize / 2);
-            gridPosition /= snapSize;
-            gridPosition = new Vector3(Mathf.Round(gridPosition.x), Mathf.Round(gridPosition.y), Mathf.Round(gridPosition.z));
-            gridPosition *= snapSize;
-            gridPosition += Vector3.one * (snapSize / 2);
-            gridPosition.y = snapSize / 2; // so it sits at ground level
+            gridPosition -= (objectSize / 2);
+            gridPosition = new Vector3(
+                Mathf.Round(gridPosition.x / objectSize.x) * objectSize.x,
+                0, // so it sits at ground level
+                Mathf.Round(gridPosition.z / objectSize.z) * objectSize.z);
+            gridPosition += (objectSize / 2);
             Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
             Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
-            return ConstrainVector(gridPosition, origin, bounds, snapSize / 2);
+            return ConstrainVector(gridPosition, origin, bounds, objectSize / 2);
         }
 
         private void CreateGroundArea(Vector3 bounds) {

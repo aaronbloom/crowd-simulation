@@ -9,7 +9,6 @@ namespace Assets.Scripts.UserInterface {
         private WorldObject primaryCursor;
         private WorldObject secondCursor;
         private readonly Material cursorMaterial;
-        private const float cursorSize = 4;
         private string currentItem;
         private Vector3 startPlacement;
         private bool startedPlacement = false;
@@ -61,12 +60,12 @@ namespace Assets.Scripts.UserInterface {
                     }
 
                     secondCursor.GameObject.transform.position 
-                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, cursorSize);
+                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, primaryCursor.Size);
                 } else {
                     if (primaryCursor.GameObject != null) {
                         primaryCursor.GameObject.transform.position
                             = Environment.Environment.PositionToGridPosition(MousePositionToGroundPosition(),
-                                cursorSize);
+                                primaryCursor.Size);
                     }
                 }
             }
