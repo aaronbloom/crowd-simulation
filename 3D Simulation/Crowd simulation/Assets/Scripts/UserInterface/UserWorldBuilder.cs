@@ -100,10 +100,10 @@ namespace Assets.Scripts.UserInterface {
             Vector3 position = start;
             WorldObject[] createdWorldObjects = new WorldObject[largerDiff + 1];
             for (int i = 0; i <= largerDiff; i++) {
-                position += step;
                 var currentWorldObject = DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
                 BootStrapper.EnvironmentManager.CurrentEnvironment.Place(currentWorldObject, position);
+                position += step;
             }
             return createdWorldObjects;
         }

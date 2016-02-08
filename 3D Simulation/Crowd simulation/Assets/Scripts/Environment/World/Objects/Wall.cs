@@ -6,7 +6,7 @@ namespace Assets.Scripts.Environment.World.Objects {
 
         public Wall() : base() {
             this.Identifier = "Wall";
-            this.Size = new Vector3(4, 4, 4);
+            this.Size = new Vector3(1, 4, 1);
         }
 
         WorldObject Collidable.getObject() {
