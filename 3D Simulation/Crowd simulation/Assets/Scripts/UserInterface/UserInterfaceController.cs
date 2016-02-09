@@ -72,13 +72,13 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void DemographicSetup() {
+            userWorldBuilder.DestroyCursors();
+            userWorldBuilder = null;
             HideMenu(environmentBuilderMenu);
             ShowMenu(demographicMenu);
         }
 
         public void StartSimulation() {
-            userWorldBuilder.DestroyCursors();
-            userWorldBuilder = null;
             HideMenu(mainMenu);
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
