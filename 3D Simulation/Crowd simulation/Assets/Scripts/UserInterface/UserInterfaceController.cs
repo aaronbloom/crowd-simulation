@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
+using Assets.Scripts.Boid;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface
 {
@@ -11,6 +13,7 @@ namespace Assets.Scripts.UserInterface
         private GameObject simulationMenu;
         private GameObject demographicMenu;
         private GameObject analysisMenu;
+        private BoidInformationWindow boidInformationWindow;
         private UserWorldBuilder userWorldBuilder;
 
         void Awake() {
@@ -20,6 +23,7 @@ namespace Assets.Scripts.UserInterface
             simulationMenu = GameObject.Find("SimulationMenu");
             demographicMenu = GameObject.Find("DemographicMenu");
             analysisMenu = GameObject.Find("AnalysisMenu");
+            boidInformationWindow = new BoidInformationWindow();
         }
 
         void Start () {
@@ -43,6 +47,12 @@ namespace Assets.Scripts.UserInterface
                     userWorldBuilder.EndPlaceWorldObject();
                 }
             }
+
+            if (Input.GetMouseButtonDown(0)) { //left mouse clicked
+                boidInformationWindow.FindBoid(Input.mousePosition);
+            }
+
+            boidInformationWindow.Update();
         }
 
         public void NewSimulation() {
@@ -92,7 +102,7 @@ namespace Assets.Scripts.UserInterface
             userWorldBuilder.SetCurrentPlacementObject(objectName);
         }
 
-        private void HideMenu(GameObject menu) {
+        public static void HideMenu(GameObject menu) {
             menu.SetActive(false);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
             if (canvasGroup != null) {
@@ -100,7 +110,7 @@ namespace Assets.Scripts.UserInterface
             }
         }
 
-        private void ShowMenu(GameObject menu) {
+        public static void ShowMenu(GameObject menu) {
             menu.SetActive(true);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
             if (canvasGroup != null) {
