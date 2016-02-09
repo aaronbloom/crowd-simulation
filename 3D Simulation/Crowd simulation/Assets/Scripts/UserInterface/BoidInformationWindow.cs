@@ -5,11 +5,11 @@ namespace Assets.Scripts.UserInterface {
     class BoidInformationWindow {
         private readonly GameObject boidInformationWindow;
         private Boid.Boid currentBoid;
-        private const string BoidInformationWindowName = "BoidInformationWindow";
+        private const string BoidInformationPanelName = "BoidInformationPanel";
         private GameObject selectionGameObject;
 
         public BoidInformationWindow() {
-            boidInformationWindow = GameObject.Find(BoidInformationWindowName);
+            boidInformationWindow = GameObject.Find(BoidInformationPanelName);
             UserInterfaceController.HideMenu(boidInformationWindow);
         }
 
