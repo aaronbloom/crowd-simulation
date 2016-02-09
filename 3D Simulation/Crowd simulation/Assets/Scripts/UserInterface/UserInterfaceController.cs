@@ -7,6 +7,8 @@ namespace Assets.Scripts.UserInterface
 {
     public class UserInterfaceController : MonoBehaviour {
 
+        private const int LeftMouseButton = 0;
+
         private GameObject mainMenu;
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
@@ -38,17 +40,15 @@ namespace Assets.Scripts.UserInterface
         void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
-                if (Input.GetMouseButtonDown(0)) { //left mouse clicked
-                    Debug.Log("Mouse down");
+                if (Input.GetMouseButtonDown(LeftMouseButton)) {
                     userWorldBuilder.StartPlaceWorldObject();
                 }
-                if (Input.GetMouseButtonUp(0)) {
-                    Debug.Log("Mouse up");
+                if (Input.GetMouseButtonUp(LeftMouseButton)) {
                     userWorldBuilder.EndPlaceWorldObject();
                 }
             }
 
-            if (Input.GetMouseButtonDown(0)) { //left mouse clicked
+            if (Input.GetMouseButtonDown(LeftMouseButton)) {
                 boidInformationWindow.FindBoid(Input.mousePosition);
             }
 
