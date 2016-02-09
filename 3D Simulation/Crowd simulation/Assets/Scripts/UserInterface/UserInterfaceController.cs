@@ -75,6 +75,10 @@ namespace Assets.Scripts.UserInterface
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
         }
 
+        public void GenerateHeatMap() {
+            BootStrapper.BoidManager.DisplayHeatMap();
+        }
+
         public void SetCurrentPlacementObject(string objectName) {
             userWorldBuilder.SetCurrentPlacementObject(objectName);
         }

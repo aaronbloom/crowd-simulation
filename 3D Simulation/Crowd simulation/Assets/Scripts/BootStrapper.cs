@@ -18,6 +18,7 @@ namespace Assets.Scripts {
         public static EnvironmentManager EnvironmentManager { get; private set; }
         public static CameraController CameraController { get; private set; }
         public static bool Pause { get; private set; }
+        public static bool CaptureHeatMap { get; private set; }
 
         void Awake() {
             Pause = false;
@@ -38,8 +39,7 @@ namespace Assets.Scripts {
 
         public void StopSimulation() {
             Pause = true;
-            BoidManager.DisplayHeatMap();
-            //Time.timeScale = 0;
+            CaptureHeatMap = false;
         }
 
         public static Object Initialise(string prefabName) {
@@ -57,9 +57,9 @@ namespace Assets.Scripts {
             }
         }
 
-        private IEnumerator BoidHeatMap()
-        {
-            while (true)
+        private IEnumerator BoidHeatMap() {
+            CaptureHeatMap = true;
+            while (CaptureHeatMap)
             {
                 BoidManager.CaptureAnalysisData();
                 yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
