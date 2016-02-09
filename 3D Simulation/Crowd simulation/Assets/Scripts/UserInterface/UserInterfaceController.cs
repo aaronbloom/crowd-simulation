@@ -9,6 +9,7 @@ namespace Assets.Scripts.UserInterface
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
         private GameObject simulationMenu;
+        private GameObject demographicMenu;
         private GameObject analysisMenu;
         private UserWorldBuilder userWorldBuilder;
 
@@ -17,6 +18,7 @@ namespace Assets.Scripts.UserInterface
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
             simulationMenu = GameObject.Find("SimulationMenu");
+            demographicMenu = GameObject.Find("DemographicMenu");
             analysisMenu = GameObject.Find("AnalysisMenu");
         }
 
@@ -25,6 +27,7 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
             HideMenu(simulationMenu);
+            HideMenu(demographicMenu);
             HideMenu(analysisMenu);
         }
 	
@@ -58,12 +61,18 @@ namespace Assets.Scripts.UserInterface
             BootStrapper.CameraController.LookAtEnvironmentCenter();
         }
 
+        public void DemographicSetup() {
+            HideMenu(environmentBuilderMenu);
+            ShowMenu(demographicMenu);
+        }
+
         public void StartSimulation() {
             userWorldBuilder.DestroyCursors();
             userWorldBuilder = null;
             HideMenu(mainMenu);
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
+            HideMenu(demographicMenu);
             int numberOfBoids = setupMenu.GetComponent<MenuControlController>().NumberOfBoidsValue;
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
             ShowMenu(simulationMenu);
