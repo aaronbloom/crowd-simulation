@@ -9,6 +9,7 @@ namespace Assets.Scripts.UserInterface
         private GameObject setupMenu;
         private GameObject environmentBuilderMenu;
         private GameObject simulationMenu;
+        private GameObject analysisMenu;
         private UserWorldBuilder userWorldBuilder;
 
         void Awake() {
@@ -16,6 +17,7 @@ namespace Assets.Scripts.UserInterface
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
             simulationMenu = GameObject.Find("SimulationMenu");
+            analysisMenu = GameObject.Find("AnalysisMenu");
         }
 
         void Start () {
@@ -23,6 +25,7 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
             HideMenu(simulationMenu);
+            HideMenu(analysisMenu);
         }
 	
         void Update () {
@@ -68,6 +71,7 @@ namespace Assets.Scripts.UserInterface
 
         public void StopSimulation() {
             HideMenu(simulationMenu);
+            ShowMenu(analysisMenu);
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
         }
 
