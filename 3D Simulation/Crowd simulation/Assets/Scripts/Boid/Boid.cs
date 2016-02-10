@@ -50,7 +50,8 @@ namespace Assets.Scripts.Boid {
         private void calculateNewPosition() {
             this.acceleration = calculateAcceleration(this.acceleration);
             this._velocity = calculateVelocity(this._velocity);
-            this.transform.position += (this._velocity * Time.deltaTime);
+            this.transform.position = this.transform.position + (this._velocity * Time.deltaTime);
+            this.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
         }
 
         private Vector3 calculateAcceleration(Vector3 acceleration) {
