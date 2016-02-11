@@ -19,12 +19,12 @@ namespace Assets.Scripts.Boid {
 
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
-        private BoidProperties properties;
+        public BoidProperties Properties { get; private set; }
         private Vector3 acceleration;
 
         void Awake() {
             this.behaviour = new GoalSeekingBehaviour(this, viewingDistance, minimumDistance);
-            this.properties = new BoidProperties();
+            this.Properties = new BoidProperties();
 
             mind = new Mind(this);
         }

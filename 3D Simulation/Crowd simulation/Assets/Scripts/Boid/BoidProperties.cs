@@ -5,19 +5,18 @@ using System.Text;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
-    class BoidProperties {
+    public class BoidProperties {
 
-        private Gender _gender;
-        public Gender Gender {
-            get { return _gender; }
-        }
+        public string HumanName { get; private set; }
+        public Gender Gender { get; private set; }
 
         public BoidProperties() {
-            this._gender = getRandomGender();
+            Gender = getRandomGender();
+            HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 
         public BoidProperties(Gender gender) {
-            this._gender = gender;
+            Gender = gender;
         }
 
         private Gender getRandomGender() {
