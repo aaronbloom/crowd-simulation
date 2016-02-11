@@ -16,6 +16,7 @@ namespace Assets.Scripts.Boid {
 
         public float viewingDistance = 20f;
         public float minimumDistance = 4.5f;
+        public readonly Vector3 EyeHeight = new Vector3(0, 2, 0);
 
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.

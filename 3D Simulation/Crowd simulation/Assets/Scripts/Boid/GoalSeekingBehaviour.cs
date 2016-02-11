@@ -8,20 +8,22 @@ namespace Assets.Scripts.Boid {
 
         private Node target;
         private Path path;
-        private const float goalMinimumDistance = 1.5f;
+        protected Node goal;
+        private const float targetMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
             this.MaxForce = 2.4f;
             this.VelocityDamping = 0.4f;
-            this.SeparationFactor = 1.2f;
+            this.SeparationFactor = 0.8f;
             BehaviourComplete = false;
         }
 
         public void Seek(Node goal, Graph graph) {
             Node startNode = graph.FindClosestNode(boid.transform.position);
             path = Path.Navigate(graph, startNode, goal);
+            this.goal = goal;
         }
 
         public void Seek(Goal goal, Graph graph) {
@@ -29,17 +31,17 @@ namespace Assets.Scripts.Boid {
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
             BehaviourComplete = false;
+            this.goal = goalNode;
         }
 
         private Vector3 MoveAlongPath() {
             if (path != null) {
                 if (this.target == null) {
                     this.target = path.FindClosestNode(boid.transform.position);
-                } else {
-                    this.TargetNextNodeAlongPath();
-                    if (this.target == null) return Vector3.zero;
-                    return this.SteerTowardsPoint(this.target.Position);
                 }
+                this.TargetNextNodeAlongPath();
+                if (this.target == null) return Vector3.zero;
+                return this.SteerTowardsPoint(this.target.Position);
             }
             return Vector3.zero;
         }
@@ -49,14 +51,17 @@ namespace Assets.Scripts.Boid {
         }
 
         public override Vector3 updateAcceleration() {
-            List<global::Assets.Scripts.Boid.Boid> boids = FindBoidsWithinView();
+            if (!BehaviourComplete) {
+                List<global::Assets.Scripts.Boid.Boid> boids = FindBoidsWithinView();
 
-            Vector3 seperationDirection = Separation(boids);
+                Vector3 seperationDirection = Separation(boids);
 
-            Vector3 acceleration = Vector3.zero;
-            acceleration += seperationDirection * SeparationFactor;
-            acceleration += MoveAlongPath();
-            return acceleration;
+                Vector3 acceleration = Vector3.zero;
+                acceleration += seperationDirection*SeparationFactor;
+                acceleration += MoveAlongPath();
+                return acceleration;
+            }
+            return Vector3.zero;
         }
 
         public override void DrawGraphGizmo() {
@@ -64,9 +69,12 @@ namespace Assets.Scripts.Boid {
             path.DrawGraphGizmo();
         }
 
+        protected virtual void LineOfSightCheck() {}
+
         private void TargetNextNodeAlongPath() {
-            if (Vector3.Distance(target.Position, this.boid.transform.position) < goalMinimumDistance) {
+            if (Vector3.Distance(target.Position, this.boid.transform.position) < targetMinimumDistance) {
                 int index = path.Nodes.IndexOf(this.target) + 1;
+                this.LineOfSightCheck();
                 if (index < path.Nodes.Count - 1) {
                     this.target = path.Nodes[index];
                 } else {

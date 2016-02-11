@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class DanceProcess : ThoughtProcess {
@@ -17,7 +18,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToStage() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
+            GoalSeekingBehaviour gsb = new LineOfSightGoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance, Stage.Name);
             gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
             owner.behaviour = gsb;
             NextStep();
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private void reachStage() {
             //probably change this to some loiter behaviour
             //satisfy slowly
-            ownerDesire.Satisfy(20);
+            ownerDesire.Satisfy(5);
             //NextStep();
         }
     }
