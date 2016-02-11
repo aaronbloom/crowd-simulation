@@ -35,6 +35,7 @@ namespace Assets.Scripts.UserInterface {
                 GameObject.Find("ThirstText").GetComponent<Text>().text = "Thirst: " + currentBoid.Thirst;
                 GameObject.Find("ToiletNeedText").GetComponent<Text>().text = "Toilet need: " + currentBoid.ToiletNeed;
                 GameObject.Find("DanceNeedText").GetComponent<Text>().text = "Dance need: " + currentBoid.DanceNeed;
+                GameObject.Find("CurrentNeedText").GetComponent<Text>().text = "Current need: " + currentBoid.CurrentNeed;
             }
         }
 

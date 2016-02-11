@@ -8,7 +8,8 @@ namespace Assets.Scripts.Boid {
 
         private Node target;
         private Path path;
-        protected Node goal;
+        protected Node goalNode;
+        protected Goal goal;
         private const float targetMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
@@ -20,18 +21,13 @@ namespace Assets.Scripts.Boid {
             BehaviourComplete = false;
         }
 
-        public void Seek(Node goal, Graph graph) {
-            Node startNode = graph.FindClosestNode(boid.transform.position);
-            path = Path.Navigate(graph, startNode, goal);
-            this.goal = goal;
-        }
-
         public void Seek(Goal goal, Graph graph) {
             Node startNode = graph.FindClosestNode(boid.transform.position);
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
             BehaviourComplete = false;
-            this.goal = goalNode;
+            this.goalNode = goalNode;
+            this.goal = goal;
         }
 
         private Vector3 MoveAlongPath() {
