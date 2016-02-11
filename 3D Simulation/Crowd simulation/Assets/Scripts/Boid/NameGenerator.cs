@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Scripts.Boid {
     static class NameGenerator
@@ -26,7 +29,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public static string GenerateName(Gender gender) {
-            return GenerateFirstName(gender) + GenerateSecondName();
+            return GenerateFirstName(gender) + " " + GenerateSecondName();
         }
 
         public static string GenerateFirstName(Gender gender) {
@@ -45,18 +48,19 @@ namespace Assets.Scripts.Boid {
         }
 
         public static void loadLists() {
-            maleFirstNames = loadList("MaleFirstNames.txt");
-            femaleFirstNames = loadList("FemaleFirstNames.txt");
-            secondNames = loadList("SecondNames.txt");
+            maleFirstNames = loadList("MaleFirstNames");
+            femaleFirstNames = loadList("FemaleFirstNames");
+            secondNames = loadList("SecondNames");
+            listsLoaded = true;
         }
 
         private static List<string> loadList(string fileName) {
             List<string> l = new List<string>();
             try {
-                var reader = new StreamReader(File.OpenRead(fileName));
-                while (!reader.EndOfStream) {
-                    var readLine = reader.ReadLine();
-                    if (readLine != null) l.Add(readLine.Trim());
+                TextAsset file = Resources.Load("Name Files/" + fileName) as TextAsset;
+                var raw = Regex.Split(file.text, @"\r\n");
+                foreach (string s in raw) {
+                    l.Add(s.Trim());
                 }
             } catch (IOException e) {
                 l.Add(fileName + ": not found");
