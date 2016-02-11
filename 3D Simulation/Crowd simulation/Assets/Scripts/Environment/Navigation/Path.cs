@@ -82,7 +82,7 @@ namespace Assets.Scripts.Environment.Navigation {
                     float potentialF = candidatePromising.calculateF();
 
                     //check this is the best route we know to the candidate
-                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF) {
+                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF && UnityEngine.Random.Range(0f,1f) > 0.5f ) {
                         //Not interested
                     } else if (closedSet.ContainsKey(candidatePromising.Node.Position) && closedSet[candidatePromising.Node.Position].ValueF < potentialF) {
                         //Not interested
