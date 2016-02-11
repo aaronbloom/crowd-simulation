@@ -8,18 +8,15 @@ namespace Assets.Scripts.Boid {
     class BoidProperties {
 
         public string HumanName { get; private set; }
-        private Gender _gender;
-        public Gender Gender {
-            get { return _gender; }
-        }
+        public Gender Gender { get; private set; }
 
         public BoidProperties() {
-            this._gender = getRandomGender();
-            HumanName = NameGenerator.GenerateFairlyUniqueName(_gender);
+            Gender = getRandomGender();
+            HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 
         public BoidProperties(Gender gender) {
-            this._gender = gender;
+            Gender = gender;
         }
 
         private Gender getRandomGender() {
