@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 namespace Assets.Scripts.Boid {
     class BoidProperties {
 
+        public string HumanName { get; private set; }
         private Gender _gender;
         public Gender Gender {
             get { return _gender; }
@@ -14,6 +15,7 @@ namespace Assets.Scripts.Boid {
 
         public BoidProperties() {
             this._gender = getRandomGender();
+            HumanName = NameGenerator.GenerateFairlyUniqueName(_gender);
         }
 
         public BoidProperties(Gender gender) {
