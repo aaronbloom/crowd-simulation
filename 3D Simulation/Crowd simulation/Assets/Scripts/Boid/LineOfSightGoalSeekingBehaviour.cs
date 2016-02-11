@@ -12,12 +12,12 @@ namespace Assets.Scripts.Boid {
 
         protected override void LineOfSightCheck() {
             Vector3 fromPosition = boid.transform.position + boid.EyeHeight;
-            Vector3 toPosition = goalNode.Position + new Vector3(0, goal.Size.y, 0);
+            Vector3 toPosition = GoalNode.Position + new Vector3(0, Goal.Size.y, 0);
 
             RaycastHit hit = new RaycastHit();
             if (Physics.Linecast(fromPosition, toPosition, out hit)) {
                 //Debug.Log("Object: " + hit.transform.name + ", distance: " + hit.distance);
-                if (hit.transform.gameObject.name.Contains(goal.Identifier)) {
+                if (hit.transform.gameObject.name.Contains(Goal.Identifier)) {
                     if (hit.distance < Random.Range(minimumDistance, maximumDistance)) {
                         BehaviourComplete = true;
                     }

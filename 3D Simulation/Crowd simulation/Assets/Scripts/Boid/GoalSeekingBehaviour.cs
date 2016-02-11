@@ -8,8 +8,8 @@ namespace Assets.Scripts.Boid {
 
         private Node target;
         private Path path;
-        protected Node goalNode;
-        protected Goal goal;
+        public Node GoalNode { get; protected set; }
+        public Goal Goal { get; protected set; }
         private const float targetMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
@@ -26,8 +26,8 @@ namespace Assets.Scripts.Boid {
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
             BehaviourComplete = false;
-            this.goalNode = goalNode;
-            this.goal = goal;
+            this.GoalNode = goalNode;
+            this.Goal = goal;
         }
 
         private Vector3 MoveAlongPath() {
