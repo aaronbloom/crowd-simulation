@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Environment.Navigation;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
@@ -9,7 +10,12 @@ namespace Assets.Scripts.Boid {
         private Node target;
         private Path path;
         private const float goalMinimumDistance = 1.5f;
+        private DateTime hitLastNode;
+        private int nodeReachedTimeout = 5; //given in seconds
 
+        private Goal goalForRecalc; //ALERT recalc will cause crash if GSB init with Seek(Node,Graph), consider removal of that void
+        private Graph graphForRecalc;
+        
         public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
@@ -25,22 +31,34 @@ namespace Assets.Scripts.Boid {
         }
 
         public void Seek(Goal goal, Graph graph) {
+            goalForRecalc = goal;
+            graphForRecalc = graph;
             Node startNode = graph.FindClosestNode(boid.transform.position);
             Node goalNode = graph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(graph, startNode, goalNode);
             BehaviourComplete = false;
+            hitLastNode = DateTime.Now;
+        }
+
+        private void reseek()
+        {
+            Debug.Log("Recalculating Path: " + boid.name);
+            target = null;
+            Seek(goalForRecalc, graphForRecalc);
         }
 
         private Vector3 MoveAlongPath() {
-            if (path != null) {
-                if (this.target == null) {
-                    this.target = path.FindClosestNode(boid.transform.position);
-                } else {
-                    this.TargetNextNodeAlongPath();
-                    if (this.target == null) return Vector3.zero;
-                    return this.SteerTowardsPoint(this.target.Position);
+            if(!BehaviourComplete) {
+                if (path != null) {
+                    if (this.target == null) {
+                        this.target = path.FindClosestNode(boid.transform.position);
+                    } else {
+                        this.TargetNextNodeAlongPath();
+                        if (this.target == null) return Vector3.zero;
+                        return this.SteerTowardsPoint(this.target.Position);
+                    }
                 }
-            }
+        }
             return Vector3.zero;
         }
 
@@ -65,13 +83,18 @@ namespace Assets.Scripts.Boid {
         }
 
         private void TargetNextNodeAlongPath() {
-            if (Vector3.Distance(target.Position, this.boid.transform.position) < goalMinimumDistance) {
-                int index = path.Nodes.IndexOf(this.target) + 1;
-                if (index < path.Nodes.Count - 1) {
-                    this.target = path.Nodes[index];
-                } else {
-                    //Goal Found
-                    BehaviourComplete = true;
+            if (hitLastNode < DateTime.Now.AddSeconds(-nodeReachedTimeout)) {
+                reseek(); //recalc after time
+            } else {
+                if (Vector3.Distance(target.Position, this.boid.transform.position) < goalMinimumDistance) {
+                    hitLastNode = DateTime.Now;
+                    int index = path.Nodes.IndexOf(this.target) + 1;
+                    if (index < path.Nodes.Count - 1) {
+                        this.target = path.Nodes[index];
+                    } else {
+                        //Goal Found
+                        BehaviourComplete = true;
+                    }
                 }
             }
         }
