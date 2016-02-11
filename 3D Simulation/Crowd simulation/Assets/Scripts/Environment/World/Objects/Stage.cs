@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
-    public class Stage : Goal {
+    public class Stage : Goal, Collidable {
 
         public Stage() : base() {
             this.Identifier = "Stage";
@@ -10,5 +10,8 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.Size = new Vector3(4, 2, 4);
         }
 
+        public WorldObject getObject() {
+            return this;
+        }
     }
 }
