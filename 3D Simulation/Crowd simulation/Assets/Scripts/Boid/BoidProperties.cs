@@ -5,7 +5,7 @@ using System.Text;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
-    class BoidProperties {
+    public class BoidProperties {
 
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
