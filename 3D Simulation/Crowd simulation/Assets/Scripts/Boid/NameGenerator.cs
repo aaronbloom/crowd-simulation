@@ -16,22 +16,22 @@ namespace Assets.Scripts.Boid {
         private static List<string> secondNames = new List<string>();
         private static List<string> generatedNames = new List<string>();
         
-        public static string GenerateFairlyUniqueName(bool male) {
-            string potentialName = GenerateName(male);
+        public static string GenerateFairlyUniqueName(Gender gender) {
+            string potentialName = GenerateName(gender);
             for (int i = 0; i < 3 && !generatedNames.Contains(potentialName); i++) {
-                potentialName = GenerateName(male);
-                if (!generatedNames.Contains(potentialName)) potentialName = GenerateName(male);
+                potentialName = GenerateName(gender);
+                if (!generatedNames.Contains(potentialName)) potentialName = GenerateName(gender);
             }
             return potentialName;
         }
 
-        public static string GenerateName(bool male) {
-            return GenerateFirstName(male) + GenerateSecondName();
+        public static string GenerateName(Gender gender) {
+            return GenerateFirstName(gender) + GenerateSecondName();
         }
 
-        public static string GenerateFirstName(bool male) {
+        public static string GenerateFirstName(Gender gender) {
             if(!listsLoaded) loadLists();
-            if (male) {
+            if (gender == Gender.MALE) {
                 return maleFirstNames[random.Next(0, maleFirstNames.Count)];
             } else {
                 return femaleFirstNames[random.Next(0, femaleFirstNames.Count)];
