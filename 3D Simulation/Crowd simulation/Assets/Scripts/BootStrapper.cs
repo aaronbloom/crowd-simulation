@@ -1,45 +1,70 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Assets.Scripts.Boid;
+using Assets.Scripts.Camera;
+using Assets.Scripts.Environment;
 using UnityEngine;
+using UnityEngineInternal;
+using Object = UnityEngine.Object;
 
-public class BootStrapper : MonoBehaviour {
+namespace Assets.Scripts {
+    public class BootStrapper : MonoBehaviour {
 
-    private static readonly string PrefabFilepath = "Prefabs/";
-    private static readonly string Camera = "Camera";
+        private static readonly string PrefabFilepath = "Prefabs/";
+        private static readonly string Camera = "Camera";
 
-    //System Fields
-    public static BoidManager BoidManager { get; private set; }
-    public static EnvironmentManager EnvironmentManager { get; private set; }
-    public static CameraController CameraController { get; private set; }
+        //System Fields
+        public static BoidManager BoidManager { get; private set; }
+        public static EnvironmentManager EnvironmentManager { get; private set; }
+        public static CameraController CameraController { get; private set; }
+        public static bool Pause { get; private set; }
 
-    void Awake() {
-        EnvironmentManager = new EnvironmentManager();
-    }
+        void Awake() {
+            Pause = false;
+            EnvironmentManager = new EnvironmentManager();
+        }
 
-    void Start() {
-        Initialise(Camera);
-    }
+        void Start() {
+            CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
+        }
 
-    public void StartSimulation(int numberOfBoids) {
-        EnvironmentManager.CurrentEnvironment.Build();
+        public void StartSimulation(int numberOfBoids) {
+            EnvironmentManager.CurrentEnvironment.Build();
 
-        BoidManager = new BoidManager(numberOfBoids);
-        StartCoroutine("BoidSpawningTimer");
-    }
+            BoidManager = new BoidManager(numberOfBoids);
+            StartCoroutine("BoidSpawningTimer");
+            StartCoroutine("BoidHeatMap");
+        }
 
-    public static Object Initialise(string prefabName) {
-        return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
-    }
+        public void StopSimulation() {
+            Pause = true;
+            BoidManager.DisplayHeatMap();
+            //Time.timeScale = 0;
+        }
 
-    public static Object Initialise(string prefabName, Vector3 position, Quaternion rotation) {
-        return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
-    }
+        public static Object Initialise(string prefabName) {
+            return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
+        }
 
-    private IEnumerator BoidSpawningTimer() {
-        while (true) {
-            yield return new WaitForSeconds(BoidManager.SpawningIntervalSeconds); //wait
-            BoidManager.AttemptBoidSpawn();
+        public static Object Initialise(string prefabName, Vector3 position, Quaternion rotation) {
+            return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
+        }
+
+        private IEnumerator BoidSpawningTimer() {
+            while (true) {
+                yield return new WaitForSeconds(BoidManager.SpawningIntervalSeconds); //wait
+                BoidManager.AttemptBoidSpawn();
+            }
+        }
+
+        private IEnumerator BoidHeatMap()
+        {
+            while (true)
+            {
+                BoidManager.CaptureAnalysisData();
+                yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
+            }
         }
     }
-
 }
 
