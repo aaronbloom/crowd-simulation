@@ -43,9 +43,13 @@ namespace Assets.Scripts.Environment {
             return position;
         }
 
-        public void Place(WorldObject worldObject, Vector3 position)
-        {
-            var location = PositionToGridPosition(position, worldObject.Size);
+        public void Place(WorldObject worldObject, Vector3 position) {
+            Vector3 location;
+            if (worldObject.GridPlaceable) {
+                location = PositionToGridPosition(position, worldObject.Size);
+            } else {
+                location = position;
+            }
             if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
             {
                 Debug.Log("Could not add new world object - Already occupied");

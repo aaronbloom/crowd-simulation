@@ -15,6 +15,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             }
         }
 
+        public bool GridPlaceable { get; protected set; }
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
         public Vector3 Size { get; protected set; }
