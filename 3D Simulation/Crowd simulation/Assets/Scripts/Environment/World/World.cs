@@ -9,7 +9,6 @@ namespace Assets.Scripts.Environment.World {
         public List<WorldObject> Objects { get; private set; }
         public List<Goal> Goals;
         public List<Entrance> Entrances;
-        public List<Exit> Exits;
         public List<Wall> Walls;
         public List<Toilet> Toilets;
         public List<Stage> Stages;
@@ -28,7 +27,6 @@ namespace Assets.Scripts.Environment.World {
         public void updateSublists() {
             Goals = ObjectSublist<Goal>();
             Entrances = ObjectSublist<Entrance>();
-            Exits = ObjectSublist<Exit>();
             Walls = ObjectSublist<Wall>();
             Toilets = ObjectSublist<Toilet>();
             Stages = ObjectSublist<Stage>();
