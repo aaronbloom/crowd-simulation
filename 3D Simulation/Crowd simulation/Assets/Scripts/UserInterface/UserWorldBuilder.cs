@@ -81,8 +81,16 @@ namespace Assets.Scripts.UserInterface {
 
         private WorldObject NewCursor(WorldObject worldObject) {
             var cursor = WorldObject.Initialise(worldObject, MousePositionToGroundPosition());
-            cursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
+            SetCursorValid(cursor);
             return cursor;
+        }
+
+        private void SetCursorValid(WorldObject cursor) {
+            cursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
+        }
+
+        private void SetCursorInvalid(WorldObject cursor) {
+            cursor.GameObject.GetComponent<Renderer>().material = invalidCursorMaterial;
         }
 
         private WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
