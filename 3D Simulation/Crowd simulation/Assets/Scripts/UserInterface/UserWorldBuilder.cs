@@ -1,6 +1,8 @@
 ﻿using System;
 using Assets.Scripts.Environment.World.Objects;
+using UnityEditor;
 using UnityEngine;
+using UnityEngineInternal;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
@@ -23,8 +25,21 @@ namespace Assets.Scripts.UserInterface {
         public void StartPlaceWorldObject() {
             if (currentItem != null) {
                 if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
-                    startPlacement = MousePositionToGroundPosition();
-                    startedPlacement = true;
+
+                    if (!primaryCursor.GridPlaceable) {
+                        Vector3 position;
+                        if (WallPlacement(out position)) {
+                            startPlacement = position;
+                            startedPlacement = true;
+                        } else {
+                            startPlacement = MousePositionToGroundPosition();
+                            startedPlacement = true;
+                        }
+                    } else {
+                        startPlacement = MousePositionToGroundPosition();
+                        startedPlacement = true;
+                    }
+
                 }
             }
         }
@@ -33,7 +48,20 @@ namespace Assets.Scripts.UserInterface {
             if (currentItem != null) {
                 if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
                     if (startedPlacement) {
-                        PlaceLine(startPlacement, MousePositionToGroundPosition(), currentItem);
+
+                        Vector3 endPlacement;
+                        if (!primaryCursor.GridPlaceable) {
+                            Vector3 position;
+                            if (WallPlacement(out position)) {
+                                endPlacement = position;
+                            } else {
+                                endPlacement = MousePositionToGroundPosition();
+                            }
+                        } else {
+                            endPlacement = MousePositionToGroundPosition();
+                        }
+
+                        PlaceLine(startPlacement, endPlacement, currentItem);
                     }
                 }
             }
@@ -63,13 +91,24 @@ namespace Assets.Scripts.UserInterface {
                     }
 
                     secondCursor.GameObject.transform.position 
-                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, primaryCursor.Size) + cursorHeight;
+                        = Environment.Environment.PositionToGridLocation(secondCursorPosition, primaryCursor.Size) + cursorHeight;
                 } else {
                     if (primaryCursor.GameObject != null) {
-                        primaryCursor.GameObject.transform.position
-                            = Environment.Environment.PositionToGridPosition(
-                                MousePositionToGroundPosition(),
-                                primaryCursor.Size) + cursorHeight;
+                        if (!primaryCursor.GridPlaceable) {
+                            Vector3 position;
+                            if (WallPlacement(out position)) {
+                                primaryCursor.GameObject.transform.position = position;
+                                SetCursorValid(primaryCursor);
+                            } else {
+                                primaryCursor.GameObject.transform.position = MousePositionToGroundPosition();
+                                SetCursorInvalid(primaryCursor);
+                            }
+                        } else {
+                            primaryCursor.GameObject.transform.position
+                                = Environment.Environment.PositionToGridLocation(
+                                    MousePositionToGroundPosition(),
+                                    primaryCursor.Size) + cursorHeight;
+                        }
                     }
                 }
             }
@@ -81,9 +120,87 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        private bool WallPlacement(out Vector3 position) {
+            RaycastHit hit;
+            GameObject gameObject;
+            if(Raycast(out hit, out gameObject)) {
+
+                if (gameObject.name.Contains(Wall.IdentifierStatic)) {
+
+                    Vector3 firstWallPosition = hit.transform.position;
+
+                    Vector3 normal = hit.normal;
+                    if (normal.y == 0) { //only wall sides, not the tops
+                        Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
+                        //perpendicular vector to normal (right vector from point of view of normal)
+
+                        float requiredWidth = primaryCursor.Size.x;
+
+                        Vector3 leftMostWall = firstWallPosition;
+                        Vector3 rightMostWall = firstWallPosition;
+
+                        int count = 1;
+                        Vector3 scanPosition = firstWallPosition;
+                        for (int i = 0; i < requiredWidth - 1; i++) {
+                            if (count >= requiredWidth) break;
+                            scanPosition += crossRight;
+                            if (
+                                BootStrapper.EnvironmentManager.CurrentEnvironment.World.AlreadyOccupied(
+                                    scanPosition)) {
+                                count++;
+                                rightMostWall = scanPosition;
+                            }
+                            else {
+                                scanPosition = firstWallPosition;
+                                for (int j = 0; j < requiredWidth - 1; j++) {
+                                    if (count >= requiredWidth) break;
+                                    scanPosition -= crossRight;
+                                    if (
+                                        BootStrapper.EnvironmentManager.CurrentEnvironment.World
+                                            .AlreadyOccupied(scanPosition)) {
+                                        count++;
+                                        leftMostWall = scanPosition;
+                                    }
+                                    else {
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        if (count >= requiredWidth) {
+
+                            Vector3 centerWall = (leftMostWall + rightMostWall)/2;
+                            Vector3 requiredDepth = normal*(primaryCursor.Size.z/2);
+                            Vector3 wallOffset = normal*(Wall.SizeStatic.z/2);
+
+                            position = centerWall + requiredDepth + wallOffset;
+                            return true;
+                        }
+                    }
+                }
+            }
+            position = Vector3.zero;
+            return false;
+        }  
+
+        private static bool Raycast(out RaycastHit hit, out GameObject gameObject) {
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit)) {
+                gameObject = hit.transform.gameObject;
+                return true;
+            }
+            gameObject = null;
+            return false;
+        }
+
         private WorldObject NewCursor(WorldObject worldObject) {
             var cursor = WorldObject.Initialise(worldObject, MousePositionToGroundPosition());
             SetCursorValid(cursor);
+            Collider collider = cursor.GameObject.GetComponent<Collider>();
+            if(collider != null) collider.enabled = false;
             return cursor;
         }
 
@@ -93,6 +210,10 @@ namespace Assets.Scripts.UserInterface {
 
         private void SetCursorInvalid(WorldObject cursor) {
             cursor.GameObject.GetComponent<Renderer>().material = invalidCursorMaterial;
+        }
+
+        private void Place(WorldObject worldObject, Vector3 position) {
+            BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
         }
 
         private WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
@@ -112,7 +233,7 @@ namespace Assets.Scripts.UserInterface {
             for (int i = 0; i <= largerDiff; i++) {
                 var currentWorldObject = DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
-                BootStrapper.EnvironmentManager.CurrentEnvironment.Place(currentWorldObject, position);
+                Place(currentWorldObject, position);
                 position += step;
             }
             return createdWorldObjects;
