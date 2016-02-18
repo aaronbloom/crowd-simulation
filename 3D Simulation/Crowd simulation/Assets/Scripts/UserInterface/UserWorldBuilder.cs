@@ -9,6 +9,7 @@ namespace Assets.Scripts.UserInterface {
         private WorldObject primaryCursor;
         private WorldObject secondCursor;
         private readonly Material cursorMaterial;
+        private readonly Material invalidCursorMaterial;
         private string currentItem;
         private Vector3 startPlacement;
         private bool startedPlacement = false;
@@ -16,6 +17,7 @@ namespace Assets.Scripts.UserInterface {
 
         public UserWorldBuilder() {
             cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
+            invalidCursorMaterial = Resources.Load("Materials/InvalidCursor", typeof (Material)) as Material;
         }
 
         public void StartPlaceWorldObject() {
