@@ -68,7 +68,6 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             ShowMenu(environmentBuilderMenu);
             userWorldBuilder = new UserWorldBuilder();
-            BootStrapper.CameraController.LookAtEnvironmentCenter();
         }
 
         public void DemographicSetup() {
@@ -92,6 +91,10 @@ namespace Assets.Scripts.UserInterface
             HideMenu(simulationMenu);
             ShowMenu(analysisMenu);
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
+        }
+
+        public void BoidsEyeView() {
+            GameObject.Find("CameraManager").GetComponent<CameraManager>().toggleFirstPersonCamera();
         }
 
         public void GenerateHeatMap() {

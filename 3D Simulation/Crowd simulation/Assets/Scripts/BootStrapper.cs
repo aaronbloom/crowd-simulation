@@ -26,6 +26,7 @@ namespace Assets.Scripts {
 
         void Start() {
             CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
+            GameObject.Find("CameraManager").GetComponent<CameraManager>().activateEnvironmentCamera();
         }
 
         public void StartSimulation(int numberOfBoids) {
