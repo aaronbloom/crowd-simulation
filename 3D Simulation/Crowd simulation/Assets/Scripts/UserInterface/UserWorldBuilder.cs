@@ -24,7 +24,7 @@ namespace Assets.Scripts.UserInterface {
 
         public void StartPlaceWorldObject() {
             if (currentItem != null) {
-                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
+                if (NotOverUI()) {
 
                     if (!primaryCursor.GridPlaceable) {
                         Vector3 position;
@@ -46,7 +46,7 @@ namespace Assets.Scripts.UserInterface {
 
         public void EndPlaceWorldObject() {
             if (currentItem != null) {
-                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
+                if (NotOverUI()) {
                     if (startedPlacement) {
 
                         Vector3 endPlacement;
@@ -54,14 +54,12 @@ namespace Assets.Scripts.UserInterface {
                             Vector3 position;
                             if (WallPlacement(out position)) {
                                 endPlacement = position;
-                            } else {
-                                endPlacement = MousePositionToGroundPosition();
+                                PlaceLine(startPlacement, endPlacement, currentItem);
                             }
                         } else {
                             endPlacement = MousePositionToGroundPosition();
+                            PlaceLine(startPlacement, endPlacement, currentItem);
                         }
-
-                        PlaceLine(startPlacement, endPlacement, currentItem);
                     }
                 }
             }
@@ -78,35 +76,25 @@ namespace Assets.Scripts.UserInterface {
             if (primaryCursor != null) {
                 if (secondCursor != null) { Object.Destroy(secondCursor.GameObject); }
                 if (startedPlacement) {
-                    secondCursor = NewCursor(DetermineObject(currentItem));
-                    Vector3 mousePosition = MousePositionToGroundPosition();
-
-                    Vector3 secondCursorPosition;
-                    var xDiff = startPlacement.x - mousePosition.x;
-                    var zDiff = startPlacement.z - mousePosition.z;
-                    if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
-                        secondCursorPosition = startPlacement + new Vector3(-xDiff, 0, 0);
-                    } else {
-                        secondCursorPosition = startPlacement + new Vector3(0, 0, -zDiff);
-                    }
-
-                    secondCursor.GameObject.transform.position 
-                        = Environment.Environment.PositionToGridLocation(secondCursorPosition, primaryCursor.Size) + cursorHeight;
+                    UpdateSecondaryCursorPosition();
                 } else {
                     if (primaryCursor.GameObject != null) {
-                        if (!primaryCursor.GridPlaceable) {
+                        if (!primaryCursor.GridPlaceable) { // wall placement
                             Vector3 position;
                             if (WallPlacement(out position)) {
-                                primaryCursor.GameObject.transform.position = position;
+                                primaryCursor.GameObject.transform.position = 
+                                    Environment.Environment.PositionToLocation(position,
+                                    primaryCursor.Size) + cursorHeight;
                                 SetCursorValid(primaryCursor);
                             } else {
-                                primaryCursor.GameObject.transform.position = MousePositionToGroundPosition();
+                                primaryCursor.GameObject.transform.position =
+                                    Environment.Environment.PositionToLocation(MousePositionToGroundPosition(),
+                                        primaryCursor.Size) + cursorHeight;
                                 SetCursorInvalid(primaryCursor);
                             }
-                        } else {
-                            primaryCursor.GameObject.transform.position
-                                = Environment.Environment.PositionToGridLocation(
-                                    MousePositionToGroundPosition(),
+                        } else { // floor placement
+                            primaryCursor.GameObject.transform.position = 
+                                Environment.Environment.PositionToGridLocation(MousePositionToGroundPosition(),
                                     primaryCursor.Size) + cursorHeight;
                         }
                     }
@@ -120,7 +108,29 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
-        private bool WallPlacement(out Vector3 position) {
+        private bool NotOverUI() { // is mouse pointer not over a menu ui
+            return !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1);
+        }
+
+        private void UpdateSecondaryCursorPosition() { //secondary cursor for drag to place
+            secondCursor = NewCursor(DetermineObject(currentItem));
+            Vector3 mousePosition = MousePositionToGroundPosition();
+
+            Vector3 secondCursorPosition;
+            var xDiff = startPlacement.x - mousePosition.x;
+            var zDiff = startPlacement.z - mousePosition.z;
+            if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
+                secondCursorPosition = startPlacement + new Vector3(-xDiff, 0, 0);
+            } else {
+                secondCursorPosition = startPlacement + new Vector3(0, 0, -zDiff);
+            }
+
+            secondCursor.GameObject.transform.position =
+                Environment.Environment.PositionToLocation(secondCursorPosition,
+                primaryCursor.Size) + cursorHeight;
+        }
+
+        private bool WallPlacement(out Vector3 position) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;
             if(Raycast(out hit, out gameObject)) {
@@ -131,14 +141,15 @@ namespace Assets.Scripts.UserInterface {
 
                     Vector3 normal = hit.normal;
                     if (normal.y == 0) { //only wall sides, not the tops
-                        Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
                         //perpendicular vector to normal (right vector from point of view of normal)
+                        Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
 
                         float requiredWidth = primaryCursor.Size.x;
 
                         Vector3 leftMostWall = firstWallPosition;
                         Vector3 rightMostWall = firstWallPosition;
 
+                        //Scans and checks existance of walls left and right of the selected wall
                         int count = 1;
                         Vector3 scanPosition = firstWallPosition;
                         for (int i = 0; i < requiredWidth - 1; i++) {
@@ -169,6 +180,7 @@ namespace Assets.Scripts.UserInterface {
                             }
                         }
 
+                        //if walls are sufficiently wide, then calculate position of wall placed world object
                         if (count >= requiredWidth) {
 
                             Vector3 centerWall = (leftMostWall + rightMostWall)/2;
