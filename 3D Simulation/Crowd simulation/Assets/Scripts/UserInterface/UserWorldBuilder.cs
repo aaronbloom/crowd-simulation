@@ -110,15 +110,15 @@ namespace Assets.Scripts.UserInterface {
 
         private static WorldObject DetermineObject(string objectName) {
             switch (objectName) {
-                case "Wall":
+                case Wall.IdentifierStatic:
                     return new Wall();
-                case "Entrance":
+                case Entrance.IdentifierStatic:
                     return new Entrance();
-                case "Toilet":
+                case Toilet.IdentifierStatic:
                     return new Toilet();
-                case "Stage":
+                case Stage.IdentifierStatic:
                     return new Stage();
-                case "Bar":
+                case Bar.IdentifierStatic:
                     return new Bar();
             }
             return null;
