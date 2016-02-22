@@ -1,62 +1,58 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using UnityStandardAssets.Characters.FirstPerson;
 
-public class CameraManager : MonoBehaviour {
+namespace Assets.Scripts.Camera {
+    public class CameraManager {
 
-    private Camera[] CCTV;
+        private static readonly string EnvironmentCameraName = "EnvironmentCamera";
+        private static readonly string FirstPersonCameraName = "FirstPersonCharacterParent";
 
-    private static GameObject FirstPersonCamera;
-    private static GameObject EnvironmentCamera;
+        private UnityEngine.Camera[] CCTV;
 
-    private Boolean isFirstPerson = false;
+        private static GameObject FirstPersonCamera;
+        private static GameObject EnvironmentCamera;
 
+        private Boolean isFirstPerson = false;
 
-    void Awake() {
-        FirstPersonCamera = GameObject.Find("FirstPersonCharacterParent");
-        EnvironmentCamera = GameObject.Find("Camera(Clone)");
-        CCTV = new Camera[0];
-    }
-
-	void Start () {
-	    //activateEnvironmentCamera();
-	}
-
-	void Update () {
-	}
-
-    public void activateFirstPersonCamera() {
-        GameObject.Find("Camera(Clone)").GetComponent<Camera>().enabled = false;
-        FirstPersonCamera.SetActive(true);
-    }
-
-    public void activateEnvironmentCamera() {
-        FirstPersonCamera.SetActive(false);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        GameObject.Find("Camera(Clone)").GetComponent<Camera>().enabled = true;
-    }
-
-    public void toggleFirstPersonCamera() {
-        if (isFirstPerson) {
-            activateEnvironmentCamera();
-            isFirstPerson = false;
-        } else {
-            activateFirstPersonCamera();
-            isFirstPerson = true;
+        public CameraManager () {
+            FirstPersonCamera = ((GameObject)BootStrapper.Initialise(FirstPersonCameraName));
+            EnvironmentCamera = ((GameObject)BootStrapper.Initialise(EnvironmentCameraName));
+            CCTV = new UnityEngine.Camera[0];
         }
-    }
 
-    public void activateCCTV(int index) {
-        disableAllCameras();
-        CCTV[index].enabled = true;
-    }
+        public void activateFirstPersonCamera() {
+            FirstPersonCamera.transform.position = Vector3.zero;
+            EnvironmentCamera.SetActive(false);
+            FirstPersonCamera.SetActive(true);
+        }
+
+        public void activateEnvironmentCamera() {
+            FirstPersonCamera.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            EnvironmentCamera.SetActive(true);
+        }
+
+        public void toggleFirstPersonCamera() {
+            if (isFirstPerson) {
+                activateEnvironmentCamera();
+                isFirstPerson = false;
+            } else {
+                activateFirstPersonCamera();
+                isFirstPerson = true;
+            }
+        }
+
+        public void activateCCTV(int index) {
+            disableAllCameras();
+            CCTV[index].enabled = true;
+        }
 
 
-    private void disableAllCameras() {
-        foreach (Camera camera in CCTV) {
-            camera.enabled = false;
+        private void disableAllCameras() {
+            foreach (UnityEngine.Camera camera in CCTV) {
+                camera.enabled = false;
+            }
         }
     }
 }

@@ -9,12 +9,11 @@ namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
 
         private static readonly string PrefabFilepath = "Prefabs/";
-        private static readonly string Camera = "Camera";
 
         //System Fields
         public static BoidManager BoidManager { get; private set; }
         public static EnvironmentManager EnvironmentManager { get; private set; }
-        public static CameraController CameraController { get; private set; }
+        public static CameraManager CameraManager { get; private set; }
         public static bool Pause { get; private set; }
         private const string CaptureHeatMap = "BoidHeatMap";
         private const string BoidSpawning = "BoidSpawningTimer";
@@ -22,11 +21,11 @@ namespace Assets.Scripts {
         void Awake() {
             Pause = false;
             EnvironmentManager = new EnvironmentManager();
+            CameraManager = new CameraManager();
         }
 
-        void Start() {
-            CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
-            GameObject.Find("CameraManager").GetComponent<CameraManager>().activateEnvironmentCamera();
+        void Start() {        
+            CameraManager.activateEnvironmentCamera();
         }
 
         public void StartSimulation(int numberOfBoids) {

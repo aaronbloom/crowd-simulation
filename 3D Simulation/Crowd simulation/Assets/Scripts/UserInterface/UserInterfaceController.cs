@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
 using Assets.Scripts.Boid;
+using Assets.Scripts.Camera;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface
@@ -94,7 +95,7 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void BoidsEyeView() {
-            GameObject.Find("CameraManager").GetComponent<CameraManager>().toggleFirstPersonCamera();
+            BootStrapper.CameraManager.toggleFirstPersonCamera();
         }
 
         public void GenerateHeatMap() {
