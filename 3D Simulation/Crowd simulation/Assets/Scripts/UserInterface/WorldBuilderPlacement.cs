@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
@@ -100,6 +101,22 @@ namespace Assets.Scripts.UserInterface {
                 position += step;
             }
             return createdWorldObjects;
+        }
+
+        public void PlacePerimeterWall(Vector3 origin, Vector3 bounds) {
+            float spacing = Wall.SizeStatic.x / 2;
+            for (var x = origin.x; x < bounds.x + origin.x; x+= spacing) {
+                Place(WorldObject.DetermineObject(Wall.IdentifierStatic), new Vector3(x, 0, 0));
+            }
+            for (var x = origin.x; x < bounds.x + origin.x; x += spacing) {
+                Place(WorldObject.DetermineObject(Wall.IdentifierStatic), new Vector3(x, 0, bounds.z + origin.z));
+            }
+            for (var z = origin.z; z < bounds.z + origin.z; z += spacing) {
+                Place(WorldObject.DetermineObject(Wall.IdentifierStatic), new Vector3(0, 0, z));
+            }
+            for (var z = origin.z; z < bounds.z + origin.z; z += spacing) {
+                Place(WorldObject.DetermineObject(Wall.IdentifierStatic), new Vector3(bounds.x + origin.x, 0, z));
+            }
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using Assets.Scripts.Environment.World.Objects;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Networking.Match;
-using UnityEngineInternal;
-using Object = UnityEngine.Object;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
