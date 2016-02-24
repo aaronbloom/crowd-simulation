@@ -63,7 +63,6 @@ namespace Assets.Scripts.Environment {
             }
             if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
             {
-                //Debug.Log("Could not add new world object - Already occupied");
                 worldObject.Destroy();
             }
         }
