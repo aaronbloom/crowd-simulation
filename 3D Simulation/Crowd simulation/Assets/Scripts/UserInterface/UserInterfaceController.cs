@@ -72,7 +72,7 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void DemographicSetup() {
-            userWorldBuilder.DestroyCursors();
+            userWorldBuilder.Destroy();
             userWorldBuilder = null;
             HideMenu(environmentBuilderMenu);
             ShowMenu(demographicMenu);

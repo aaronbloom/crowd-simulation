@@ -48,5 +48,21 @@ namespace Assets.Scripts.Environment.World.Objects {
                 );
             return worldObject;
         }
+
+        public static WorldObject DetermineObject(string objectName) {
+            switch (objectName) {
+                case Wall.IdentifierStatic:
+                    return new Wall();
+                case Entrance.IdentifierStatic:
+                    return new Entrance();
+                case Toilet.IdentifierStatic:
+                    return new Toilet();
+                case Stage.IdentifierStatic:
+                    return new Stage();
+                case Bar.IdentifierStatic:
+                    return new Bar();
+            }
+            return null;
+        }
     }
 }
