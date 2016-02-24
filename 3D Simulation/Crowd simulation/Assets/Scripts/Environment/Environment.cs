@@ -61,10 +61,7 @@ namespace Assets.Scripts.Environment {
             } else {
                 location = PositionToLocation(position, worldObject.Size);
             }
-            if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
-            {
-                worldObject.Destroy();
-            }
+            World.AddObject(WorldObject.Initialise(worldObject, location));
         }
 
         public static Vector3 PositionToLocation(Vector3 position, Vector3 objectSize) {

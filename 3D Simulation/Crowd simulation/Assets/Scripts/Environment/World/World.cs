@@ -39,6 +39,8 @@ namespace Assets.Scripts.Environment.World {
             if (!alreadyOccupied) {
                 Objects.Add(worldObject);
                 updateSublists();
+            } else {
+                Object.Destroy(worldObject.GameObject);
             }
             return !alreadyOccupied;
         }
