@@ -27,8 +27,22 @@ namespace Assets.Scripts.Environment.World.Objects {
             InitialRotationOffSet = Quaternion.identity;
         }
 
-        //basic withinbounds checker, override for complex world objects
-        public bool WithinBounds(Vector3 position) {
+        //basic withinbounds checker
+        public bool WithinBounds(WorldObject worldObject) {
+            Vector3 position = GameObject.transform.position;
+
+            Vector3 otherPosition = worldObject.GameObject.transform.position;
+            Vector3 otherSize = worldObject.Size;
+
+            if (Mathf.Abs(position.x - otherPosition.x) < (Size.x / 2 + otherSize.x / 2) 
+                && Mathf.Abs(position.z - otherPosition.z) < (Size.z / 2 + otherSize.z / 2)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool SamePosition(Vector3 position) {
             Vector3 gameObjectPosition = GameObject.transform.position;
             gameObjectPosition.y = 0;
             position.y = 0;
