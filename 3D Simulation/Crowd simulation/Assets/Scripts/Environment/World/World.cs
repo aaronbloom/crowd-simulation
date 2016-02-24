@@ -35,10 +35,12 @@ namespace Assets.Scripts.Environment.World {
         }
 
         public bool AddObject(WorldObject worldObject) {
-            bool alreadyOccupied = AlreadyOccupied(worldObject.GameObject.transform.position);
+            bool alreadyOccupied = AlreadyOccupied(worldObject);
             if (!alreadyOccupied) {
                 Objects.Add(worldObject);
                 updateSublists();
+            } else {
+                Object.Destroy(worldObject.GameObject);
             }
             return !alreadyOccupied;
         }
@@ -53,7 +55,17 @@ namespace Assets.Scripts.Environment.World {
 
         public bool AlreadyOccupied(Vector3 location) {
             foreach (WorldObject worldObject in Objects) {
-                if (worldObject.WithinBounds(location)) {
+                if (worldObject.SamePosition(location)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public bool AlreadyOccupied(WorldObject worldObject) {
+            foreach (WorldObject otherWorldObject in Objects) {
+                if (otherWorldObject.WithinBounds(worldObject)) {
                     return true;
                 }
             }

@@ -25,7 +25,6 @@ namespace Assets.Scripts.Analysis {
         }
 
         public void Update() {
-            Debug.Log("Update heat map");
             foreach (var boid in boids) {
                 this.addToMap(boid.transform.position);
             }

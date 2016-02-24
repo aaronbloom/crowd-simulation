@@ -27,8 +27,24 @@ namespace Assets.Scripts.Environment.World.Objects {
             InitialRotationOffSet = Quaternion.identity;
         }
 
-        //basic withinbounds checker, override for complex world objects
-        public bool WithinBounds(Vector3 position) {
+        //basic withinbounds checker, simple AABB collision detection
+        public bool WithinBounds(WorldObject worldObject) {
+            Vector3 position = GameObject.transform.position;
+            Vector3 halfSize = this.Size / 2;
+
+            Vector3 otherPosition = worldObject.GameObject.transform.position;
+            Vector3 otherHalfSize = worldObject.Size;
+
+            var xDifference = MathHelper.Difference(position.x, otherPosition.x);
+            var zDifference = MathHelper.Difference(position.z, otherPosition.z);
+
+            var halfWidthSum = halfSize.x + otherHalfSize.x;
+            var halfLengthSum = halfSize.z + otherHalfSize.z;
+
+            return xDifference < halfWidthSum && zDifference < halfLengthSum; //AABB
+        }
+
+        public bool SamePosition(Vector3 position) {
             Vector3 gameObjectPosition = GameObject.transform.position;
             gameObjectPosition.y = 0;
             position.y = 0;
@@ -47,6 +63,22 @@ namespace Assets.Scripts.Environment.World.Objects {
                 worldObject.InitialRotationOffSet
                 );
             return worldObject;
+        }
+
+        public static WorldObject DetermineObject(string objectName) {
+            switch (objectName) {
+                case Wall.IdentifierStatic:
+                    return new Wall();
+                case Entrance.IdentifierStatic:
+                    return new Entrance();
+                case Toilet.IdentifierStatic:
+                    return new Toilet();
+                case Stage.IdentifierStatic:
+                    return new Stage();
+                case Bar.IdentifierStatic:
+                    return new Bar();
+            }
+            return null;
         }
     }
 }

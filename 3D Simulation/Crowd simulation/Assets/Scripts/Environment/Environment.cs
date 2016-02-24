@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Environment.Navigation;
 using Assets.Scripts.Environment.World;
 using Assets.Scripts.Environment.World.Objects;
+using Assets.Scripts.UserInterface;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment {
@@ -31,6 +32,10 @@ namespace Assets.Scripts.Environment {
             this.World = new World.World();
         }
 
+        public void Setup() {
+            new WorldBuilderPlacement().PlacePerimeterWall(Origin, Bounds);
+        }
+
         public void Build() {
             constructNavMesh();
         }
@@ -56,11 +61,7 @@ namespace Assets.Scripts.Environment {
             } else {
                 location = PositionToLocation(position, worldObject.Size);
             }
-            if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
-            {
-                Debug.Log("Could not add new world object - Already occupied");
-                worldObject.Destroy();
-            }
+            World.AddObject(WorldObject.Initialise(worldObject, location));
         }
 
         public static Vector3 PositionToLocation(Vector3 position, Vector3 objectSize) {
