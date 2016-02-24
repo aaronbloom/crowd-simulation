@@ -16,19 +16,19 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public void StartPlaceWorldObject() {
-            cursor.StartPlaceWorldObject();
+            cursor.StartPlaceWorldObject(MousePositionToGroundPosition());
         }
 
         public void EndPlaceWorldObject() {
-            cursor.EndPlaceWorldObject();
+            cursor.EndPlaceWorldObject(MousePositionToGroundPosition());
         }
 
         public void SetCurrentPlacementObject(string objectName) {
-            cursor.SetPlacementObject(objectName);
+            cursor.SetPlacementObject(objectName, MousePositionToGroundPosition());
         }
 
         public void UpdateCursorPosition() {
-            cursor.Update();
+            cursor.Update(MousePositionToGroundPosition());
         }
 
         public static bool NotOverUI() { // is mouse pointer not over a menu ui
@@ -46,7 +46,7 @@ namespace Assets.Scripts.UserInterface {
             return false;
         }
 
-        public static Vector3 MousePositionToGroundPosition() {
+        private static Vector3 MousePositionToGroundPosition() {
             Plane plane = new Plane(Vector3.up, Vector3.zero); // floor
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 

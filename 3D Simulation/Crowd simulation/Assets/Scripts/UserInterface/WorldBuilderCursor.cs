@@ -23,18 +23,18 @@ namespace Assets.Scripts.UserInterface {
             invalidCursorMaterial = Resources.Load("Materials/InvalidCursor", typeof(Material)) as Material;
         }
 
-        public void Update() {
+        public void Update(Vector3 groundPosition) {
             if (primaryCursor != null) {
                 if (secondCursor != null) { Object.Destroy(secondCursor.GameObject); }
                 if (startedPlacement) {
-                    UpdateSecondaryCursor();
+                    UpdateSecondaryCursor(groundPosition);
                 } else {
-                    UpdatePrimaryCursor();
+                    UpdatePrimaryCursor(groundPosition);
                 }
             }
         }
 
-        public void UpdatePrimaryCursor() {
+        public void UpdatePrimaryCursor(Vector3 groundPosition) {
             if (primaryCursor.GameObject != null) {
                 if (!primaryCursor.GridPlaceable) { // wall placement
                     Vector3 position;
@@ -45,21 +45,19 @@ namespace Assets.Scripts.UserInterface {
                         SetCursorValid(primaryCursor);
                     } else {
                         primaryCursor.GameObject.transform.position =
-                            Environment.Environment.PositionToLocation(UserWorldBuilder.MousePositionToGroundPosition(),
-                                primaryCursor.Size) + cursorHeight;
+                            Environment.Environment.PositionToLocation(groundPosition, primaryCursor.Size) + cursorHeight;
                         SetCursorInvalid(primaryCursor);
                     }
                 } else { // floor placement
                     primaryCursor.GameObject.transform.position =
-                        Environment.Environment.PositionToGridLocation(UserWorldBuilder.MousePositionToGroundPosition(),
-                            primaryCursor.Size) + cursorHeight;
+                        Environment.Environment.PositionToGridLocation(groundPosition, primaryCursor.Size) + cursorHeight;
                 }
             }
         }
 
-        public void UpdateSecondaryCursor() { //secondary cursor for drag to place
-            secondCursor = NewCursor(WorldObject.DetermineObject(currentItem));
-            Vector3 mousePosition = UserWorldBuilder.MousePositionToGroundPosition();
+        public void UpdateSecondaryCursor(Vector3 groundPosition) { //secondary cursor for drag to place
+            secondCursor = NewCursor(WorldObject.DetermineObject(currentItem), groundPosition);
+            Vector3 mousePosition = groundPosition;
 
             Vector3 secondCursorPosition;
             var xDiff = startPlacement.x - mousePosition.x;
@@ -76,13 +74,13 @@ namespace Assets.Scripts.UserInterface {
                     primaryCursor.Size) + cursorHeight;
         }
 
-        public void SetPlacementObject(string objectName) {
+        public void SetPlacementObject(string objectName, Vector3 groundPosition) {
             currentItem = objectName;
             DestroyCursors();
-            primaryCursor = NewCursor(WorldObject.DetermineObject(objectName));
+            primaryCursor = NewCursor(WorldObject.DetermineObject(objectName), groundPosition);
         }
 
-        public void StartPlaceWorldObject() {
+        public void StartPlaceWorldObject(Vector3 groundPosition) {
             if (currentItem != null) {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (!primaryCursor.GridPlaceable) {
@@ -91,11 +89,11 @@ namespace Assets.Scripts.UserInterface {
                             startPlacement = position;
                             startedPlacement = true;
                         } else {
-                            startPlacement = UserWorldBuilder.MousePositionToGroundPosition();
+                            startPlacement = groundPosition;
                             startedPlacement = true;
                         }
                     } else {
-                        startPlacement = UserWorldBuilder.MousePositionToGroundPosition();
+                        startPlacement = groundPosition;
                         startedPlacement = true;
 
                     }
@@ -103,7 +101,7 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
-        public void EndPlaceWorldObject() {
+        public void EndPlaceWorldObject(Vector3 groundPosition) {
             if (currentItem != null) {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (startedPlacement) {
@@ -116,7 +114,7 @@ namespace Assets.Scripts.UserInterface {
                                 worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentItem);
                             }
                         } else {
-                            endPlacement = UserWorldBuilder.MousePositionToGroundPosition();
+                            endPlacement = groundPosition;
                             worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentItem);
                         }
                     }
@@ -139,8 +137,8 @@ namespace Assets.Scripts.UserInterface {
             cursor.GameObject.GetComponent<Renderer>().material = invalidCursorMaterial;
         }
 
-        private WorldObject NewCursor(WorldObject worldObject) {
-            var cursor = WorldObject.Initialise(worldObject, UserWorldBuilder.MousePositionToGroundPosition());
+        private WorldObject NewCursor(WorldObject worldObject, Vector3 groundPosition) {
+            var cursor = WorldObject.Initialise(worldObject, groundPosition);
             SetCursorValid(cursor);
             Collider collider = cursor.GameObject.GetComponent<Collider>();
             if (collider != null) collider.enabled = false;
