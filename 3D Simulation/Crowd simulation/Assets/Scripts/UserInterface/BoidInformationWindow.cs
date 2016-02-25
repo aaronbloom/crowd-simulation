@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
     class BoidInformationWindow {
@@ -12,6 +14,8 @@ namespace Assets.Scripts.UserInterface {
         private readonly Slider ThirstSlider;
         private readonly Slider ToiletSlider;
         private readonly Slider DanceSlider;
+
+        private String currentNeed;
 
         private Boid.Boid currentBoid;
         private GameObject selectionGameObject;
@@ -66,13 +70,16 @@ namespace Assets.Scripts.UserInterface {
         }
 
         private void UpdateSelectionGameObject() {
-            if (selectionGameObject == null) {
-                selectionGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            if (selectionGameObject == null || currentNeed != currentBoid.CurrentNeed) {
+                Object.Destroy(selectionGameObject);
+                selectionGameObject = BootStrapper.Initialise(currentBoid.CurrentNeed) as GameObject;
+                currentNeed = currentBoid.CurrentNeed;
             }
             Vector3 currentBoidPosition = currentBoid.transform.position;
             selectionGameObject.transform.position = currentBoidPosition + new Vector3(0, 4f, 0);
-            selectionGameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            selectionGameObject.transform.Rotate(Vector3.left + Vector3.down, 100 * Time.deltaTime);
+            selectionGameObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            selectionGameObject.transform.Rotate(Vector3.down, 100 * Time.deltaTime);
         }
     }
 }
+w
