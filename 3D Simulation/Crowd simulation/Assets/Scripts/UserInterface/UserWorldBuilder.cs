@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Environment;
+using Assets.Scripts.Environment.World.Objects;
+using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
@@ -19,6 +22,22 @@ namespace Assets.Scripts.UserInterface {
 
         public void SetCurrentPlacementObject(string objectName) {
             cursor.SetPlacementObject(objectName, MousePositionToGroundPosition());
+        }
+
+        public void DeleteWorldObject() {
+            if (NotOverUI()) {
+                RaycastHit hit;
+                GameObject gameObject;
+                if(Raycast(out hit,out gameObject)) {
+                    List<WorldObject> worldObjects = EnvironmentManager.Shared().CurrentEnvironment.World.Objects;
+                    foreach (WorldObject worldObject in worldObjects) {
+                        if (worldObject.GameObject.Equals(gameObject)) {
+                            EnvironmentManager.Shared().CurrentEnvironment.World.RemoveObject(worldObject);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public void UpdateCursorPosition() {
