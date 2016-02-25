@@ -1,127 +1,43 @@
-﻿using System;
-using Assets.Scripts.Environment.World.Objects;
-using UnityEngine;
-using Object = UnityEngine.Object;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
 
-        private WorldObject primaryCursor;
-        private WorldObject secondCursor;
-        private readonly Material cursorMaterial;
-        private string currentItem;
-        private Vector3 startPlacement;
-        private bool startedPlacement = false;
-        private readonly Vector3 cursorHeight = new Vector3(0, 0.2f, 0);
+        private WorldBuilderCursor cursor;
 
         public UserWorldBuilder() {
-            cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
+            cursor = new WorldBuilderCursor();
         }
 
         public void StartPlaceWorldObject() {
-            if (currentItem != null) {
-                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
-                    startPlacement = MousePositionToGroundPosition();
-                    startedPlacement = true;
-                }
-            }
+            cursor.StartPlaceWorldObject(MousePositionToGroundPosition());
         }
 
         public void EndPlaceWorldObject() {
-            if (currentItem != null) {
-                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) { //is mouse pointer not over a menu ui
-                    if (startedPlacement) {
-                        PlaceLine(startPlacement, MousePositionToGroundPosition(), currentItem);
-                    }
-                }
-            }
-            startedPlacement = false;
+            cursor.EndPlaceWorldObject(MousePositionToGroundPosition());
         }
 
         public void SetCurrentPlacementObject(string objectName) {
-            currentItem = objectName;
-            DestroyCursors();
-            primaryCursor = NewCursor(DetermineObject(currentItem));
+            cursor.SetPlacementObject(objectName, MousePositionToGroundPosition());
         }
 
         public void UpdateCursorPosition() {
-            if (primaryCursor != null) {
-                if (secondCursor != null) { Object.Destroy(secondCursor.GameObject); }
-                if (startedPlacement) {
-                    secondCursor = NewCursor(DetermineObject(currentItem));
-                    Vector3 mousePosition = MousePositionToGroundPosition();
-
-                    Vector3 secondCursorPosition;
-                    var xDiff = startPlacement.x - mousePosition.x;
-                    var zDiff = startPlacement.z - mousePosition.z;
-                    if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
-                        secondCursorPosition = startPlacement + new Vector3(-xDiff, 0, 0);
-                    } else {
-                        secondCursorPosition = startPlacement + new Vector3(0, 0, -zDiff);
-                    }
-
-                    secondCursor.GameObject.transform.position 
-                        = Environment.Environment.PositionToGridPosition(secondCursorPosition, primaryCursor.Size) + cursorHeight;
-                } else {
-                    if (primaryCursor.GameObject != null) {
-                        primaryCursor.GameObject.transform.position
-                            = Environment.Environment.PositionToGridPosition(
-                                MousePositionToGroundPosition(),
-                                primaryCursor.Size) + cursorHeight;
-                    }
-                }
-            }
+            cursor.Update(MousePositionToGroundPosition());
         }
 
-        public void DestroyCursors() {
-            if (primaryCursor != null) {
-                    Object.Destroy(primaryCursor.GameObject);
-            }
+        public static bool NotOverUI() { // is mouse pointer not over a menu ui
+            return !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1);
         }
 
-        private WorldObject NewCursor(WorldObject worldObject) {
-            var cursor = WorldObject.Initialise(worldObject, MousePositionToGroundPosition());
-            cursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
-            return cursor;
-        }
+        public static bool Raycast(out RaycastHit hit, out GameObject gameObject) {
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        private WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
-            Vector3 step;
-            var xDiff = start.x - end.x;
-            var zDiff = start.z - end.z;
-            int largerDiff;
-            if (Mathf.Abs(xDiff) > Mathf.Abs(zDiff)) {
-                step = new Vector3(-Mathf.Sign(xDiff), 0, 0);
-                largerDiff = (int) Mathf.Abs(xDiff);
-            } else {
-                step = new Vector3(0, 0, -Mathf.Sign(zDiff));
-                largerDiff = (int) Mathf.Abs(zDiff);
+            if (Physics.Raycast(ray, out hit)) {
+                gameObject = hit.transform.gameObject;
+                return true;
             }
-            Vector3 position = start;
-            WorldObject[] createdWorldObjects = new WorldObject[largerDiff + 1];
-            for (int i = 0; i <= largerDiff; i++) {
-                var currentWorldObject = DetermineObject(objectName);
-                createdWorldObjects[i] = currentWorldObject;
-                BootStrapper.EnvironmentManager.CurrentEnvironment.Place(currentWorldObject, position);
-                position += step;
-            }
-            return createdWorldObjects;
-        }
-
-        private static WorldObject DetermineObject(string objectName) {
-            switch (objectName) {
-                case "Wall":
-                    return new Wall();
-                case "Entrance":
-                    return new Entrance();
-                case "Toilet":
-                    return new Toilet();
-                case "Stage":
-                    return new Stage();
-                case "Bar":
-                    return new Bar();
-            }
-            return null;
+            gameObject = null;
+            return false;
         }
 
         private static Vector3 MousePositionToGroundPosition() {
@@ -133,6 +49,10 @@ namespace Assets.Scripts.UserInterface {
                 return ray.GetPoint(distance);
             }
             return Vector3.zero;
+        }
+
+        public void Destroy() {
+            cursor.DestroyCursors();
         }
     }
 }

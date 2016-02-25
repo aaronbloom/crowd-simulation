@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Assets.Scripts.Environment.Navigation;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class DanceProcess : ThoughtProcess {
         private Boid owner;
         private Need ownerDesire;
+        private Node goalNode;
 
         public DanceProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -17,9 +16,10 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToStage() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
-            gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
-            owner.behaviour = gsb;
+            GoalSeekingBehaviour behaviour = new LineOfSightGoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
+            behaviour.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
+            this.goalNode = behaviour.GoalNode;
+            owner.behaviour = behaviour;
             NextStep();
         }
 
@@ -30,9 +30,10 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachStage() {
-            //probably change this to some loiter behaviour
+            WatchingBehaviour behaviour = new WatchingBehaviour(this.owner, this.goalNode);
+            owner.behaviour = behaviour;
             //satisfy slowly
-            ownerDesire.Satisfy(20);
+            ownerDesire.Satisfy(5);
             //NextStep();
         }
     }

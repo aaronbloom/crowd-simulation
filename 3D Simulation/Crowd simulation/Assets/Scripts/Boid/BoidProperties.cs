@@ -5,28 +5,25 @@ using System.Text;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
-    class BoidProperties {
+    public class BoidProperties {
+        private readonly float _genderBias;
 
-        private Gender _gender;
-        public Gender Gender {
-            get { return _gender; }
-        }
+        public string HumanName { get; private set; }
+        public Gender Gender { get; private set; }
 
-        public BoidProperties() {
-            this._gender = getRandomGender();
+        public BoidProperties(float genderBias) {
+            _genderBias = genderBias;
+            Gender = getRandomGender();
+            HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 
         public BoidProperties(Gender gender) {
-            this._gender = gender;
+            Gender = gender;
         }
 
         private Gender getRandomGender() {
-            int value = Random.Range(0, 2);
-            switch (value) {
-                case 0: return Gender.MALE;
-                case 1: return Gender.FEMALE;
-                default: return Gender.UNDEFINED;
-            }
+            float value = Random.Range(0, 101);
+            return value < _genderBias ? Gender.MALE : Gender.FEMALE;
         }
 
     }

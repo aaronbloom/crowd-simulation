@@ -14,6 +14,7 @@ namespace Assets.Scripts.Environment
 
         public void InitialiseEnvironment(Vector3 bounds) {
             CurrentEnvironment = new Environment(bounds);
+            CurrentEnvironment.Setup();
         }
 
         private void initSingleton() {

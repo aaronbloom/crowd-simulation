@@ -6,6 +6,10 @@ namespace Assets.Scripts.Boid {
     public class Boid : MonoBehaviour {
 
         private Mind mind;
+        public float Thirst { get { return mind.Thirst; } }
+        public float ToiletNeed { get { return mind.ToiletNeed; } }
+        public float DanceNeed { get { return mind.DanceNeed; } }
+        public string CurrentNeed { get { return mind.CurrentNeed.MindState.ToString(); } }
         private Vector3 _velocity;
         public Vector3 Velocity {
             get { return _velocity; }
@@ -13,15 +17,16 @@ namespace Assets.Scripts.Boid {
 
         public float viewingDistance = 20f;
         public float minimumDistance = 4.5f;
+        public readonly Vector3 EyeHeight = new Vector3(0, 2, 0);
 
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
-        private BoidProperties properties;
+        public BoidProperties Properties { get; private set; }
         private Vector3 acceleration;
 
         void Awake() {
             this.behaviour = new GoalSeekingBehaviour(this, viewingDistance, minimumDistance);
-            this.properties = new BoidProperties();
+            //this.Properties = new BoidProperties();
 
             mind = new Mind(this);
         }
@@ -47,7 +52,8 @@ namespace Assets.Scripts.Boid {
         private void calculateNewPosition() {
             this.acceleration = calculateAcceleration(this.acceleration);
             this._velocity = calculateVelocity(this._velocity);
-            this.transform.position += (this._velocity * Time.deltaTime);
+            this.transform.position = this.transform.position + (this._velocity * Time.deltaTime);
+            this.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
         }
 
         private Vector3 calculateAcceleration(Vector3 acceleration) {
@@ -67,7 +73,9 @@ namespace Assets.Scripts.Boid {
         }
 
         private void faceTravelDirection() {
-            this.transform.rotation = Quaternion.LookRotation(this._velocity);
+            if (this._velocity != Vector3.zero) {
+                this.transform.rotation = Quaternion.LookRotation(this._velocity);
+            }
         }
     }
 }
