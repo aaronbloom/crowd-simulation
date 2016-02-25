@@ -8,6 +8,7 @@ namespace Assets.Scripts.UserInterface
     public class UserInterfaceController : MonoBehaviour {
 
         private const int LeftMouseButton = 0;
+        private const int RightMouseButton = 1;
 
         private GameObject mainMenu;
         private GameObject setupMenu;
@@ -45,6 +46,9 @@ namespace Assets.Scripts.UserInterface
                 }
                 if (Input.GetMouseButtonUp(LeftMouseButton)) {
                     userWorldBuilder.EndPlaceWorldObject();
+                }
+                if (Input.GetMouseButtonUp(RightMouseButton)) {
+                    userWorldBuilder.DeleteWorldObject();
                 }
             }
 

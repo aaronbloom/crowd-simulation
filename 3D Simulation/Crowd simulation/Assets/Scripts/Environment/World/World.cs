@@ -48,6 +48,7 @@ namespace Assets.Scripts.Environment.World {
         public bool RemoveObject(WorldObject worldObject) {
             bool success = Objects.Remove(worldObject);
             if (success) {
+                worldObject.Destroy();
                 updateSublists();
             }
             return success;
