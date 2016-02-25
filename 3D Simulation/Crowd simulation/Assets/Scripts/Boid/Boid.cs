@@ -26,7 +26,7 @@ namespace Assets.Scripts.Boid {
 
         void Awake() {
             this.behaviour = new GoalSeekingBehaviour(this, viewingDistance, minimumDistance);
-            //this.Properties = new BoidProperties();
+            this.Properties = new BoidProperties(50);
 
             mind = new Mind(this);
         }
