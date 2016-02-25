@@ -10,9 +10,10 @@ namespace Assets.Scripts.Boid {
 
         private const int boidHeight = 2;
         private static readonly string[] MalePrefab = {"chr_mike", "chr_bro", "chr_beardo2"};
-        private static readonly string[] FemalePrefab = {"chr_brookie", "chr_brookie", "chr_goth2"};
+        private static readonly string[] FemalePrefab = {"chr_brookie", "chr_bridget", "chr_goth2"};
 
         private readonly int NumberOfBoids;
+        private readonly float _genderBias;
         private readonly Quaternion rotation;
         private readonly EnvironmentManager EnvironmentManager;
         private readonly List<GameObject> boids;
@@ -20,9 +21,10 @@ namespace Assets.Scripts.Boid {
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
 
-        public BoidManager(int numOfBoids) {
+        public BoidManager(int numOfBoids, float genderBias) {
             EnvironmentManager = EnvironmentManager.Shared();
             NumberOfBoids = numOfBoids;
+            _genderBias = genderBias;
             rotation = Quaternion.identity;
             boids = new List<GameObject>(NumberOfBoids);
             heatMap = new HeatMap(boids);
@@ -53,7 +55,7 @@ namespace Assets.Scripts.Boid {
                     }
                 }
                 if (!isOverLapping) {
-                    BoidProperties boidProperties = new BoidProperties();
+                    BoidProperties boidProperties = new BoidProperties(_genderBias);
                     position.y = 0.1f;
                     Gender boidGender = boidProperties.Gender;
                     int index = Random.Range(0, 3);

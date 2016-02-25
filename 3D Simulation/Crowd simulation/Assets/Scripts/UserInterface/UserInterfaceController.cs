@@ -83,8 +83,10 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
             HideMenu(demographicMenu);
-            int numberOfBoids = setupMenu.GetComponent<MenuControlController>().NumberOfBoidsValue;
-            GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids);
+            MenuControlController menuControlController = setupMenu.GetComponent<MenuControlController>();
+            int numberOfBoids = menuControlController.NumberOfBoidsValue;
+            float genderBias = menuControlController.GenderBiasValue;
+            GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids, genderBias);
             ShowMenu(simulationMenu);
         }
 
