@@ -71,7 +71,9 @@ namespace Assets.Scripts.UserInterface {
 
         private void UpdateSelectionGameObject() {
             if (selectionGameObject == null || currentNeed != currentBoid.CurrentNeed) {
-                Object.Destroy(selectionGameObject);
+                if (selectionGameObject != null) {
+                    Object.Destroy(selectionGameObject);
+                }
                 selectionGameObject = BootStrapper.Initialise(currentBoid.CurrentNeed) as GameObject;
                 currentNeed = currentBoid.CurrentNeed;
             }
