@@ -33,7 +33,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             Vector3 halfSize = this.Size / 2;
 
             Vector3 otherPosition = worldObject.GameObject.transform.position;
-            Vector3 otherHalfSize = worldObject.Size;
+            Vector3 otherHalfSize = worldObject.Size / 2;
 
             var xDifference = MathHelper.Difference(position.x, otherPosition.x);
             var zDifference = MathHelper.Difference(position.z, otherPosition.z);
