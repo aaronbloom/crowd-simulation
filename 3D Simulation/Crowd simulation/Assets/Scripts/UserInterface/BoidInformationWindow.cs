@@ -1,15 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface {
     class BoidInformationWindow {
-        private readonly GameObject boidInformationWindow;
-        private Boid.Boid currentBoid;
+
         private const string BoidInformationPanelName = "BoidInformationPanel";
+        private readonly GameObject boidInformationWindow;
+        private readonly Color MaxHealthColor = Color.red;
+        private readonly Color MinHealthColor = Color.green;
+        private readonly Slider ThirstSlider;
+        private readonly Slider ToiletSlider;
+        private readonly Slider DanceSlider;
+
+        private Boid.Boid currentBoid;
         private GameObject selectionGameObject;
 
         public BoidInformationWindow() {
             boidInformationWindow = GameObject.Find(BoidInformationPanelName);
+            
+
+            ThirstSlider = GameObject.Find("ThirstSlider").GetComponent<Slider>();
+            ToiletSlider = GameObject.Find("ToiletSlider").GetComponent<Slider>();
+            DanceSlider = GameObject.Find("DanceSlider").GetComponent<Slider>();
+
             UserInterfaceController.HideMenu(boidInformationWindow);
         }
 
@@ -32,12 +46,23 @@ namespace Assets.Scripts.UserInterface {
         public void Update() {
             if (currentBoid != null) {
                 UpdateSelectionGameObject();
-                GameObject.Find("ThirstText").GetComponent<Text>().text = "Thirst: " + currentBoid.Thirst;
-                GameObject.Find("ToiletNeedText").GetComponent<Text>().text = "Toilet need: " + currentBoid.ToiletNeed;
-                GameObject.Find("DanceNeedText").GetComponent<Text>().text = "Dance need: " + currentBoid.DanceNeed;
+                float totalNeed = currentBoid.Thirst + currentBoid.ToiletNeed + currentBoid.DanceNeed;
+                setSliderValue(ThirstSlider, currentBoid.Thirst / totalNeed);
+                setSliderValue(ToiletSlider, currentBoid.ToiletNeed / totalNeed);
+                setSliderValue(DanceSlider, currentBoid.DanceNeed / totalNeed);
                 GameObject.Find("BoidNameText").GetComponent<Text>().text = "Name: " + currentBoid.Properties.HumanName;
                 GameObject.Find("CurrentNeedText").GetComponent<Text>().text = "Current need: " + currentBoid.CurrentNeed;
             }
+        }
+
+        private void setSliderValue(Slider slider, float value) {
+            slider.value = value;
+            InterpolateColour(slider);
+        }
+
+        private void InterpolateColour(Slider slider) {
+            Image fill = slider.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
+            fill.color = Color.Lerp(MinHealthColor, MaxHealthColor, slider.value/1);
         }
 
         private void UpdateSelectionGameObject() {
