@@ -6,11 +6,13 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
     public class BoidProperties {
+        private readonly float _genderBias;
 
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
 
-        public BoidProperties() {
+        public BoidProperties(float genderBias) {
+            _genderBias = genderBias;
             Gender = getRandomGender();
             HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
@@ -20,12 +22,8 @@ namespace Assets.Scripts.Boid {
         }
 
         private Gender getRandomGender() {
-            int value = Random.Range(0, 2);
-            switch (value) {
-                case 0: return Gender.MALE;
-                case 1: return Gender.FEMALE;
-                default: return Gender.UNDEFINED;
-            }
+            float value = Random.Range(0, 101);
+            return value < _genderBias ? Gender.MALE : Gender.FEMALE;
         }
 
     }

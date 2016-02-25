@@ -28,10 +28,10 @@ namespace Assets.Scripts {
             CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
         }
 
-        public void StartSimulation(int numberOfBoids) {
+        public void StartSimulation(int numberOfBoids, float genderBias) {
             EnvironmentManager.CurrentEnvironment.Build();
 
-            BoidManager = new BoidManager(numberOfBoids);
+            BoidManager = new BoidManager(numberOfBoids, genderBias);
             StartCoroutine(CaptureHeatMap);
             StartCoroutine(BoidSpawning);
         }
