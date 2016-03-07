@@ -81,7 +81,7 @@ namespace Assets.Scripts.UserInterface {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
         }
 
-        public WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
+        public WorldObject[] PlaceLine(Vector3 start, Vector3 end, Vector3 wallNormal, String objectName) {
             Vector3 step;
             var xDiff = start.x - end.x;
             var zDiff = start.z - end.z;
@@ -99,6 +99,7 @@ namespace Assets.Scripts.UserInterface {
                 var currentWorldObject = WorldObject.DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
                 Place(currentWorldObject, position);
+                currentWorldObject.LookTowardsNormal(wallNormal);
                 position += step;
             }
             return createdWorldObjects;

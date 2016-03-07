@@ -34,8 +34,6 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
-        
-
         public void UpdatePrimaryCursor(Vector3 groundPosition) {
             if (primaryCursor.GameObject != null) {
                 if (!primaryCursor.GridPlaceable) { // wall placement
@@ -76,6 +74,7 @@ namespace Assets.Scripts.UserInterface {
             secondCursor.GameObject.transform.position =
                 Environment.Environment.PositionToLocation(secondCursorPosition,
                     primaryCursor.Size) + cursorHeight;
+            secondCursor.GameObject.transform.rotation = primaryCursor.GameObject.transform.rotation;
         }
 
         public void SetPlacementObject(string objectName, Vector3 groundPosition) {
@@ -117,11 +116,11 @@ namespace Assets.Scripts.UserInterface {
                             Vector3 normal;
                             if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
                                 endPlacement = position;
-                                worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentItem);
+                                worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, normal, currentItem);
                             }
                         } else {
                             endPlacement = groundPosition;
-                            worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentItem);
+                            worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, Vector3.forward, currentItem);
                         }
                     }
                 }
