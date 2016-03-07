@@ -57,6 +57,10 @@ namespace Assets.Scripts.Environment.World.Objects {
 
         public static WorldObject Initialise(WorldObject worldObject, Vector3 position)
         {
+            if (worldObject.Identifier.Contains("Bar"))
+            {
+                var i = 0;
+            }
             worldObject.GameObject = (GameObject)BootStrapper.Initialise(
                 worldObject.Identifier,
                 position + worldObject.InitialPositionOffSet,
