@@ -34,14 +34,18 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        
+
         public void UpdatePrimaryCursor(Vector3 groundPosition) {
             if (primaryCursor.GameObject != null) {
                 if (!primaryCursor.GridPlaceable) { // wall placement
                     Vector3 position;
-                    if (worldBuilderPlacement.WallPlacement(out position, primaryCursor.Size)) {
+                    Vector3 normal;
+                    if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
                         primaryCursor.GameObject.transform.position =
                             Environment.Environment.PositionToLocation(position,
                             primaryCursor.Size) + cursorHeight;
+                        primaryCursor.LookTowardsNormal(normal);
                         SetCursorValid(primaryCursor);
                     } else {
                         primaryCursor.GameObject.transform.position =
@@ -85,7 +89,8 @@ namespace Assets.Scripts.UserInterface {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (!primaryCursor.GridPlaceable) {
                         Vector3 position;
-                        if (worldBuilderPlacement.WallPlacement(out position, primaryCursor.Size)) {
+                        Vector3 normal;
+                        if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
                             startPlacement = position;
                             startedPlacement = true;
                         } else {
@@ -109,7 +114,8 @@ namespace Assets.Scripts.UserInterface {
                         Vector3 endPlacement;
                         if (!primaryCursor.GridPlaceable) {
                             Vector3 position;
-                            if (worldBuilderPlacement.WallPlacement(out position, primaryCursor.Size)) {
+                            Vector3 normal;
+                            if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
                                 endPlacement = position;
                                 worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentItem);
                             }
