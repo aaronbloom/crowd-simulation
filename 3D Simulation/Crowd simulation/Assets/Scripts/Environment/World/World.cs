@@ -31,6 +31,7 @@ namespace Assets.Scripts.Environment.World {
             Toilets = ObjectSublist<Toilet>();
             Stages = ObjectSublist<Stage>();
             Bars = ObjectSublist<Bar>();
+            
             Collidables = Objects.OfType<Collidable>().ToList();
         }
 
