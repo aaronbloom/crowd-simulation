@@ -11,7 +11,7 @@ namespace Assets.Scripts.UserInterface {
 
         public WorldBuilderPlacement() {}
 
-        public bool WallPlacement(out Vector3 position, Vector3 cursorSize) { //is the cursor over a wall
+        public bool WallPlacement(out Vector3 normal, out Vector3 position, Vector3 cursorSize) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;
             if (UserWorldBuilder.Raycast(out hit, out gameObject)) {
@@ -20,7 +20,7 @@ namespace Assets.Scripts.UserInterface {
 
                     Vector3 firstWallPosition = hit.transform.position;
 
-                    Vector3 normal = hit.normal;
+                    normal = hit.normal;
                     if (normal.y == 0) { //only wall sides, not the tops
                         //perpendicular vector to normal (right vector from point of view of normal)
                         Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
@@ -73,6 +73,7 @@ namespace Assets.Scripts.UserInterface {
                 }
             }
             position = Vector3.zero;
+            normal = Vector3.zero;
             return false;
         }
 
@@ -80,7 +81,7 @@ namespace Assets.Scripts.UserInterface {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
         }
 
-        public WorldObject[] PlaceLine(Vector3 start, Vector3 end, String objectName) {
+        public WorldObject[] PlaceLine(Vector3 start, Vector3 end, Vector3 wallNormal, String objectName) {
             Vector3 step;
             var xDiff = start.x - end.x;
             var zDiff = start.z - end.z;
@@ -98,6 +99,7 @@ namespace Assets.Scripts.UserInterface {
                 var currentWorldObject = WorldObject.DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
                 Place(currentWorldObject, position);
+                currentWorldObject.LookTowardsNormal(wallNormal);
                 position += step;
             }
             return createdWorldObjects;

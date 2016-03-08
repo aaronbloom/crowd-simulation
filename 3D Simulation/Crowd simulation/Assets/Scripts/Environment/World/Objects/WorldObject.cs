@@ -57,6 +57,11 @@ namespace Assets.Scripts.Environment.World.Objects {
             Object.Destroy(GameObject);
         }
 
+        public void LookTowardsNormal(Vector3 normal) {
+            this.GameObject.transform.forward = normal;
+            this.GameObject.transform.rotation *= this.InitialRotationOffSet;
+        }
+
         public static WorldObject Initialise(WorldObject worldObject, Vector3 position)
         {
             worldObject.GameObject = (GameObject)BootStrapper.Initialise(
