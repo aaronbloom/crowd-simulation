@@ -19,21 +19,23 @@ namespace Assets.Scripts.Environment.World.Objects {
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
         public Vector3 Size { get; protected set; }
+        public Vector3 Padding { get; protected set; }
 
         public GameObject GameObject { get; set; }
 
         protected WorldObject() {
             InitialPositionOffSet = Vector3.zero;
             InitialRotationOffSet = Quaternion.identity;
+            Padding = Vector3.zero; //default
         }
 
         //basic withinbounds checker, simple AABB collision detection
         public bool WithinBounds(WorldObject worldObject) {
             Vector3 position = GameObject.transform.position;
-            Vector3 halfSize = this.Size / 2;
+            Vector3 halfSize = (this.Size + this.Padding) / 2;
 
             Vector3 otherPosition = worldObject.GameObject.transform.position;
-            Vector3 otherHalfSize = worldObject.Size / 2;
+            Vector3 otherHalfSize = (worldObject.Size + worldObject.Padding) / 2;
 
             var xDifference = MathHelper.Difference(position.x, otherPosition.x);
             var zDifference = MathHelper.Difference(position.z, otherPosition.z);
