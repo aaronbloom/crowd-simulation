@@ -50,7 +50,7 @@ namespace Assets.Scripts.Boid {
         }
 
         private void TargetNextNodeAlongPath() {
-            if (Vector3.Distance(target.Position, this.boid.transform.position) < 1) {
+            if (Vector3.Distance(target.Position, this.boid.Position) < 1) {
                 int index = path.Nodes.IndexOf(this.target) + 1;
                 if (index < path.Nodes.Count - 1) {
                     this.target = path.Nodes[index];

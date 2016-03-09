@@ -37,8 +37,9 @@ namespace Assets.Scripts.UserInterface {
             if (Physics.Raycast(ray, out raycastHit, 100)) {
                 if (raycastHit.transform.tag == "Boid") {
                     UserInterfaceController.ShowMenu(boidInformationWindow);
-                    currentBoid = raycastHit.transform.GetComponent<Boid.Boid>();
-                } else {
+                    currentBoid = BootStrapper.BoidManager.FindBoid(raycastHit.transform.gameObject);
+                }
+                else {
                     currentBoid = null;
                     Object.Destroy(selectionGameObject);
                     selectionGameObject = null;
@@ -77,7 +78,7 @@ namespace Assets.Scripts.UserInterface {
                 selectionGameObject = BootStrapper.Initialise(currentBoid.CurrentNeed) as GameObject;
                 currentNeed = currentBoid.CurrentNeed;
             }
-            Vector3 currentBoidPosition = currentBoid.transform.position;
+            Vector3 currentBoidPosition = currentBoid.Position;
             selectionGameObject.transform.position = currentBoidPosition + new Vector3(0, 4f, 0);
             selectionGameObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             selectionGameObject.transform.Rotate(Vector3.down, 100 * Time.deltaTime);

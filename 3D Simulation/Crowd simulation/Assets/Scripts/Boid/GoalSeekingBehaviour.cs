@@ -27,7 +27,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public void Seek(Goal goal, Graph navGraph) {
-            Node startNode = navGraph.FindClosestNode(boid.transform.position);
+            Node startNode = navGraph.FindClosestNode(boid.Position);
             Node goalNode = navGraph.FindClosestNode(goal.GameObject.transform.position);
             path = Path.Navigate(navGraph, startNode, goalNode);
             BehaviourComplete = false;
@@ -38,7 +38,7 @@ namespace Assets.Scripts.Boid {
         }
 
         private void reseek() {
-            Debug.Log("Recalculating Path: " + boid.name);
+            Debug.Log("Recalculating Path: " + boid.Name);
             target = null;
             Seek(Goal, graph);
         }
@@ -46,7 +46,7 @@ namespace Assets.Scripts.Boid {
         private Vector3 MoveAlongPath() {
             if (path != null) {
                 if (this.target == null) {
-                    this.target = path.FindClosestNode(boid.transform.position);
+                    this.target = path.FindClosestNode(boid.Position);
                 }
                 this.TargetNextNodeAlongPath();
                 if (this.target == null) return Vector3.zero;
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Boid {
             if (hitLastNode < DateTime.Now.AddSeconds(-nodeReachedTimeout)) {
                 reseek(); //recalc after time
             } else {
-                if (Vector3.Distance(target.Position, this.boid.transform.position) < targetMinimumDistance) {
+                if (Vector3.Distance(target.Position, this.boid.Position) < targetMinimumDistance) {
                     hitLastNode = DateTime.Now;
                     int index = path.Nodes.IndexOf(this.target) + 1;
                     this.LineOfSightCheck();

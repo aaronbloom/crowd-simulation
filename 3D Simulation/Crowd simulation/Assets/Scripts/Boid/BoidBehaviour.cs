@@ -19,7 +19,7 @@ namespace Assets.Scripts.Boid {
         public abstract void DrawGraphGizmo();
 
         protected Vector3 SteerTowardsPoint(Vector3 target) {
-            Vector3 aim = target - boid.transform.position;
+            Vector3 aim = target - boid.Position;
             aim.Normalize();
             aim *= MaxSpeed;
             Vector3 steeringDirection = aim - boid.Velocity;

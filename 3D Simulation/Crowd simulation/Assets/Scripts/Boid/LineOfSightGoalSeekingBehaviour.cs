@@ -11,7 +11,7 @@ namespace Assets.Scripts.Boid {
         }
 
         protected override void LineOfSightCheck() {
-            Vector3 fromPosition = boid.transform.position + boid.EyeHeight;
+            Vector3 fromPosition = boid.Position + boid.EyeHeight;
             Vector3 toPosition = GoalNode.Position + new Vector3(0, Goal.Size.y, 0);
 
             RaycastHit hit = new RaycastHit();
