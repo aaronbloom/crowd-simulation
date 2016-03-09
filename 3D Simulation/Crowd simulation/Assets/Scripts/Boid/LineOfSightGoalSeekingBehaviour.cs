@@ -12,7 +12,7 @@ namespace Assets.Scripts.Boid {
 
         protected override void LineOfSightCheck() {
             Vector3 fromPosition = boid.transform.position + boid.EyeHeight;
-            Vector3 toPosition = GoalNode.Position + new Vector3(0, Goal.Size.y, 0);
+            Vector3 toPosition = Goal.GameObject.transform.position;
 
             RaycastHit hit = new RaycastHit();
             if (Physics.Linecast(fromPosition, toPosition, out hit)) {
@@ -20,6 +20,7 @@ namespace Assets.Scripts.Boid {
                 if (hit.transform.gameObject.name.Contains(Goal.Identifier)) {
                     if (hit.distance < Random.Range(minimumDistance, maximumDistance)) {
                         BehaviourComplete = true;
+                        boid.transform.LookAt(toPosition); //look at stage once found
                     }
                 }
             }
