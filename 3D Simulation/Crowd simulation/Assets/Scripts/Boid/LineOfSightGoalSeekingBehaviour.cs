@@ -6,7 +6,7 @@ namespace Assets.Scripts.Boid {
         private const int minimumDistance = 5;
         private const int maximumDistance = 15;
 
-        public LineOfSightGoalSeekingBehaviour(Boid boid, float viewingDistance, float minimumDistance)
+        public LineOfSightGoalSeekingBehaviour(Boid boid)
             : base(boid) {
         }
 
