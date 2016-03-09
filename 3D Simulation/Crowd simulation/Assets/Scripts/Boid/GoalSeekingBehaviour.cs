@@ -117,10 +117,5 @@ namespace Assets.Scripts.Boid {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
-
-        public void switchBehaviourToLoiter() {
-            boid.behaviour = new LoiteringBehaviour(boid, path.Nodes[path.Nodes.Count - 2]);
-        }
-
     }
 }
