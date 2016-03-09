@@ -19,23 +19,25 @@ namespace Assets.Scripts.Environment.World.Objects {
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
         public Vector3 Size { get; protected set; }
-        public Vector3 Padding { get; protected set; }
+        public Vector3 FacingDirection { get; set; } //The normalised direction vector for the object front face
+        public int FrontPadding { get; set; } //Amount from front to pad the object size, int 4 => 4 spaces in front of face
 
         public GameObject GameObject { get; set; }
 
         protected WorldObject() {
             InitialPositionOffSet = Vector3.zero;
             InitialRotationOffSet = Quaternion.identity;
-            Padding = Vector3.zero; //default
+            FacingDirection = Vector3.forward;
+            FrontPadding = 0;
         }
 
         //basic withinbounds checker, simple AABB collision detection
         public bool WithinBounds(WorldObject worldObject) {
             Vector3 position = GameObject.transform.position;
-            Vector3 halfSize = (this.Size + this.Padding) / 2;
+            Vector3 halfSize = (this.Size) / 2;
 
             Vector3 otherPosition = worldObject.GameObject.transform.position;
-            Vector3 otherHalfSize = (worldObject.Size + worldObject.Padding) / 2;
+            Vector3 otherHalfSize = (worldObject.Size) / 2;
 
             var xDifference = MathHelper.Difference(position.x, otherPosition.x);
             var zDifference = MathHelper.Difference(position.z, otherPosition.z);
@@ -60,6 +62,24 @@ namespace Assets.Scripts.Environment.World.Objects {
         public void LookTowardsNormal(Vector3 normal) {
             this.GameObject.transform.forward = normal;
             this.GameObject.transform.rotation *= this.InitialRotationOffSet;
+            AdjustSizing(normal);
+        }
+
+        public void AdjustSizing(Vector3 direction) {
+            float dotProduct = Vector3.Dot(this.FacingDirection, direction);
+
+            if (dotProduct == 0) { //perpendicular
+                this.Size = new Vector3(this.Size.z, this.Size.y, this.Size.x); //swap dimensions
+            }
+
+            this.FacingDirection = direction;
+        }
+
+        //A position in-front of the front of the object, inc. any front padding
+        public Vector3 FrontPosition() {
+            return this.GameObject.transform.position
+                + Vector3.Scale(this.FacingDirection, this.Size/2) //The front face
+                + this.FrontPadding * this.FacingDirection; //The front inc. front padding
         }
 
         public static WorldObject Initialise(WorldObject worldObject, Vector3 position)

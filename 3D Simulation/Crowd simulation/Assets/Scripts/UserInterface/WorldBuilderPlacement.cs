@@ -11,7 +11,7 @@ namespace Assets.Scripts.UserInterface {
 
         public WorldBuilderPlacement() {}
 
-        public bool WallPlacement(out Vector3 normal, out Vector3 position, Vector3 cursorSize) { //is the cursor over a wall
+        public bool WallPlacement(out Vector3 normal, out Vector3 position, WorldObject cursor) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;
             if (UserWorldBuilder.Raycast(out hit, out gameObject)) {
@@ -25,6 +25,8 @@ namespace Assets.Scripts.UserInterface {
                         //perpendicular vector to normal (right vector from point of view of normal)
                         Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
 
+                        cursor.LookTowardsNormal(normal);
+                        var cursorSize = cursor.Size;
                         float requiredWidth = cursorSize.x;
 
                         Vector3 leftMostWall = firstWallPosition;
@@ -98,6 +100,7 @@ namespace Assets.Scripts.UserInterface {
             for (int i = 0; i <= largerDiff; i++) {
                 var currentWorldObject = WorldObject.DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
+                currentWorldObject.AdjustSizing(wallNormal);
                 Place(currentWorldObject, position);
                 currentWorldObject.LookTowardsNormal(wallNormal);
                 position += step;

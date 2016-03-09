@@ -39,7 +39,7 @@ namespace Assets.Scripts.UserInterface {
                 if (!primaryCursor.GridPlaceable) { // wall placement
                     Vector3 position;
                     Vector3 normal;
-                    if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
+                    if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
                         primaryCursor.GameObject.transform.position =
                             Environment.Environment.PositionToLocation(position,
                             primaryCursor.Size) + cursorHeight;
@@ -89,7 +89,7 @@ namespace Assets.Scripts.UserInterface {
                     if (!primaryCursor.GridPlaceable) {
                         Vector3 position;
                         Vector3 normal;
-                        if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
+                        if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
                             startPlacement = position;
                             startedPlacement = true;
                         } else {
@@ -114,7 +114,7 @@ namespace Assets.Scripts.UserInterface {
                         if (!primaryCursor.GridPlaceable) {
                             Vector3 position;
                             Vector3 normal;
-                            if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor.Size)) {
+                            if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
                                 endPlacement = position;
                                 worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, normal, currentItem);
                             }
