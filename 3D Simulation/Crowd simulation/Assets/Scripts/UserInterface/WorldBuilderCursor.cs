@@ -45,6 +45,7 @@ namespace Assets.Scripts.UserInterface {
                             primaryCursor.Size) + cursorHeight;
                         primaryCursor.LookTowardsNormal(normal);
                         SetCursorValid(primaryCursor);
+                        RecalcBars();
                     } else {
                         primaryCursor.GameObject.transform.position =
                             Environment.Environment.PositionToLocation(groundPosition, primaryCursor.Size) + cursorHeight;
@@ -75,6 +76,38 @@ namespace Assets.Scripts.UserInterface {
                 Environment.Environment.PositionToLocation(secondCursorPosition,
                     primaryCursor.Size) + cursorHeight;
             secondCursor.GameObject.transform.rotation = primaryCursor.GameObject.transform.rotation;
+        }
+
+        public void RecalcBars()
+        {
+            foreach (Bar bar in BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars)
+            {
+                Vector3 barPosition = bar.GameObject.transform.position;
+                Vector3 offsetX = new Vector3((bar.Size.x/2)+0.5f,0,0);
+                Vector3 offsetZ = new Vector3(0,0,bar.Size.z);
+                int isLeftBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetX) ? 1 : 0;
+                int isRightBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetX) ? 1 : 0;
+                int isUpBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetZ) ? 1 : 0;
+                int isDownBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetZ) ? 1 : 0;
+                int sides = isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
+                switch (sides)
+                {
+                    case 4:
+
+                        break;
+                    case 3:
+
+                        break;
+
+                    case 2:
+
+                        break;
+
+                    case 1:
+
+                        break;
+                }
+            }
         }
 
         public void SetPlacementObject(string objectName, Vector3 groundPosition) {

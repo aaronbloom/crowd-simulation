@@ -37,7 +37,7 @@ namespace Assets.Scripts.UserInterface {
                             if (count >= requiredWidth) break;
                             scanPosition += crossRight;
                             if (
-                                BootStrapper.EnvironmentManager.CurrentEnvironment.World.AlreadyOccupied(
+                                BootStrapper.EnvironmentManager.CurrentEnvironment.World.PointAlreadyOccupied(
                                     scanPosition)) {
                                 count++;
                                 rightMostWall = scanPosition;
@@ -48,7 +48,7 @@ namespace Assets.Scripts.UserInterface {
                                     scanPosition -= crossRight;
                                     if (
                                         BootStrapper.EnvironmentManager.CurrentEnvironment.World
-                                            .AlreadyOccupied(scanPosition)) {
+                                            .PointAlreadyOccupied(scanPosition)) {
                                         count++;
                                         leftMostWall = scanPosition;
                                     } else {
