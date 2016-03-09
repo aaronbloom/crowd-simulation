@@ -47,7 +47,6 @@ namespace Assets.Scripts.UserInterface {
                             primaryCursor.Size) + cursorHeight;
                         primaryCursor.LookTowardsNormal(normal);
                         SetCursorValid(primaryCursor);
-                        RecalcBars();
                     } else {
                         primaryCursor.GameObject.transform.position =
                             Environment.Environment.PositionToLocation(groundPosition, primaryCursor.Size) + cursorHeight;
@@ -78,104 +77,6 @@ namespace Assets.Scripts.UserInterface {
                 Environment.Environment.PositionToLocation(secondCursorPosition,
                     primaryCursor.Size) + cursorHeight;
             secondCursor.GameObject.transform.rotation = primaryCursor.GameObject.transform.rotation;
-        }
-
-        public void RecalcBars()
-        {
-            List<Bar> bars = new List<Bar>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
-            foreach (Bar bar in bars)
-            {
-                Vector3 barPosition = bar.GameObject.transform.position;
-                Vector3 offsetX = new Vector3((bar.Size.x/2)+0.4f,0,0);
-                Vector3 offsetZ = new Vector3(0,0,(bar.Size.z/2)+0.4f);
-                int isLeftBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetX) ? 1 : 0;
-                int isRightBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetX) ? 1 : 0;
-                int isUpBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetZ) ? 1 : 0;
-                int isDownBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetZ) ? 1 : 0;
-                int sides = isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
-                string pattern = "" + isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
-                int left = 0, up = 90, right = 180, down = 270;
-                switch (sides)
-                {
-                    case 4:
-                        switch (pattern) {
-                            case "1111":
-                                tryUpdatePattern("1111", "bar/bar¬", bar, down);
-                                break;
-                        }
-                        break;
-                    case 3:
-                        bar.ChangePrefab("bar/barI");
-                        switch (pattern) {
-                            case "0111":
-                                tryUpdatePattern("0001", "bar/barI", bar, left);
-                                break;
-                            case "1011":
-                                tryUpdatePattern("1011", "bar/barI", bar, up);
-                                break;
-                            case "1101":
-                                tryUpdatePattern("1101", "bar/barI", bar, right);
-                                break;
-                            case "1110":
-                                tryUpdatePattern("1110", "bar/barI", bar, down);
-                                break;
-                        }
-                        break;
-                    case 2:
-                        switch (pattern) {
-                            case "0011":
-                                tryUpdatePattern("0011", "bar/barL", bar, left);
-                                break;
-                            case "0110":
-                                tryUpdatePattern("0110", "bar/barL", bar, up);
-                                break;
-                            case "1100":
-                                tryUpdatePattern("1100", "bar/barL", bar, right);
-                                break;
-                            case "1010":
-                                // =
-                                break;
-                            case "0101":
-                                // =
-                                break;
-                            case "1001":
-                                tryUpdatePattern("1001", "bar/barL", bar, down);
-                                break;
-                        }
-                        break;
-                    case 1:
-                        switch (pattern) {
-                            case "1000":
-                                tryUpdatePattern("1000", "bar/barU", bar, left);
-                                break;
-                            case "0100":
-                                tryUpdatePattern("0100", "bar/barU", bar, right);
-                                break;
-                            case "0010":
-                                tryUpdatePattern("0010", "bar/barU", bar, up);
-                                break;
-                            case "0001":
-                                tryUpdatePattern("0001", "bar/barU", bar, down);
-                                break;
-                        }
-                        break;
-                }
-            }
-        }
-
-        private void tryUpdatePattern(string pattern, string prefab, Bar bar, int yVal)
-        {
-            if (bar.IsNewPlacementPattern(pattern))
-            {
-                bar.placementPattern = pattern;
-                bar.ChangePrefab(prefab);
-                bar.GameObject.transform.rotation = rotateToY(bar, yVal);
-            }
-        }
-
-        private Quaternion rotateToY(WorldObject obj, int yVal)
-        {
-            return Quaternion.Euler(obj.GameObject.transform.rotation.eulerAngles.x, yVal, obj.GameObject.transform.rotation.eulerAngles.z);
         }
 
         public void SetPlacementObject(string objectName, Vector3 groundPosition) {

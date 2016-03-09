@@ -84,11 +84,13 @@ namespace Assets.Scripts.Environment.World.Objects {
         public void ChangePrefab(string identifer)
         {
             GameObject toDestroy = this.GameObject;
+            var rotation = this.GameObject.transform.rotation;
+            var position = this.GameObject.transform.position;
+            Object.Destroy(toDestroy);
             this.GameObject = (GameObject) BootStrapper.Initialise(
                 identifer,
-                this.GameObject.transform.position,
-                this.GameObject.transform.rotation);
-            Object.Destroy(toDestroy);
+                position,
+                rotation);
         }
 
         public static WorldObject DetermineObject(string objectName) {

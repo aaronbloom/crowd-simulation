@@ -77,8 +77,15 @@ namespace Assets.Scripts.UserInterface {
             return false;
         }
 
+        public void Place(WorldObject worldObject, Vector3 position, Vector3 wallNormal) {
+            BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
+            worldObject.LookTowardsNormal(wallNormal);
+            RecalcBars();
+        }
+
         public void Place(WorldObject worldObject, Vector3 position) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
+            RecalcBars();
         }
 
         public WorldObject[] PlaceLine(Vector3 start, Vector3 end, Vector3 wallNormal, String objectName) {
@@ -98,8 +105,7 @@ namespace Assets.Scripts.UserInterface {
             for (int i = 0; i <= largerDiff; i++) {
                 var currentWorldObject = WorldObject.DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
-                Place(currentWorldObject, position);
-                currentWorldObject.LookTowardsNormal(wallNormal);
+                Place(currentWorldObject, position, wallNormal);
                 position += step;
             }
             return createdWorldObjects;
@@ -120,5 +126,118 @@ namespace Assets.Scripts.UserInterface {
                 Place(WorldObject.DetermineObject(Wall.IdentifierStatic), new Vector3(bounds.x + origin.x, 0, z));
             }
         }
+
+        public void RecalcBars()
+        {
+            List<Bar> bars = new List<Bar>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
+            foreach (Bar bar in bars)
+            {
+                Vector3 barPosition = bar.GameObject.transform.position;
+                Vector3 offsetX = new Vector3((bar.Size.x/2)+0.1f,0,0);
+                Vector3 offsetZ = new Vector3(0,0,(bar.Size.z/2)+0.1f);
+                int isLeftBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetX) ? 1 : 0;
+                int isRightBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetX) ? 1 : 0;
+                int isUpBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetZ) ? 1 : 0;
+                int isDownBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetZ) ? 1 : 0;
+                int sides = isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
+                string pattern = "" + isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
+                int left = 0, up = 90, right = 180, down = 270;
+                Debug.Log(pattern);
+                switch (sides)
+                {
+                    case 4:
+                        switch (pattern) {
+                            case "1111":
+                                switch (bar.placementPattern)
+                                {
+                                    case "0111":
+                                        tryUpdatePattern("1111", "bar/bar¬", bar, left + 180);
+                                        break;
+                                    case "1011":
+                                        tryUpdatePattern("1111", "bar/bar¬", bar, up - 90);
+                                        break;
+                                    case "1101":
+                                        tryUpdatePattern("1111", "bar/bar¬", bar, right - 90);
+                                        break;
+                                    case "1110":
+                                        tryUpdatePattern("1111", "bar/bar¬", bar, down);
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                    case 3:
+                        switch (pattern) {
+                            case "0111":
+                                tryUpdatePattern("0111", "bar/barI", bar, left- 90);
+                                break;
+                            case "1011":
+                                tryUpdatePattern("1011", "bar/barI", bar, up);
+                                break;
+                            case "1101":
+                                tryUpdatePattern("1101", "bar/barI", bar, right);
+                                break;
+                            case "1110":
+                                tryUpdatePattern("1110", "bar/barI", bar, down+ 90);
+                                break;
+                        }
+                        break;
+                    case 2:
+                        switch (pattern) {
+                            case "0011":
+                                // =
+                                break;
+                            case "0110":
+                                tryUpdatePattern("0110", "bar/barL", bar, up + 180);
+                                break;
+                            case "1100":
+                                // =
+                                break;
+                            case "1010":
+                                tryUpdatePattern("1010", "bar/barL", bar, left);
+                                break;
+                            case "0101":
+                                tryUpdatePattern("0101", "bar/barL", bar, right);
+                                break;
+                            case "1001":
+                                tryUpdatePattern("1001", "bar/barL", bar, down + 180);
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch (pattern) {
+                            case "1000":
+                                tryUpdatePattern("1000", "bar/barU", bar, left + 90);
+                                break;
+                            case "0100":
+                                tryUpdatePattern("0100", "bar/barU", bar, right + 90);
+                                break;
+                            case "0010":
+                                tryUpdatePattern("0010", "bar/barU", bar, up - 90);
+                                break;
+                            case "0001":
+                                tryUpdatePattern("0001", "bar/barU", bar, down - 90);
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void tryUpdatePattern(string pattern, string prefab, Bar bar, int yVal)
+        {
+            if (bar.IsNewPlacementPattern(pattern))
+            {
+                bar.placementPattern = pattern;
+                bar.ChangePrefab(prefab);
+                bar.GameObject.transform.rotation = rotateToY(bar, yVal);
+            }
+        }
+
+        private Quaternion rotateToY(WorldObject obj, int yVal)
+        {
+            return Quaternion.Euler(obj.GameObject.transform.rotation.eulerAngles.x, yVal, obj.GameObject.transform.rotation.eulerAngles.z);
+        }
+
     }
 }
