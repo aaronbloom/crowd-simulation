@@ -90,21 +90,55 @@ namespace Assets.Scripts.UserInterface {
                 int isUpBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetZ) ? 1 : 0;
                 int isDownBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetZ) ? 1 : 0;
                 int sides = isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
+                string pattern = "" + isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
                 switch (sides)
                 {
                     case 4:
-
+                        switch (pattern) {
+                            case "1111":
+                                //Do Nothing
+                                break;
+                        }
                         break;
                     case 3:
-
+                        switch (pattern) {
+                            case "0111":
+                                break;
+                            case "1011":
+                                break;
+                            case "1101":
+                                break;
+                            case "1110":
+                                break;
+                        }
                         break;
-
                     case 2:
-
+                        switch (pattern) {
+                            case "0011":
+                                break;
+                            case "0110":
+                                break;
+                            case "1100":
+                                break;
+                            case "1010":
+                                break;
+                            case "0101":
+                                break;
+                            case "1001":
+                                break;
+                        }
                         break;
-
                     case 1:
-
+                        switch (pattern) {
+                            case "1000":
+                                break;
+                            case "0100":
+                                break;
+                            case "0010":
+                                break;
+                            case "0001":
+                                break;
+                        }
                         break;
                 }
             }
