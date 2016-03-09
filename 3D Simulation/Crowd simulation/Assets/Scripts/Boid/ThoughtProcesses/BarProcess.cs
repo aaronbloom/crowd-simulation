@@ -17,7 +17,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToBar() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.ViewingDistance, owner.MinimumDistance);
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
             gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
             owner.behaviour = gsb;
             NextStep();

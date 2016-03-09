@@ -10,18 +10,14 @@ namespace Assets.Scripts.Boid {
         private static readonly string BoidTag = "Boid";
 
         private EnvironmentManager environmentManager;
-        private float viewingDistance;
-        private float minimumDistance;
         public float SeparationFactor { get; protected set; }
 
-        public FlockingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) {
+        public FlockingBehaviour(Boid boid) {
             this.MaxSpeed = 8.0f;
             this.MaxForce = 0.05f;
             this.VelocityDamping = 1f;
             this.SeparationFactor = 1.5f;
             this.boid = boid;
-            this.viewingDistance = viewingDistance;
-            this.minimumDistance = minimumDistance;
             this.environmentManager = EnvironmentManager.Shared();
         }
 
@@ -65,7 +61,7 @@ namespace Assets.Scripts.Boid {
             Vector3 boidPosition = boid.Position;
             Vector3 otherBoidPosition = otherBoid.transform.position;
             float distance = Vector3.Distance(boidPosition, otherBoidPosition);
-            return distance < this.viewingDistance && distance != 0;
+            return distance < boid.ViewingDistance && distance != 0;
         }
 
         protected Vector3 Cohesion(List<global::Assets.Scripts.Boid.Boid> boids) {
@@ -104,7 +100,7 @@ namespace Assets.Scripts.Boid {
         private Vector3 calculateSteeringDirection(global::Assets.Scripts.Boid.Boid otherBoid) {
             Vector3 steeringDirection = Vector3.zero;
             float distance = Vector3.Distance(boid.Position, otherBoid.Position);
-            if (distance < minimumDistance) {
+            if (distance < boid.MinimumDistance) {
                 Vector3 difference = boid.Position - otherBoid.Position;
                 difference.Normalize();
                 difference /= distance; //weight by distance
@@ -152,7 +148,7 @@ namespace Assets.Scripts.Boid {
             Vector3 steeringDirection = Vector3.zero;
             foreach (Plane boundary in boundaries) {
                 //if really close proximity to a plane boundary
-                if (boundary.GetDistanceToPoint(boid.Position) < this.minimumDistance) {
+                if (boundary.GetDistanceToPoint(boid.Position) < boid.MinimumDistance) {
                     Vector3 avoidDirection = boundary.normal;
                     avoidDirection *= MaxSpeed;
                     avoidDirection = Vector3.ClampMagnitude(avoidDirection, MaxForce);

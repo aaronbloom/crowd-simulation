@@ -52,7 +52,7 @@ namespace Assets.Scripts.Boid {
             gameObject = BootStrapper.Initialise("mmmm/" + boidPrefab, position, Quaternion.identity) as GameObject;
 
 
-            behaviour = new GoalSeekingBehaviour(this, ViewingDistance, MinimumDistance);
+            behaviour = new GoalSeekingBehaviour(this);
             mind = new Mind(this);
             _velocity = behaviour.InitialVelocity();
 

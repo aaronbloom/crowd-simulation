@@ -61,7 +61,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public void switchBehaviourToGoalSeeking() {
-            boid.behaviour = new GoalSeekingBehaviour(boid, 10f, 2.5f);
+            boid.behaviour = new GoalSeekingBehaviour(boid);
         }
 
 

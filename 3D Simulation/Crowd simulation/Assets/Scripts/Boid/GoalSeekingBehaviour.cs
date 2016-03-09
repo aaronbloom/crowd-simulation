@@ -17,7 +17,7 @@ namespace Assets.Scripts.Boid {
         private int nodeReachedTimeout = 5; //given in seconds
         private const float targetMinimumDistance = 1.5f;
 
-        public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
+        public GoalSeekingBehaviour(Boid boid) : base(boid) {
             this.boid = boid;
             this.MaxSpeed = 9.0f;
             this.MaxForce = 2.4f;
