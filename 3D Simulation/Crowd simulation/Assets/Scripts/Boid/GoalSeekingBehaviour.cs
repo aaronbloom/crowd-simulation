@@ -19,7 +19,6 @@ namespace Assets.Scripts.Boid {
 
         public GoalSeekingBehaviour(Boid boid) : base(boid) {
             this.boid = boid;
-            this.MaxSpeed = 9.0f;
             this.MaxForce = 2.4f;
             this.VelocityDamping = 0.4f;
             this.SeparationFactor = 0.8f;

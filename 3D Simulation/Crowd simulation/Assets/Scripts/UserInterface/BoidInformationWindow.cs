@@ -56,6 +56,7 @@ namespace Assets.Scripts.UserInterface {
                 setSliderValue(ToiletSlider, currentBoid.ToiletNeed / totalNeed);
                 setSliderValue(DanceSlider, currentBoid.DanceNeed / totalNeed);
                 GameObject.Find("BoidNameText").GetComponent<Text>().text = "Name: " + currentBoid.Properties.HumanName;
+                GameObject.Find("BoidDemographicText").GetComponent<Text>().text = "Demographic: " + currentBoid.Properties.Demographic;
                 GameObject.Find("CurrentNeedText").GetComponent<Text>().text = "Current need: " + currentBoid.CurrentNeed;
             }
         }
