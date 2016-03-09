@@ -66,7 +66,7 @@ namespace Assets.Scripts.Environment.World {
 
         public bool SpaceAlreadyOccupied(Vector3 location)
         {
-            return Objects.Any(worldObject => worldObject.SamePosition(location));
+            return Objects.Any(worldObject => worldObject.WithinBounds(location));
         }
 
 
