@@ -33,6 +33,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void reachToilet() {
             ownerDesire.Satisfy();
+            owner.Statistics.LogToiletBreak();
             NextStep();
         }
 
