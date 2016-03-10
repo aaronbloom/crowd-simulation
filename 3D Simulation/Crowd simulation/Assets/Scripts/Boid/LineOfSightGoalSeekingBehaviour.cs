@@ -6,12 +6,12 @@ namespace Assets.Scripts.Boid {
         private const int minimumDistance = 5;
         private const int maximumDistance = 15;
 
-        public LineOfSightGoalSeekingBehaviour(Boid boid, float viewingDistance, float minimumDistance)
-            : base(boid, viewingDistance, minimumDistance) {
+        public LineOfSightGoalSeekingBehaviour(Boid boid)
+            : base(boid) {
         }
 
         protected override void LineOfSightCheck() {
-            Vector3 fromPosition = boid.transform.position + boid.EyeHeight;
+            Vector3 fromPosition = boid.Position + boid.EyeHeight;
             Vector3 toPosition = Goal.GameObject.transform.position;
 
             RaycastHit hit = new RaycastHit();
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Boid {
                 if (hit.transform.gameObject.name.Contains(Goal.Identifier)) {
                     if (hit.distance < Random.Range(minimumDistance, maximumDistance)) {
                         BehaviourComplete = true;
-                        boid.transform.LookAt(toPosition); //look at stage once found
+                        boid.LookAt(toPosition); //look at stage once found
                     }
                 }
             }

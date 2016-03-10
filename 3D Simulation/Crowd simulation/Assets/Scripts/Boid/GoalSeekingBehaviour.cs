@@ -17,9 +17,8 @@ namespace Assets.Scripts.Boid {
         private int nodeReachedTimeout = 5; //given in seconds
         private const float targetMinimumDistance = 1.5f;
 
-        public GoalSeekingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) : base(boid, viewingDistance, minimumDistance) {
+        public GoalSeekingBehaviour(Boid boid) : base(boid) {
             this.boid = boid;
-            this.MaxSpeed = 9.0f;
             this.MaxForce = 2.4f;
             this.VelocityDamping = 0.4f;
             this.SeparationFactor = 0.8f;
@@ -27,7 +26,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public void Seek(Goal goal, Graph navGraph) {
-            Node startNode = navGraph.FindClosestNode(boid.transform.position);
+            Node startNode = navGraph.FindClosestNode(boid.Position);
             Node goalNode = navGraph.FindClosestNode(goal.FrontPosition());
             path = Path.Navigate(navGraph, startNode, goalNode);
             BehaviourComplete = false;
@@ -38,7 +37,7 @@ namespace Assets.Scripts.Boid {
         }
 
         private void reseek() {
-            Debug.Log("Recalculating Path: " + boid.name);
+            Debug.Log("Recalculating Path: " + boid.Name);
             target = null;
             Seek(Goal, graph);
         }
@@ -46,7 +45,7 @@ namespace Assets.Scripts.Boid {
         private Vector3 MoveAlongPath() {
             if (path != null) {
                 if (this.target == null) {
-                    this.target = path.FindClosestNode(boid.transform.position);
+                    this.target = path.FindClosestNode(boid.Position);
                 }
                 this.TargetNextNodeAlongPath();
                 if (this.target == null) return Vector3.zero;
@@ -84,7 +83,7 @@ namespace Assets.Scripts.Boid {
             if (hitLastNode < DateTime.Now.AddSeconds(-nodeReachedTimeout)) {
                 reseek(); //recalc after time
             } else {
-                if (Vector3.Distance(target.Position, this.boid.transform.position) < targetMinimumDistance) {
+                if (Vector3.Distance(target.Position, this.boid.Position) < targetMinimumDistance) {
                     hitLastNode = DateTime.Now;
                     int index = path.Nodes.IndexOf(this.target) + 1;
                     this.LineOfSightCheck();
@@ -117,10 +116,5 @@ namespace Assets.Scripts.Boid {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
         }
-
-        public void switchBehaviourToLoiter() {
-            boid.behaviour = new LoiteringBehaviour(boid, path.Nodes[path.Nodes.Count - 2]);
-        }
-
     }
 }

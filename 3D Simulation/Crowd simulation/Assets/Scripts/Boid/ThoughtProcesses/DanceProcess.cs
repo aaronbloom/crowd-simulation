@@ -16,7 +16,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToStage() {
-            GoalSeekingBehaviour behaviour = new LineOfSightGoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
+            GoalSeekingBehaviour behaviour = new LineOfSightGoalSeekingBehaviour(owner);
             behaviour.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
             this.goalNode = behaviour.GoalNode;
             owner.behaviour = behaviour;

@@ -24,9 +24,9 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, Random.Range(2,4), 2000);
-            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, 0.5f), 2000);
-            danceNeed = new Need(MindState.Dancey, Random.Range(1, 5), 2000);
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(2, boid.Properties.Thirstiness), 2000);
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, boid.Properties.BladderSize), 2000);
+            danceNeed = new Need(MindState.Dancey, Random.Range(1, boid.Properties.Danciness), 2000);
 
             CurrentNeed = danceNeed;
             startNewProcess(CurrentNeed.MindState);

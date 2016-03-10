@@ -25,7 +25,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 497014}
   - 54: {fileID: 5497012}
-  - 114: {fileID: 11490768}
   m_Layer: 0
   m_Name: chr_beardo2
   m_TagString: Boid
@@ -136,19 +135,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &11490768
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 197014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d961f4e704848e14a8cbcddb32373792, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewingDistance: 10
-  minimumDistance: 5.5
 --- !u!136 &13697012
 CapsuleCollider:
   m_ObjectHideFlags: 1

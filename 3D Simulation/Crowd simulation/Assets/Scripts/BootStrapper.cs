@@ -28,6 +28,12 @@ namespace Assets.Scripts {
             CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
         }
 
+        void Update() {
+            if (BoidManager != null) {
+                BoidManager.Update();
+            }
+        }
+
         public void StartSimulation(int numberOfBoids, float genderBias) {
             EnvironmentManager.CurrentEnvironment.Build();
 

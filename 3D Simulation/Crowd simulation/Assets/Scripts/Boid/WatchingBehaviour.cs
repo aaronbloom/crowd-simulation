@@ -17,7 +17,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public override Vector3 updateAcceleration() {
-            boid.transform.LookAt(goalNode.Position);
+            boid.LookAt(goalNode.Position);
             return Vector3.zero;
         }
 
