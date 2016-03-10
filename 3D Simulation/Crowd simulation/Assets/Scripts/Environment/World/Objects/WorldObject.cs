@@ -86,11 +86,10 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.FacingDirection = direction;
         }
 
-        //A position in-front of the front of the object, inc. any front padding
+        //A position in-front of the front of the object
         public Vector3 FrontPosition() {
             return this.GameObject.transform.position
-                + Vector3.Scale(this.FacingDirection, this.Size/2) //The front face
-                + this.FrontPadding * this.FacingDirection; //The front inc. front padding
+                   + Vector3.Scale(this.FacingDirection, this.Size/2); //The front face
         }
 
         public static WorldObject Initialise(WorldObject worldObject, Vector3 position)
