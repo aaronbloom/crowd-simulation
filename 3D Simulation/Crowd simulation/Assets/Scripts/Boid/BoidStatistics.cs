@@ -8,6 +8,7 @@ namespace Assets.Scripts.Boid {
     public class BoidStatistics {
         public float DistanceCovered { get; private set; }
         public int StageWatchedAmount { get; private set; }
+        public int DrinksBought { get; private set; }
 
         public BoidStatistics() {
             DistanceCovered = 0;
@@ -20,6 +21,10 @@ namespace Assets.Scripts.Boid {
 
         public void LogWatchingStage() {
             StageWatchedAmount++;
+        }
+
+        public void LogDrinkBought() {
+            DrinksBought++;
         }
     }
 }
