@@ -34,6 +34,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             owner.behaviour = behaviour;
             //satisfy slowly
             ownerDesire.Satisfy(5);
+            owner.Statistics.LogWatchingStage();
             //NextStep();
         }
     }
