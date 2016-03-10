@@ -28,7 +28,7 @@ namespace Assets.Scripts.Boid {
 
         public void Seek(Goal goal, Graph navGraph) {
             Node startNode = navGraph.FindClosestNode(boid.transform.position);
-            Node goalNode = navGraph.FindClosestNode(goal.GameObject.transform.position);
+            Node goalNode = navGraph.FindClosestNode(goal.FrontPosition());
             path = Path.Navigate(navGraph, startNode, goalNode);
             BehaviourComplete = false;
             this.GoalNode = goalNode;

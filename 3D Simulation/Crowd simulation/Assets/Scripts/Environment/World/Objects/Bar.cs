@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
-    public class Bar : Goal {
-        public const string IdentifierStatic = "Bar";
+    public class Bar : Goal, Collidable {
+        public const string IdentifierStatic = "Bar/BarU";
         public static Vector3 SizeStatic = new Vector3(4, 0, 4);
 
         public Bar() : base() {
@@ -13,5 +13,8 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.GridPlaceable = false;
         }
 
+        public WorldObject getObject() {
+            return this;
+        }
     }
 }
