@@ -14,6 +14,7 @@ namespace Assets.Scripts.UserInterface {
         private string currentItem;
         private Vector3 startPlacement;
         private bool startedPlacement = false;
+        private Vector3 currentPlacementNormal;
 
         private readonly WorldBuilderPlacement worldBuilderPlacement;
 
@@ -88,8 +89,7 @@ namespace Assets.Scripts.UserInterface {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (!primaryCursor.GridPlaceable) {
                         Vector3 position;
-                        Vector3 normal;
-                        if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
+                        if (worldBuilderPlacement.WallPlacement(out currentPlacementNormal, out position, primaryCursor)) {
                             startPlacement = position;
                             startedPlacement = true;
                         } else {
@@ -109,18 +109,11 @@ namespace Assets.Scripts.UserInterface {
             if (currentItem != null) {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (startedPlacement) {
-
-                        Vector3 endPlacement;
                         if (!primaryCursor.GridPlaceable) {
-                            Vector3 position;
-                            Vector3 normal;
-                            if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
-                                endPlacement = position;
-                                worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, normal, currentItem);
-                            }
+                            Vector3 endPlacement = secondCursor.GameObject.transform.position; //current cursor position (along wall)
+                            worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentPlacementNormal, currentItem);
                         } else {
-                            endPlacement = groundPosition;
-                            worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, Vector3.forward, currentItem);
+                            worldBuilderPlacement.PlaceLine(startPlacement, groundPosition, Vector3.forward, currentItem);
                         }
                     }
                 }
