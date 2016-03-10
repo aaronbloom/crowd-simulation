@@ -26,8 +26,7 @@ namespace Assets.Scripts.UserInterface {
                         Vector3 crossRight = Vector3.Cross(Vector3.up, normal).normalized;
 
                         cursor.LookTowardsNormal(normal);
-                        var cursorSize = cursor.Size;
-                        float requiredWidth = cursorSize.x;
+                        float requiredWidth = cursor.Size.x;
 
                         Vector3 leftMostWall = firstWallPosition;
                         Vector3 rightMostWall = firstWallPosition;
@@ -65,7 +64,7 @@ namespace Assets.Scripts.UserInterface {
                         if (count >= requiredWidth) {
 
                             Vector3 centerWall = (leftMostWall + rightMostWall) / 2;
-                            Vector3 requiredDepth = normal * (cursorSize.z / 2);
+                            Vector3 requiredDepth = normal * (cursor.Size.z / 2);
                             Vector3 wallOffset = normal * (Wall.SizeStatic.z / 2);
 
                             position = centerWall + requiredDepth + wallOffset;

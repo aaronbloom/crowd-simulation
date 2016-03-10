@@ -19,8 +19,8 @@ namespace Assets.Scripts.Environment.World.Objects {
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
         public Vector3 Size { get; protected set; }
-        public Vector3 FacingDirection { get; set; } //The normalised direction vector for the object front face
-        public int FrontPadding { get; set; } //Amount from front to pad the object size, int 4 => 4 spaces in front of face
+        public Vector3 FacingDirection { get; protected set; } //The normalised direction vector for the object front face
+        public int FrontPadding { get; protected set; } //Amount from front to pad the object size, int 4 => 4 spaces in front of face
 
         public GameObject GameObject { get; set; }
 
@@ -34,10 +34,10 @@ namespace Assets.Scripts.Environment.World.Objects {
         //basic withinbounds checker, simple AABB collision detection
         public bool WithinBounds(WorldObject worldObject) {
             Vector3 position = GameObject.transform.position;
-            Vector3 halfSize = (this.Size) / 2;
+            Vector3 halfSize = this.Size / 2;
 
             Vector3 otherPosition = worldObject.GameObject.transform.position;
-            Vector3 otherHalfSize = (worldObject.Size) / 2;
+            Vector3 otherHalfSize = worldObject.Size / 2;
 
             var xDifference = MathHelper.Difference(position.x, otherPosition.x);
             var zDifference = MathHelper.Difference(position.z, otherPosition.z);
