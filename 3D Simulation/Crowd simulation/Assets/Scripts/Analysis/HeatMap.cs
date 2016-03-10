@@ -5,12 +5,12 @@ using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Analysis {
     public class HeatMap {
-        private readonly List<GameObject> boids;
+        private readonly List<Boid.Boid> boids;
         private readonly float[,] map;
         private readonly int width;
         private readonly int length;
 
-        public HeatMap(List<GameObject> boids) {
+        public HeatMap(List<Boid.Boid> boids) {
             this.boids = boids;
             var bounds = BootStrapper.EnvironmentManager.CurrentEnvironment.Bounds;
             this.width = (int) (bounds.x/HeatMapTile.TileSize);
@@ -25,9 +25,8 @@ namespace Assets.Scripts.Analysis {
         }
 
         public void Update() {
-            Debug.Log("Update heat map");
             foreach (var boid in boids) {
-                this.addToMap(boid.transform.position);
+                this.addToMap(boid.Position);
             }
         }
 

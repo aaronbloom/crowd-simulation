@@ -3,28 +3,25 @@ using Assets.Scripts.Analysis;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
     public class BoidManager {
 
         private const int boidHeight = 2;
-        private static readonly string[] MalePrefab = {"chr_mike", "chr_bro", "chr_beardo2"};
-        private static readonly string[] FemalePrefab = {"chr_brookie", "chr_brookie", "chr_goth2"};
 
         private readonly int NumberOfBoids;
-        private readonly Quaternion rotation;
+        private readonly float _genderBias;
         private readonly EnvironmentManager EnvironmentManager;
-        private readonly List<GameObject> boids;
+        private readonly List<Boid> boids;
         private readonly HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
 
-        public BoidManager(int numOfBoids) {
+        public BoidManager(int numOfBoids, float genderBias) {
             EnvironmentManager = EnvironmentManager.Shared();
             NumberOfBoids = numOfBoids;
-            rotation = Quaternion.identity;
-            boids = new List<GameObject>(NumberOfBoids);
+            _genderBias = genderBias;
+            boids = new List<Boid>(NumberOfBoids);
             heatMap = new HeatMap(boids);
         }
 
@@ -42,23 +39,24 @@ namespace Assets.Scripts.Boid {
             heatMap.Display();
         }
 
+        public void Update() {
+            foreach (Boid boid in boids) {
+                boid.Update();
+            }
+        }
+
         private void spawnBoid() {
             if (EntranceAvaliable()) {
                 Vector3 positionOffset = FindRandomEntrancePosition();
                 Vector3 position = Vector3.zero + positionOffset;
                 bool isOverLapping = false;
-                foreach (var boid in boids) {
-                    if (Vector3.Distance(position, boid.transform.position) < 3) {
+                foreach (Boid boid in boids) {
+                    if (Vector3.Distance(position, boid.Position) < 3) {
                         isOverLapping = true;
                     }
                 }
                 if (!isOverLapping) {
-                    BoidProperties boidProperties = new BoidProperties();
-                    position.y = 0.1f;
-                    Gender boidGender = boidProperties.Gender;
-                    int index = Random.Range(0, 3);
-                    string boidPrefab = boidGender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
-                    boids.Add((GameObject) BootStrapper.Initialise("mmmm/" + boidPrefab, position, rotation));
+                    boids.Add(Boid.Spawn(position, _genderBias));
                 }
             }
         }
@@ -89,6 +87,15 @@ namespace Assets.Scripts.Boid {
 
         private bool EntranceAvaliable() {
             return EnvironmentManager.CurrentEnvironment.World.Entrances.Count > 0;
+        }
+
+        public Boid FindBoid(GameObject gameObject) {
+            foreach (Boid boid in boids) {
+                if (boid.HasGameObject(gameObject)) {
+                    return boid;
+                }
+            }
+            return null;
         }
     }
 }

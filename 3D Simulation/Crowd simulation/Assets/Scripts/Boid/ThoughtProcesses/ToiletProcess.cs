@@ -19,7 +19,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToToilet() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
             gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Toilets);
             owner.behaviour = gsb;
             NextStep();

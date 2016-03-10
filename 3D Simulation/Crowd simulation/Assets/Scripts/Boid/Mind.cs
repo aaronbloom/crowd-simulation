@@ -7,11 +7,13 @@ using Assets.Scripts.Environment.World.Objects;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
-
-    class Mind {
+    public class Mind {
 
         public Goal Goal { get; private set; }
         public Need CurrentNeed { get; private set; }
+        public float Thirst { get { return drinkNeed.Value; } }
+        public float ToiletNeed { get { return toiletNeed.Value; } }
+        public float DanceNeed { get { return danceNeed.Value; } }
 
         private Boid boid;
         private ThoughtProcess thoughtProcess;
@@ -22,9 +24,9 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, Random.Range(2,4), 2000);
-            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, 0.5f), 2000);
-            danceNeed = new Need(MindState.Dancey, Random.Range(1, 5), 2000);
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(2, boid.Properties.Thirstiness), 2000);
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, boid.Properties.BladderSize), 2000);
+            danceNeed = new Need(MindState.Dancey, Random.Range(1, boid.Properties.Danciness), 2000);
 
             CurrentNeed = danceNeed;
             startNewProcess(CurrentNeed.MindState);
@@ -76,7 +78,7 @@ namespace Assets.Scripts.Boid {
 
     }
 
-    class Need {
+    public class Need {
         public MindState MindState { get; private set; }
         public float Value { get; private set; }
         public float Max { get; private set; }
@@ -115,10 +117,9 @@ namespace Assets.Scripts.Boid {
         {
             Value = (int) (Value * perc);
         }
-
     }
 
-    enum MindState {
+    public enum MindState {
         Thirsty,
         Dancey,
         Incontenent

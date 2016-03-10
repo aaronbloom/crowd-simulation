@@ -6,6 +6,8 @@ using UnityEngine;
 namespace Assets.Scripts.Environment.Navigation {
     class Path : Graph {
 
+        private static float navigationAccuracy = 0.5f;
+
         //Constructs Path from ordered node list
         public Path(List<Node> nodes) : base(nodes) {
         }
@@ -82,7 +84,7 @@ namespace Assets.Scripts.Environment.Navigation {
                     float potentialF = candidatePromising.calculateF();
 
                     //check this is the best route we know to the candidate
-                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF) {
+                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF && UnityEngine.Random.Range(0f,1f) > navigationAccuracy) {
                         //Not interested
                     } else if (closedSet.ContainsKey(candidatePromising.Node.Position) && closedSet[candidatePromising.Node.Position].ValueF < potentialF) {
                         //Not interested

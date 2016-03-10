@@ -10,22 +10,18 @@ namespace Assets.Scripts.Boid {
         private static readonly string BoidTag = "Boid";
 
         private EnvironmentManager environmentManager;
-        private float viewingDistance;
-        private float minimumDistance;
         public float SeparationFactor { get; protected set; }
 
-        public FlockingBehaviour(global::Assets.Scripts.Boid.Boid boid, float viewingDistance, float minimumDistance) {
-            this.MaxSpeed = 8.0f;
+        public FlockingBehaviour(Boid boid) {
             this.MaxForce = 0.05f;
             this.VelocityDamping = 1f;
             this.SeparationFactor = 1.5f;
             this.boid = boid;
-            this.viewingDistance = viewingDistance;
-            this.minimumDistance = minimumDistance;
             this.environmentManager = EnvironmentManager.Shared();
         }
 
         public override Vector3 InitialVelocity() {
+            float MaxSpeed = boid.Properties.speed;
             return Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
         }
 
@@ -55,25 +51,25 @@ namespace Assets.Scripts.Boid {
             List<global::Assets.Scripts.Boid.Boid> closeBoids = new List<global::Assets.Scripts.Boid.Boid>();
             foreach (GameObject otherBoid in boids) {
                 if (!object.ReferenceEquals(this.boid, otherBoid) && isWithinView(boid, otherBoid)) {
-                    closeBoids.Add(otherBoid.GetComponent<global::Assets.Scripts.Boid.Boid>());
+                    closeBoids.Add(BootStrapper.BoidManager.FindBoid(otherBoid));
                 }
             }
             return closeBoids;
         }
 
         private bool isWithinView(global::Assets.Scripts.Boid.Boid boid, GameObject otherBoid) {
-            Vector3 boidPosition = boid.transform.position;
+            Vector3 boidPosition = boid.Position;
             Vector3 otherBoidPosition = otherBoid.transform.position;
             float distance = Vector3.Distance(boidPosition, otherBoidPosition);
-            return distance < this.viewingDistance && distance != 0;
+            return distance < boid.ViewingDistance && distance != 0;
         }
 
         protected Vector3 Cohesion(List<global::Assets.Scripts.Boid.Boid> boids) {
             if (boids.Count > 0) {
                 Vector3 averagePosition = getAveragePosition(boids);
-                Vector3 aim = averagePosition - boid.transform.position;
+                Vector3 aim = averagePosition - boid.Position;
                 aim.Normalize();
-                aim *= this.MaxSpeed;
+                aim *= boid.Properties.speed;
                 Vector3 steeringDirection = aim - boid.Velocity;
                 steeringDirection = Vector3.ClampMagnitude(steeringDirection, this.MaxForce);
                 return steeringDirection;
@@ -85,7 +81,7 @@ namespace Assets.Scripts.Boid {
             Vector3 averagePosition = Vector3.zero;
 
             foreach (global::Assets.Scripts.Boid.Boid otherBoid in boids) {
-                averagePosition += otherBoid.transform.position;
+                averagePosition += otherBoid.Position;
             }
 
             return averagePosition / boids.Count;
@@ -103,9 +99,9 @@ namespace Assets.Scripts.Boid {
 
         private Vector3 calculateSteeringDirection(global::Assets.Scripts.Boid.Boid otherBoid) {
             Vector3 steeringDirection = Vector3.zero;
-            float distance = Vector3.Distance(boid.transform.position, otherBoid.transform.position);
-            if (distance < minimumDistance) {
-                Vector3 difference = boid.transform.position - otherBoid.transform.position;
+            float distance = Vector3.Distance(boid.Position, otherBoid.Position);
+            if (distance < boid.MinimumDistance) {
+                Vector3 difference = boid.Position - otherBoid.Position;
                 difference.Normalize();
                 difference /= distance; //weight by distance
                 steeringDirection += difference;
@@ -120,7 +116,7 @@ namespace Assets.Scripts.Boid {
             }
             if (averageSteeringDirection.magnitude > 0) {
                 averageSteeringDirection.Normalize();
-                averageSteeringDirection *= MaxSpeed;
+                averageSteeringDirection *= boid.Properties.speed;
                 averageSteeringDirection = Vector3.ClampMagnitude(steeringDirectionAggregator, MaxForce);
             }
             return averageSteeringDirection;
@@ -130,7 +126,7 @@ namespace Assets.Scripts.Boid {
             if (boids.Count > 0) {
                 Vector3 averageHeading = getAverageHeading(boids);
                 averageHeading.Normalize();
-                averageHeading *= this.MaxSpeed;
+                averageHeading *= boid.Properties.speed;
                 Vector3 steeringDirection = averageHeading - boid.Velocity;
                 steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
                 return steeringDirection;
@@ -152,20 +148,20 @@ namespace Assets.Scripts.Boid {
             Vector3 steeringDirection = Vector3.zero;
             foreach (Plane boundary in boundaries) {
                 //if really close proximity to a plane boundary
-                if (boundary.GetDistanceToPoint(boid.transform.position) < this.minimumDistance) {
+                if (boundary.GetDistanceToPoint(boid.Position) < boid.MinimumDistance) {
                     Vector3 avoidDirection = boundary.normal;
-                    avoidDirection *= MaxSpeed;
+                    avoidDirection *= boid.Properties.speed;
                     avoidDirection = Vector3.ClampMagnitude(avoidDirection, MaxForce);
                     steeringDirection += avoidDirection;
                 }
 
                 //if directly facing boundary and within reasonable distance from plane boundary
-                Ray direction = new Ray(boid.transform.position, boid.Velocity);
+                Ray direction = new Ray(boid.Position, boid.Velocity);
                 float distance;
                 if (boundary.Raycast(direction, out distance)) {
                     if (distance < 35) {
                         Vector3 avoidDirection = boundary.normal;
-                        avoidDirection *= MaxSpeed;
+                        avoidDirection *= boid.Properties.speed;
                         avoidDirection = Vector3.ClampMagnitude(avoidDirection, MaxForce);
                         steeringDirection += avoidDirection;
                     }

@@ -17,7 +17,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void navigateToBar() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
             gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
             owner.behaviour = gsb;
             NextStep();
@@ -31,6 +31,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void reachBar() {
             ownerDesire.Satisfy();
+            owner.Statistics.LogDrinkBought();
             NextStep();
         }
     }
