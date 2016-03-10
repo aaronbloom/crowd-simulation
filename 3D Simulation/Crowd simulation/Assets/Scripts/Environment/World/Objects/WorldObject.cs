@@ -48,6 +48,17 @@ namespace Assets.Scripts.Environment.World.Objects {
             return xDifference < halfWidthSum && zDifference < halfLengthSum; //AABB
         }
 
+        //Return true if arg within WorldObject bounds
+        public bool WithinBounds(Vector3 targetPosition) {
+            Vector3 position = GameObject.transform.position;
+            Vector3 halfSize = this.Size / 2;
+
+            bool x = targetPosition.x <= (position.x + halfSize.x) && targetPosition.x >= (position.x - halfSize.x);
+            bool z = targetPosition.z <= (position.z + halfSize.z) && targetPosition.z >= (position.z - halfSize.z);
+
+            return x && z;
+        }
+
         public bool SamePosition(Vector3 position) {
             Vector3 gameObjectPosition = GameObject.transform.position;
             gameObjectPosition.y = 0;
@@ -90,6 +101,18 @@ namespace Assets.Scripts.Environment.World.Objects {
                 worldObject.InitialRotationOffSet
                 );
             return worldObject;
+        }
+
+        public void ChangePrefab(string identifer)
+        {
+            GameObject toDestroy = this.GameObject;
+            var rotation = this.GameObject.transform.rotation;
+            var position = this.GameObject.transform.position;
+            Object.Destroy(toDestroy);
+            this.GameObject = (GameObject) BootStrapper.Initialise(
+                identifer,
+                position,
+                rotation);
         }
 
         public static WorldObject DetermineObject(string objectName) {

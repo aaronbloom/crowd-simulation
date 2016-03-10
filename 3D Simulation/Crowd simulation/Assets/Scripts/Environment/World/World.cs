@@ -31,6 +31,7 @@ namespace Assets.Scripts.Environment.World {
             Toilets = ObjectSublist<Toilet>();
             Stages = ObjectSublist<Stage>();
             Bars = ObjectSublist<Bar>();
+            
             Collidables = Objects.OfType<Collidable>().ToList();
         }
 
@@ -54,13 +55,18 @@ namespace Assets.Scripts.Environment.World {
             return success;
         }
 
-        public bool AlreadyOccupied(Vector3 location) {
+        public bool PointAlreadyOccupied(Vector3 location) {
             foreach (WorldObject worldObject in Objects) {
                 if (worldObject.SamePosition(location)) {
                     return true;
                 }
             }
             return false;
+        }
+
+        public bool SpaceAlreadyOccupied(Vector3 location)
+        {
+            return Objects.Any(worldObject => worldObject.WithinBounds(location));
         }
 
 
