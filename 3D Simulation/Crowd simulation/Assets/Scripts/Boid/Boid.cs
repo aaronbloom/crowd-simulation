@@ -32,6 +32,7 @@ namespace Assets.Scripts.Boid {
 
         public BoidBehaviour behaviour; //Set as protected, so can namespace behaviour access.
         public BoidProperties Properties { get; private set; }
+        public BoidStatistics Statistics { get; private set; }
         private Vector3 acceleration;
 
         public static Boid Spawn(Vector3 position, float genderBias = 0.5f) {
@@ -46,6 +47,7 @@ namespace Assets.Scripts.Boid {
 
         private Boid(Vector3 position, float genderBias) {
             Properties = new BoidProperties(genderBias);
+            Statistics = new BoidStatistics();
 
             int index = Random.Range(0, 3);
             string boidPrefab = Properties.Gender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
@@ -72,8 +74,11 @@ namespace Assets.Scripts.Boid {
         private void calculateNewPosition() {
             this.acceleration = calculateAcceleration(this.acceleration);
             this._velocity = calculateVelocity(this._velocity);
-            gameObject.transform.position = gameObject.transform.position + (this._velocity * Time.deltaTime);
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+            var oldPosition = gameObject.transform.position;
+            var newPosition = gameObject.transform.position + (this._velocity * Time.deltaTime);
+            newPosition = new Vector3(newPosition.x, 0, newPosition.z);
+            gameObject.transform.position = newPosition;
+            this.Statistics.LogDistance(Vector3.Distance(oldPosition, newPosition));
         }
 
         private Vector3 calculateAcceleration(Vector3 acceleration) {
