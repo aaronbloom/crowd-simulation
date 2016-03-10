@@ -31,6 +31,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void reachBar() {
             ownerDesire.Satisfy();
+            owner.Statistics.LogDrinkBought();
             NextStep();
         }
     }
