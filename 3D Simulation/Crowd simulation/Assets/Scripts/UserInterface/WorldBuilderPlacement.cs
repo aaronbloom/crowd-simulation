@@ -127,22 +127,32 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        private int[] directionsBlocked(WorldObject obj)
+        {
+            float whiskerDepth = 0.1f;
+            Vector3 position = obj.GameObject.transform.position;
+            Vector3 offsetX = new Vector3((obj.Size.x / 2) + whiskerDepth, 0, 0);
+            Vector3 offsetZ = new Vector3(0, 0, (obj.Size.z / 2) + whiskerDepth);
+
+            int[] directionsBlocked = new int[4];
+            directionsBlocked[0] = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(position - offsetX) ? 1 : 0;
+            directionsBlocked[1] = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(position + offsetX) ? 1 : 0;
+            directionsBlocked[2] = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(position - offsetZ) ? 1 : 0;
+            directionsBlocked[3] = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(position + offsetZ) ? 1 : 0;
+
+            return directionsBlocked;
+        }
+
+        int left = 0, back = 90, right = 180, forward = 270;
         public void RecalcBars()
         {
             List<Bar> bars = new List<Bar>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
             foreach (Bar bar in bars)
             {
-                Vector3 barPosition = bar.GameObject.transform.position;
-                Vector3 offsetX = new Vector3((bar.Size.x/2)+0.1f,0,0);
-                Vector3 offsetZ = new Vector3(0,0,(bar.Size.z/2)+0.1f);
-                int isLeftBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetX) ? 1 : 0;
-                int isRightBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetX) ? 1 : 0;
-                int isUpBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition - offsetZ) ? 1 : 0;
-                int isDownBlocked = BootStrapper.EnvironmentManager.CurrentEnvironment.World.SpaceAlreadyOccupied(barPosition + offsetZ) ? 1 : 0;
-                int sides = isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
-                string pattern = "" + isLeftBlocked + isRightBlocked + isUpBlocked + isDownBlocked;
-                int left = 0, up = 90, right = 180, down = 270;
-                Debug.Log(pattern);
+                int[] directionsBlocked = this.directionsBlocked(bar);
+                int sides = directionsBlocked.Sum();
+                string pattern = string.Join("",directionsBlocked.Select(x => x.ToString()).ToArray());
+
                 switch (sides)
                 {
                     case 4:
@@ -151,16 +161,16 @@ namespace Assets.Scripts.UserInterface {
                                 switch (bar.placementPattern)
                                 {
                                     case "0111":
-                                        tryUpdatePattern("1111", "bar/bar¬", bar, left + 180);
+                                        tryUpdatePattern(pattern, "bar/bar¬", bar, right);
                                         break;
                                     case "1011":
-                                        tryUpdatePattern("1111", "bar/bar¬", bar, up - 90);
+                                        tryUpdatePattern(pattern, "bar/bar¬", bar, left);
                                         break;
                                     case "1101":
-                                        tryUpdatePattern("1111", "bar/bar¬", bar, right - 90);
+                                        tryUpdatePattern(pattern, "bar/bar¬", bar, right);
                                         break;
                                     case "1110":
-                                        tryUpdatePattern("1111", "bar/bar¬", bar, down);
+                                        tryUpdatePattern(pattern, "bar/bar¬", bar, forward);
                                         break;
                                 }
                                 break;
@@ -169,16 +179,16 @@ namespace Assets.Scripts.UserInterface {
                     case 3:
                         switch (pattern) {
                             case "0111":
-                                tryUpdatePattern("0111", "bar/barI", bar, left- 90);
+                                tryUpdatePattern(pattern, "bar/barI", bar, forward);
                                 break;
                             case "1011":
-                                tryUpdatePattern("1011", "bar/barI", bar, up);
+                                tryUpdatePattern(pattern, "bar/barI", bar, back);
                                 break;
                             case "1101":
-                                tryUpdatePattern("1101", "bar/barI", bar, right);
+                                tryUpdatePattern(pattern, "bar/barI", bar, right);
                                 break;
                             case "1110":
-                                tryUpdatePattern("1110", "bar/barI", bar, down+ 90);
+                                tryUpdatePattern(pattern, "bar/barI", bar, left);
                                 break;
                         }
                         break;
@@ -188,35 +198,35 @@ namespace Assets.Scripts.UserInterface {
                                 // =
                                 break;
                             case "0110":
-                                tryUpdatePattern("0110", "bar/barL", bar, up + 180);
+                                tryUpdatePattern(pattern, "bar/barL", bar, forward);
                                 break;
                             case "1100":
                                 // =
                                 break;
                             case "1010":
-                                tryUpdatePattern("1010", "bar/barL", bar, left);
+                                tryUpdatePattern(pattern, "bar/barL", bar, left);
                                 break;
                             case "0101":
-                                tryUpdatePattern("0101", "bar/barL", bar, right);
+                                tryUpdatePattern(pattern, "bar/barL", bar, right);
                                 break;
                             case "1001":
-                                tryUpdatePattern("1001", "bar/barL", bar, down + 180);
+                                tryUpdatePattern(pattern, "bar/barL", bar, back);
                                 break;
                         }
                         break;
                     case 1:
                         switch (pattern) {
                             case "1000":
-                                tryUpdatePattern("1000", "bar/barU", bar, left + 90);
+                                tryUpdatePattern(pattern, "bar/barU", bar, back);
                                 break;
                             case "0100":
-                                tryUpdatePattern("0100", "bar/barU", bar, right + 90);
+                                tryUpdatePattern(pattern, "bar/barU", bar, forward);
                                 break;
                             case "0010":
-                                tryUpdatePattern("0010", "bar/barU", bar, up - 90);
+                                tryUpdatePattern(pattern, "bar/barU", bar, left);
                                 break;
                             case "0001":
-                                tryUpdatePattern("0001", "bar/barU", bar, down - 90);
+                                tryUpdatePattern(pattern, "bar/barU", bar, right);
                                 break;
                         }
                         break;
