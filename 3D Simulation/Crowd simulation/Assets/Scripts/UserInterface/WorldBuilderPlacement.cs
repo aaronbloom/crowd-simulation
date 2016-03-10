@@ -107,7 +107,7 @@ namespace Assets.Scripts.UserInterface {
                 var currentWorldObject = WorldObject.DetermineObject(objectName);
                 createdWorldObjects[i] = currentWorldObject;
                 currentWorldObject.AdjustSizing(wallNormal);
-                Place(currentWorldObject, position);
+                Place(currentWorldObject, position, wallNormal);
                 position += step;
             }
             return createdWorldObjects;
