@@ -8,15 +8,15 @@ namespace Assets.Scripts.Boid {
     class DemographicAttr : Attribute {
 
         public float movespeed { get; private set; }
-        public float bladderSize { get; private set; }
-        public float thirstiness { get; private set; }
-        public float danciness { get; private set; }
+        public float ToiletNeedRate { get; private set; }
+        public float DrinkNeedRate { get; private set; }
+        public float DanceNeedRate { get; private set; }
 
-        internal DemographicAttr(float movespeed, float bladderSize, float thirstiness, float danciness) {
+        internal DemographicAttr(float movespeed, float toiletNeedRate, float drinkNeedRate, float danceNeedRate) {
             this.movespeed = movespeed;
-            this.bladderSize = bladderSize;
-            this.thirstiness = thirstiness;
-            this.danciness = danciness;
+            this.ToiletNeedRate = toiletNeedRate;
+            this.DrinkNeedRate = drinkNeedRate;
+            this.DanceNeedRate = danceNeedRate;
         }
     }
 
@@ -26,16 +26,16 @@ namespace Assets.Scripts.Boid {
             return GetAttr(d).movespeed;
         }
 
-        public static float GetBladderSize(this Demographic d) {
-            return GetAttr(d).bladderSize;
+        public static float GetToiletNeedRate(this Demographic d) {
+            return GetAttr(d).ToiletNeedRate;
         }
 
-        public static float GetThirstiness(this Demographic d) {
-            return GetAttr(d).bladderSize;
+        public static float GetDrinkNeedRate(this Demographic d) {
+            return GetAttr(d).ToiletNeedRate;
         }
 
-        public static float GetDanciness(this Demographic d) {
-            return GetAttr(d).bladderSize;
+        public static float GetDanceNeedRate(this Demographic d) {
+            return GetAttr(d).ToiletNeedRate;
         }
 
         private static DemographicAttr GetAttr(Demographic d) {

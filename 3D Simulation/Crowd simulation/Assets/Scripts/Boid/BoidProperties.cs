@@ -12,10 +12,10 @@ namespace Assets.Scripts.Boid {
         public Gender Gender { get; private set; }
         public Demographic Demographic { get; private set; }
 
-        public float speed { get { return Demographic.GetMovespeed(); } }
-        public float BladderSize { get { return Demographic.GetBladderSize(); } }
-        public float Thirstiness { get { return Demographic.GetThirstiness(); } }
-        public float Danciness { get { return Demographic.GetDanciness(); } }
+        public float Speed { get { return Demographic.GetMovespeed(); } }
+        public float ToiletNeedRate { get { return Demographic.GetToiletNeedRate(); } }
+        public float DrinkNeedRate { get { return Demographic.GetDrinkNeedRate(); } }
+        public float DanceNeedRate { get { return Demographic.GetDanceNeedRate(); } }
 
         public BoidProperties(float genderBias) {
             _genderBias = genderBias;

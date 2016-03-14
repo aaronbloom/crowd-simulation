@@ -88,7 +88,7 @@ namespace Assets.Scripts.Boid {
         private Vector3 calculateVelocity(Vector3 velocity) {
             velocity *= this.behaviour.VelocityDamping;
             velocity += acceleration;
-            velocity = Vector3.ClampMagnitude(velocity, Properties.speed);
+            velocity = Vector3.ClampMagnitude(velocity, Properties.Speed);
             velocity.y = 0;
             return velocity;
         }
