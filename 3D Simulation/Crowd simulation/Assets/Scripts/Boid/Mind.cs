@@ -25,9 +25,9 @@ namespace Assets.Scripts.Boid {
         public Mind(Boid boid) {
             this.boid = boid;
 
-            drinkNeed = new Need(MindState.Thirsty, Random.Range(0.1f, boid.Properties.DrinkNeedRate), 100);
-            toiletNeed = new Need(MindState.Incontenent, Random.Range(0.1f, boid.Properties.ToiletNeedRate), 100);
-            danceNeed = new Need(MindState.Dancey, Random.Range(0.1f, boid.Properties.DanceNeedRate), 100);
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(0.1f, boid.Properties.DrinkNeedRate));
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0.1f, boid.Properties.ToiletNeedRate));
+            danceNeed = new Need(MindState.Dancey, Random.Range(0.1f, boid.Properties.DanceNeedRate));
 
             desireNeeds();
             CurrentNeed = danceNeed;
@@ -81,6 +81,9 @@ namespace Assets.Scripts.Boid {
 
     public class Need {
 
+        public static int DefaultThreshold = 100;
+        public static int ThresholdModifier = 20;
+
         public MindState MindState { get; private set; }
         public float Value { get; private set; }
         public float Max { get; private set; }
@@ -93,11 +96,11 @@ namespace Assets.Scripts.Boid {
         private readonly float increment;
         private readonly float satisfactionThreshold;
 
-        public Need(MindState mindState, float increment, float satisfactionThreshold) {
+        public Need(MindState mindState, float increment) {
             this.Max = 5000000;
             this.Min = 0;
             this.increment = increment;
-            this.satisfactionThreshold = satisfactionThreshold;
+            this.satisfactionThreshold = DefaultThreshold;
             this.MindState = mindState;
         }
 
@@ -113,7 +116,7 @@ namespace Assets.Scripts.Boid {
 
         //Decreases Need to point of satisfaction
         public void SatifyToThreshhold() {
-            Value = Math.Max(Min,satisfactionThreshold-20);
+            Value = Math.Max(Min,satisfactionThreshold-ThresholdModifier);
         }
         
         //Decreases Need by value
