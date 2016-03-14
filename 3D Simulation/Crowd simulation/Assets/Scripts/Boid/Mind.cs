@@ -24,29 +24,14 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, Random.Range(2, boid.Properties.Thirstiness), 2000);
-            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, boid.Properties.BladderSize), 2000);
-            danceNeed = new Need(MindState.Dancey, Random.Range(1, boid.Properties.Danciness), 2000);
 
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(0.1f, boid.Properties.DrinkNeedRate), 100);
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0.1f, boid.Properties.ToiletNeedRate), 100);
+            danceNeed = new Need(MindState.Dancey, Random.Range(0.1f, boid.Properties.DanceNeedRate), 100);
+
+            desireNeeds();
             CurrentNeed = danceNeed;
-            startNewProcess(CurrentNeed.MindState);
-        }
-
-        private MindState evaluatePriorities() {
-            if (CurrentNeed.Satisfied)
-            {
-                if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
-                if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
-                if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
-            }
-            return CurrentNeed.MindState;
-
-        }
-
-        private void desireNeeds() {
-            drinkNeed.Desire();
-            toiletNeed.Desire();
-            danceNeed.Desire();
+            startNewProcess(evaluatePriorities());
         }
 
         public void Think() {
@@ -58,6 +43,22 @@ namespace Assets.Scripts.Boid {
                 startNewProcess(newMindState);
             }
             thoughtProcess.RunCurrentProcess();
+        }
+
+        private MindState evaluatePriorities() {
+            if (!CurrentNeed.Satisfied) return CurrentNeed.MindState;
+            //else
+            if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
+            if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
+            if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
+            return CurrentNeed.MindState;
+
+        }
+
+        private void desireNeeds() {
+            drinkNeed.Desire();
+            toiletNeed.Desire();
+            danceNeed.Desire();
         }
 
         private void startNewProcess(MindState mindState) {
@@ -79,6 +80,7 @@ namespace Assets.Scripts.Boid {
     }
 
     public class Need {
+
         public MindState MindState { get; private set; }
         public float Value { get; private set; }
         public float Max { get; private set; }
@@ -91,7 +93,6 @@ namespace Assets.Scripts.Boid {
         private readonly float increment;
         private readonly float satisfactionThreshold;
 
-
         public Need(MindState mindState, float increment, float satisfactionThreshold) {
             this.Max = 5000000;
             this.Min = 0;
@@ -100,20 +101,29 @@ namespace Assets.Scripts.Boid {
             this.MindState = mindState;
         }
 
+        //Increases Need
         public void Desire() {
             if (Value < Max) Value += increment;
         }
 
-        public void Satisfy() {
+        //Decreases Need to minimum value
+        public void SatisfyCompletely() {
             Value = Min;
         }
 
-        public void Satisfy(int val) {
+        //Decreases Need to point of satisfaction
+        public void SatifyToThreshhold() {
+            Value = Math.Max(Min,satisfactionThreshold-20);
+        }
+        
+        //Decreases Need by value
+        public void SatisfyByValue(int val) {
             Value-= val;
             if (Value < 0) Value = 0;
         }
 
-        public void SatisfyPercent(float perc)
+        //Decreases Need by percent of current value
+        public void SatisfyByPercent(float perc)
         {
             Value = (int) (Value * perc);
         }
