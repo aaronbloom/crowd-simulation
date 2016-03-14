@@ -47,7 +47,7 @@ namespace Assets.Scripts.UserInterface
                 if (Input.GetMouseButtonUp(LeftMouseButton)) {
                     userWorldBuilder.EndPlaceWorldObject();
                 }
-                if (Input.GetMouseButtonUp(RightMouseButton)) {
+                if (Input.GetMouseButtonDown(RightMouseButton)) {
                     userWorldBuilder.DeleteWorldObject();
                 }
             }

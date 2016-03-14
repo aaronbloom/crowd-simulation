@@ -38,9 +38,11 @@ namespace Assets.Scripts.UserInterface {
                 if (raycastHit.transform.tag == "Boid") {
                     UserInterfaceController.ShowMenu(boidInformationWindow);
                     currentBoid = BootStrapper.BoidManager.FindBoid(raycastHit.transform.gameObject);
+                    BootStrapper.CameraController.SetTarget(currentBoid.Transform);
                 }
                 else {
                     currentBoid = null;
+                    BootStrapper.CameraController.ResetTarget();
                     Object.Destroy(selectionGameObject);
                     selectionGameObject = null;
                     UserInterfaceController.HideMenu(boidInformationWindow);

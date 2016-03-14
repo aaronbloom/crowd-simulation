@@ -94,15 +94,15 @@ namespace RTS_Cam
         public KeyCode panningKey = KeyCode.Mouse2;
 
         public bool useKeyboardZooming = true;
-        public KeyCode zoomInKey = KeyCode.E;
-        public KeyCode zoomOutKey = KeyCode.Q;
+        public KeyCode zoomInKey = KeyCode.R;
+        public KeyCode zoomOutKey = KeyCode.F;
 
         public bool useScrollwheelZooming = true;
         public string zoomingAxis = "Mouse ScrollWheel";
 
         public bool useKeyboardRotation = true;
-        public KeyCode rotateRightKey = KeyCode.X;
-        public KeyCode rotateLeftKey = KeyCode.Z;
+        public KeyCode rotateRightKey = KeyCode.E;
+        public KeyCode rotateLeftKey = KeyCode.Q;
 
         public bool useMouseRotation = true;
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
@@ -258,7 +258,7 @@ namespace RTS_Cam
         {
             float distanceToGround = DistanceToGround();
             if(useScrollwheelZooming)
-                zoomPos += ScrollWheel * Time.deltaTime * scrollWheelZoomingSensitivity;
+                zoomPos -= ScrollWheel * Time.deltaTime * scrollWheelZoomingSensitivity;
             if (useKeyboardZooming)
                 zoomPos += ZoomDirection * Time.deltaTime * keyboardZoomingSensitivity;
 
@@ -289,8 +289,8 @@ namespace RTS_Cam
         /// <summary>
         /// follow targetif target != null
         /// </summary>
-        private void FollowTarget()
-        {
+        private void FollowTarget() {
+            targetOffset.z = -m_Transform.position.y;
             Vector3 targetPos = new Vector3(targetFollow.position.x, m_Transform.position.y, targetFollow.position.z) + targetOffset;
             m_Transform.position = Vector3.MoveTowards(m_Transform.position, targetPos, Time.deltaTime * followingSpeed);
         }
