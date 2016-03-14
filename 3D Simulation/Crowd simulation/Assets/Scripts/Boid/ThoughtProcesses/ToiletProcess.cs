@@ -32,7 +32,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachToilet() {
-            ownerDesire.Satisfy();
+            ownerDesire.SatisfyCompletely();
             owner.Statistics.LogToiletBreak();
             NextStep();
         }

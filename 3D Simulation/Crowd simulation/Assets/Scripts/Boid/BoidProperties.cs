@@ -12,7 +12,7 @@ namespace Assets.Scripts.Boid {
         public Gender Gender { get; private set; }
         public DemographicProperties DemographicProperties { get; private set; }
 
-        public float Speed { get { return DemographicProperties.MoveSpeed; } }
+        public float MoveSpeed { get { return DemographicProperties.MoveSpeed; } }
         public float ToiletNeedRate { get { return DemographicProperties.ToiletNeedRate; } }
         public float DrinkNeedRate { get { return DemographicProperties.DrinkNeedRate; } }
         public float DanceNeedRate { get { return DemographicProperties.DanceNeedRate; } }

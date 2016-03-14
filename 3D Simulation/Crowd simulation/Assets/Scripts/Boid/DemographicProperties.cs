@@ -16,6 +16,11 @@ namespace Assets.Scripts.Boid {
         public float DrinkNeedRate { get; private set; }
         public float DanceNeedRate { get; private set; }
 
+        public override string ToString()
+        {
+            return demographicType.ToString();
+        }
+
         public DemographicProperties(DemographicType type)
         {
             updateType(type);
@@ -44,7 +49,7 @@ namespace Assets.Scripts.Boid {
                     break;
                 case DemographicType.INCONTENENT:
                     MoveSpeed = 11f;
-                    ToiletNeedRate = 3f;
+                    ToiletNeedRate = 1.5f;
                     break;
                 case DemographicType.ALCOHOLIC:
                     MoveSpeed = 8f;
@@ -62,7 +67,7 @@ namespace Assets.Scripts.Boid {
         private void setDefaultValues()
         {
             MoveSpeed = 10f;
-            ToiletNeedRate = 0.5f;
+            ToiletNeedRate = 0.4f;
             DrinkNeedRate = 4;
             DanceNeedRate = 5;
         }

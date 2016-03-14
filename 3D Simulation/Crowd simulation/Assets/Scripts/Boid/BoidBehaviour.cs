@@ -20,7 +20,7 @@ namespace Assets.Scripts.Boid {
         protected Vector3 SteerTowardsPoint(Vector3 target) {
             Vector3 aim = target - boid.Position;
             aim.Normalize();
-            aim *= boid.Properties.Speed;
+            aim *= boid.Properties.MoveSpeed;
             Vector3 steeringDirection = aim - boid.Velocity;
             steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
             return steeringDirection;

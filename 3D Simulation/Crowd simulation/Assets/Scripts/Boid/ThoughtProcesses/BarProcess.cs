@@ -14,6 +14,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             processList.Add((Action)navigateToBar);
             processList.Add((Action)continueWalkToBar);
             processList.Add((Action)reachBar);
+            processList.Add((Action)drink);
         }
 
         private void navigateToBar() {
@@ -30,9 +31,14 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachBar() {
-            ownerDesire.Satisfy();
+            //ownerDesire.SatisfyCompletely();
             owner.Statistics.LogDrinkBought();
             NextStep();
+        }
+
+        private void drink()
+        {
+            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate*3);
         }
     }
 }

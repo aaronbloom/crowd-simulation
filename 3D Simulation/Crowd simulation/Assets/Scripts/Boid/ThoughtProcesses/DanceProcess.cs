@@ -33,7 +33,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             WatchingBehaviour behaviour = new WatchingBehaviour(this.owner, this.goalNode);
             owner.behaviour = behaviour;
             //satisfy slowly
-            ownerDesire.Satisfy(5);
+            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DanceNeedRate + 1);
             owner.Statistics.LogWatchingStage();
             //NextStep();
         }

@@ -24,29 +24,14 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
+
             drinkNeed = new Need(MindState.Thirsty, Random.Range(0.1f, boid.Properties.DrinkNeedRate), 100);
             toiletNeed = new Need(MindState.Incontenent, Random.Range(0.1f, boid.Properties.ToiletNeedRate), 100);
             danceNeed = new Need(MindState.Dancey, Random.Range(0.1f, boid.Properties.DanceNeedRate), 100);
 
+            desireNeeds();
             CurrentNeed = danceNeed;
-            startNewProcess(CurrentNeed.MindState);
-        }
-
-        private MindState evaluatePriorities() {
-            if (CurrentNeed.Satisfied)
-            {
-                if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
-                if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
-                if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
-            }
-            return CurrentNeed.MindState;
-
-        }
-
-        private void desireNeeds() {
-            drinkNeed.Desire();
-            toiletNeed.Desire();
-            danceNeed.Desire();
+            startNewProcess(evaluatePriorities());
         }
 
         public void Think() {
@@ -58,6 +43,22 @@ namespace Assets.Scripts.Boid {
                 startNewProcess(newMindState);
             }
             thoughtProcess.RunCurrentProcess();
+        }
+
+        private MindState evaluatePriorities() {
+            if (!CurrentNeed.Satisfied) return CurrentNeed.MindState;
+            //else
+            if (drinkNeed.Value > CurrentNeed.Value) CurrentNeed = drinkNeed;
+            if (toiletNeed.Value > CurrentNeed.Value) CurrentNeed = toiletNeed;
+            if (danceNeed.Value > CurrentNeed.Value) CurrentNeed = danceNeed;
+            return CurrentNeed.MindState;
+
+        }
+
+        private void desireNeeds() {
+            drinkNeed.Desire();
+            toiletNeed.Desire();
+            danceNeed.Desire();
         }
 
         private void startNewProcess(MindState mindState) {
