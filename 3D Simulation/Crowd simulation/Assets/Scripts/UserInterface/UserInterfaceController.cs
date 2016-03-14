@@ -72,7 +72,7 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             ShowMenu(environmentBuilderMenu);
             userWorldBuilder = new UserWorldBuilder();
-            BootStrapper.CameraController.LookAtEnvironmentCenter();
+            //BootStrapper.CameraController.LookAtEnvironmentCenter();
         }
 
         public void DemographicSetup() {

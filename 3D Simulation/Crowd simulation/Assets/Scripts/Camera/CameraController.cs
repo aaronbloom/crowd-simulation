@@ -30,7 +30,6 @@ namespace Assets.Scripts.Camera
         // Update is called once per frame
         void Update()
         {
-            checkKeypress();
             checkMouseScroll();
             checkForMouseMovement();
         }

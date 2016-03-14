@@ -25,7 +25,7 @@ namespace Assets.Scripts {
         }
 
         void Start() {
-            CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
+            //CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
         }
 
         void Update() {
