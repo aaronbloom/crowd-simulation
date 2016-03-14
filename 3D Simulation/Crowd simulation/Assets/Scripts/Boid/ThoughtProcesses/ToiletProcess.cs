@@ -16,6 +16,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             processList.Add((Action)navigateToToilet);
             processList.Add((Action)continueWalkToToilet);
             processList.Add((Action)reachToilet);
+            processList.Add((Action)pee);
         }
 
         private void navigateToToilet() {
@@ -32,9 +33,13 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachToilet() {
-            ownerDesire.SatisfyCompletely();
             owner.Statistics.LogToiletBreak();
             NextStep();
+        }
+
+        private void pee()
+        {
+            ownerDesire.SatisfyByValue(20);
         }
 
     }
