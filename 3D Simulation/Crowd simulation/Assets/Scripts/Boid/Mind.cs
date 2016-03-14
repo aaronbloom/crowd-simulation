@@ -24,9 +24,9 @@ namespace Assets.Scripts.Boid {
 
         public Mind(Boid boid) {
             this.boid = boid;
-            drinkNeed = new Need(MindState.Thirsty, Random.Range(0, boid.Properties.DrinkNeedRate), 2000);
-            toiletNeed = new Need(MindState.Incontenent, Random.Range(0, boid.Properties.ToiletNeedRate), 2000);
-            danceNeed = new Need(MindState.Dancey, Random.Range(0, boid.Properties.DanceNeedRate), 2000);
+            drinkNeed = new Need(MindState.Thirsty, Random.Range(0.1f, boid.Properties.DrinkNeedRate), 100);
+            toiletNeed = new Need(MindState.Incontenent, Random.Range(0.1f, boid.Properties.ToiletNeedRate), 100);
+            danceNeed = new Need(MindState.Dancey, Random.Range(0.1f, boid.Properties.DanceNeedRate), 100);
 
             CurrentNeed = danceNeed;
             startNewProcess(CurrentNeed.MindState);
@@ -79,6 +79,7 @@ namespace Assets.Scripts.Boid {
     }
 
     public class Need {
+
         public MindState MindState { get; private set; }
         public float Value { get; private set; }
         public float Max { get; private set; }
@@ -91,7 +92,6 @@ namespace Assets.Scripts.Boid {
         private readonly float increment;
         private readonly float satisfactionThreshold;
 
-
         public Need(MindState mindState, float increment, float satisfactionThreshold) {
             this.Max = 5000000;
             this.Min = 0;
@@ -100,20 +100,29 @@ namespace Assets.Scripts.Boid {
             this.MindState = mindState;
         }
 
+        //Increases Need
         public void Desire() {
             if (Value < Max) Value += increment;
         }
 
-        public void Satisfy() {
+        //Decreases Need to minimum value
+        public void SatisfyCompletely() {
             Value = Min;
         }
 
-        public void Satisfy(int val) {
+        //Decreases Need to point of satisfaction
+        public void SatifyToThreshhold() {
+            Value = Math.Max(Min,satisfactionThreshold-20);
+        }
+        
+        //Decreases Need by value
+        public void SatisfyByValue(int val) {
             Value-= val;
             if (Value < 0) Value = 0;
         }
 
-        public void SatisfyPercent(float perc)
+        //Decreases Need by percent of current value
+        public void SatisfyByPercent(float perc)
         {
             Value = (int) (Value * perc);
         }
