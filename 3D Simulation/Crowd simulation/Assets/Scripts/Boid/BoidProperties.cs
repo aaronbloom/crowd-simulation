@@ -10,17 +10,17 @@ namespace Assets.Scripts.Boid {
 
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
-        public Demographic Demographic { get; private set; }
+        public DemographicProperties DemographicProperties { get; private set; }
 
-        public float Speed { get { return Demographic.GetMovespeed(); } }
-        public float ToiletNeedRate { get { return Demographic.GetToiletNeedRate(); } }
-        public float DrinkNeedRate { get { return Demographic.GetDrinkNeedRate(); } }
-        public float DanceNeedRate { get { return Demographic.GetDanceNeedRate(); } }
+        public float Speed { get { return DemographicProperties.MoveSpeed; } }
+        public float ToiletNeedRate { get { return DemographicProperties.ToiletNeedRate; } }
+        public float DrinkNeedRate { get { return DemographicProperties.DrinkNeedRate; } }
+        public float DanceNeedRate { get { return DemographicProperties.DanceNeedRate; } }
 
         public BoidProperties(float genderBias) {
             _genderBias = genderBias;
             Gender = getRandomGender();
-            Demographic = (Demographic) Random.Range(0, 5);
+            DemographicProperties = new DemographicProperties();
             HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 
