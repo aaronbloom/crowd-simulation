@@ -14,6 +14,7 @@ namespace Assets.Scripts.Boid {
 
         private GameObject gameObject;
         private Mind mind;
+        public Transform Transform { get { return gameObject.transform; } }
         public Vector3 Position { get { return gameObject.transform.position; } }
         public string Name { get { return gameObject.name; } }
         public float Thirst { get { return mind.Thirst; } }
