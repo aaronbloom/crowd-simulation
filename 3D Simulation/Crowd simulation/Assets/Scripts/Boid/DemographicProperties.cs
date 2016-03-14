@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
 
-    public class DemographicProperties
-    {
+    public class DemographicProperties {
+
         private DemographicType demographicType;
 
         public float MoveSpeed { get; private set; }
@@ -16,13 +16,11 @@ namespace Assets.Scripts.Boid {
         public float DrinkNeedRate { get; private set; }
         public float DanceNeedRate { get; private set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return demographicType.ToString();
         }
 
-        public DemographicProperties(DemographicType type)
-        {
+        public DemographicProperties(DemographicType type) {
             updateType(type);
         }
 
@@ -34,13 +32,11 @@ namespace Assets.Scripts.Boid {
             updateType((DemographicType) Random.Range(0, 5));
         }
 
-        public void updateType(DemographicType type)
-        {
+        public void updateType(DemographicType type) {
             demographicType = type;
             setDefaultValues();
 
-            switch (demographicType)
-            {
+            switch (demographicType) {
                 case DemographicType.DEFAULT:
                     //Do Nothing
                     break;
@@ -64,8 +60,7 @@ namespace Assets.Scripts.Boid {
             }
         }
 
-        private void setDefaultValues()
-        {
+        private void setDefaultValues() {
             MoveSpeed = 10f;
             ToiletNeedRate = 0.4f;
             DrinkNeedRate = 4;
@@ -73,8 +68,7 @@ namespace Assets.Scripts.Boid {
         }
     }
 
-    public enum DemographicType
-    {
+    public enum DemographicType {
         DEFAULT,
         SLOW,
         INCONTENENT,

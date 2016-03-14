@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class BarProcess : ThoughtProcess {
+
         private Boid owner;
         private Need ownerDesire;
+        private int satisfactionMultiplier = 3;
 
         public BarProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -31,14 +33,13 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachBar() {
-            //ownerDesire.SatisfyCompletely();
             owner.Statistics.LogDrinkBought();
             NextStep();
         }
 
         private void drink()
         {
-            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate*3);
+            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate* satisfactionMultiplier);
         }
     }
 }
