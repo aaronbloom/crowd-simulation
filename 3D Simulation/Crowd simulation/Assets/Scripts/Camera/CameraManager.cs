@@ -7,8 +7,6 @@ namespace Assets.Scripts.Camera {
         private static readonly string EnvironmentCameraName = "EnvironmentCamera";
         private static readonly string FirstPersonCameraName = "FirstPersonCharacterParent";
 
-        private UnityEngine.Camera[] CCTV;
-
         private static GameObject FirstPersonCamera;
         private static GameObject EnvironmentCamera;
 
@@ -17,7 +15,6 @@ namespace Assets.Scripts.Camera {
         public CameraManager () {
             FirstPersonCamera = ((GameObject)BootStrapper.Initialise(FirstPersonCameraName));
             EnvironmentCamera = ((GameObject)BootStrapper.Initialise(EnvironmentCameraName));
-            CCTV = new UnityEngine.Camera[0];
         }
 
         public void activateFirstPersonCamera() {
@@ -40,18 +37,6 @@ namespace Assets.Scripts.Camera {
             } else {
                 activateFirstPersonCamera();
                 isFirstPerson = true;
-            }
-        }
-
-        public void activateCCTV(int index) {
-            disableAllCameras();
-            CCTV[index].enabled = true;
-        }
-
-
-        private void disableAllCameras() {
-            foreach (UnityEngine.Camera camera in CCTV) {
-                camera.enabled = false;
             }
         }
     }
