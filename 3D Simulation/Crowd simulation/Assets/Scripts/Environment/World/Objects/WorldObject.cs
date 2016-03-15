@@ -7,7 +7,7 @@ namespace Assets.Scripts.Environment.World.Objects {
     public abstract class WorldObject {
         private string _identifer = String.Empty;
         private string _tag = "Untagged";
-
+        
         public string Identifier {
             get { return _identifer; }
             set {
@@ -31,6 +31,7 @@ namespace Assets.Scripts.Environment.World.Objects {
         public Vector3 Size { get; protected set; }
         public Vector3 FacingDirection { get; protected set; } //The normalised direction vector for the object front face
         public int FrontPadding { get; protected set; } //Amount from front to pad the object size, int 4 => 4 spaces in front of face
+        public Vector3 InitialWallNormal { get; set; }
 
         public GameObject GameObject { get; set; }
 
@@ -102,8 +103,9 @@ namespace Assets.Scripts.Environment.World.Objects {
                    + Vector3.Scale(this.FacingDirection, this.Size/2); //The front face
         }
 
-        public static WorldObject Initialise(WorldObject worldObject, Vector3 position)
+        public static WorldObject Initialise(WorldObject worldObject, Vector3 position, Vector3 wallNormal)
         {
+            worldObject.InitialWallNormal = Vector3.zero;
             worldObject.GameObject = (GameObject)BootStrapper.Initialise(
                 worldObject.Identifier,
                 position + worldObject.InitialPositionOffSet,

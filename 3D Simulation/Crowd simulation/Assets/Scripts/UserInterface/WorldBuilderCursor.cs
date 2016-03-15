@@ -137,7 +137,7 @@ namespace Assets.Scripts.UserInterface {
         }
 
         private WorldObject NewCursor(WorldObject worldObject, Vector3 groundPosition) {
-            var cursor = WorldObject.Initialise(worldObject, groundPosition);
+            var cursor = WorldObject.Initialise(worldObject, groundPosition, Vector3.zero);
             SetCursorValid(cursor);
             Collider collider = cursor.GameObject.GetComponent<Collider>();
             if (collider != null) collider.enabled = false;
