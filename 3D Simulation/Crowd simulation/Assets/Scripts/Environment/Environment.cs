@@ -110,5 +110,29 @@ namespace Assets.Scripts.Environment {
 
             return boundaries;
         }
+
+        public void SaveEnvironment() {
+            var savedEnvironment = new SaveableEnvironment();
+            savedEnvironment.SaveWorldObjects(World.Objects);
+            FileHandler.WriteToFile("World", savedEnvironment);
+        }
+
+        public void LoadEnvironmentFromFile(string fileName) {
+            var file = FileHandler.LoadFromFile(fileName);
+            if (file != null) {
+                var savedEnv = file as SaveableEnvironment;
+                if (savedEnv != null) {
+                    LoadEnvironment(savedEnv);
+                }
+            }
+        }
+
+        public void LoadEnvironment(SaveableEnvironment savedEnvironment) {
+            savedEnvironment.BuildWorldWith(new WorldBuilderPlacement());
+        }
     }
+
+    
+
+    
 }

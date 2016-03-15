@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Environment;
+using Assets.Scripts.Environment.Save;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
-    class WorldBuilderPlacement {
+    class WorldBuilderPlacement : IBuilder {
 
         public WorldBuilderPlacement() {}
 
