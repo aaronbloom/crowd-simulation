@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     class AnalysisInterface {
-        private readonly Vector3 chartPosition = new Vector3(100, 100, 100);
+        private readonly Vector3 chartPosition = new Vector3(100, -100, 100);
         private  readonly Vector3 barChartPositionOffset = new Vector3(-0.5f, -0.5f, 0);
         private GameObject barChartObject;
         private BarChart barChartData;
@@ -41,9 +41,7 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public void View() {
-            BootStrapper.CameraController.transform.position = chartPosition + Vector3.back;
-            BootStrapper.CameraController.transform.LookAt(BootStrapper.CameraController.transform.position +
-                                                           Vector3.forward);
+            BootStrapper.CameraManager.SwitchToStatsCamera(chartPosition, Vector3.forward);
         }
     }
 }

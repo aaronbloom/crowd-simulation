@@ -14,7 +14,7 @@ namespace Assets.Scripts {
         //System Fields
         public static BoidManager BoidManager { get; private set; }
         public static EnvironmentManager EnvironmentManager { get; private set; }
-        public static RTS_Camera CameraController { get; private set; }
+        public static CameraManager CameraManager { get; private set; }
         public static bool Pause { get; private set; }
         private const string CaptureHeatMap = "BoidHeatMap";
         private const string BoidSpawning = "BoidSpawningTimer";
@@ -22,11 +22,10 @@ namespace Assets.Scripts {
         void Awake() {
             Pause = false;
             EnvironmentManager = new EnvironmentManager();
+            CameraManager = new CameraManager();
         }
 
-        void Start() {
-            CameraController = GameObject.Find(CameraPrefab).GetComponent(typeof (RTS_Camera)) as RTS_Camera;
-        }
+        void Start() {}
 
         void Update() {
             if (BoidManager != null) {
