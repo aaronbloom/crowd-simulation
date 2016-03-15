@@ -2,6 +2,7 @@
 using UnityEngine;
 using Assets.Scripts.Boid;
 using Assets.Scripts.Camera;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface
@@ -96,6 +97,7 @@ namespace Assets.Scripts.UserInterface
 
         public void BoidsEyeView() {
             BootStrapper.CameraManager.toggleFirstPersonCamera();
+            EventSystem.current.SetSelectedGameObject(null, null);
         }
 
         public void GenerateHeatMap() {
