@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface {
     class AnalysisInterface {
@@ -49,6 +50,24 @@ namespace Assets.Scripts.UserInterface {
 
         public void HideChart() {
             BootStrapper.CameraManager.SwitchToRTSCamera();
+        }
+
+        public void SetStatisticsValues() {
+            Text DistanceCoveredAverageText = GameObject.Find("DistanceCoveredAverageText").GetComponent<Text>();
+            Text DistanceCoveredMinText = GameObject.Find("DistanceCoveredMinText").GetComponent<Text>();
+            Text DistanceCoveredMaxText = GameObject.Find("DistanceCoveredMaxText").GetComponent<Text>();
+            Text DrinksBoughtTotalText = GameObject.Find("DrinksBoughtTotalText").GetComponent<Text>();
+            Text StageViewingAverageText = GameObject.Find("StageViewingAverageText").GetComponent<Text>();
+            Text StageViewingMinText = GameObject.Find("StageViewingMinText").GetComponent<Text>();
+            Text StageViewingMaxText = GameObject.Find("StageViewingMaxText").GetComponent<Text>();
+
+            DistanceCoveredAverageText.text = BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.DistanceCovered).ToString();
+            DistanceCoveredMinText.text = BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.DistanceCovered).ToString();
+            DistanceCoveredMaxText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DistanceCovered).ToString();
+            DrinksBoughtTotalText.text = BootStrapper.BoidManager.Boids.Sum(boid => boid.Statistics.DrinksBought).ToString();
+            StageViewingAverageText.text = BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.StageWatchedAmount).ToString();
+            StageViewingMaxText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.StageWatchedAmount).ToString();
+            StageViewingMinText.text = BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.StageWatchedAmount).ToString();
         }
     }
 }

@@ -111,6 +111,7 @@ namespace Assets.Scripts.UserInterface {
 
         public void ShowStatistics() {
             analysisInterface.statisticsInformationWindow.Show();
+            analysisInterface.SetStatisticsValues();
         }
 
         public void SetCurrentPlacementObject(string objectName) {
