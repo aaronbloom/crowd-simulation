@@ -1,10 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
-using Assets.Scripts.Boid;
-using UnityEngine.UI;
 
-namespace Assets.Scripts.UserInterface
-{
+namespace Assets.Scripts.UserInterface {
     public class UserInterfaceController : MonoBehaviour {
 
         private const int LeftMouseButton = 0;
@@ -18,6 +15,7 @@ namespace Assets.Scripts.UserInterface
         private GameObject analysisMenu;
         private BoidInformationWindow boidInformationWindow;
         private UserWorldBuilder userWorldBuilder;
+        private AnalysisInterface analysisInterface;
 
         void Awake() {
             mainMenu = GameObject.Find("MainMenu");
@@ -27,6 +25,7 @@ namespace Assets.Scripts.UserInterface
             demographicMenu = GameObject.Find("DemographicMenu");
             analysisMenu = GameObject.Find("AnalysisMenu");
             boidInformationWindow = new BoidInformationWindow();
+            analysisInterface = new AnalysisInterface();
         }
 
         void Start () {
@@ -98,6 +97,8 @@ namespace Assets.Scripts.UserInterface
             HideMenu(simulationMenu);
             ShowMenu(analysisMenu);
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
+            analysisInterface.Populate();
+            analysisInterface.View();
         }
 
         public void GenerateHeatMap() {

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Boid {
         private readonly int NumberOfBoids;
         private readonly float _genderBias;
         private readonly EnvironmentManager EnvironmentManager;
-        private readonly List<Boid> boids;
+        public List<Boid> Boids { get; protected set; }
         private readonly HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
@@ -21,12 +21,12 @@ namespace Assets.Scripts.Boid {
             EnvironmentManager = EnvironmentManager.Shared();
             NumberOfBoids = numOfBoids;
             _genderBias = genderBias;
-            boids = new List<Boid>(NumberOfBoids);
-            heatMap = new HeatMap(boids);
+            Boids = new List<Boid>(NumberOfBoids);
+            heatMap = new HeatMap(Boids);
         }
 
         public void AttemptBoidSpawn() {
-            for (int i = 0; i < NumberOfBoids - boids.Count; i++) {
+            for (int i = 0; i < NumberOfBoids - Boids.Count; i++) {
                 spawnBoid();
             }
         }
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public void Update() {
-            foreach (Boid boid in boids) {
+            foreach (Boid boid in Boids) {
                 boid.Update();
             }
         }
@@ -50,13 +50,13 @@ namespace Assets.Scripts.Boid {
                 Vector3 positionOffset = FindRandomEntrancePosition();
                 Vector3 position = Vector3.zero + positionOffset;
                 bool isOverLapping = false;
-                foreach (Boid boid in boids) {
+                foreach (Boid boid in Boids) {
                     if (Vector3.Distance(position, boid.Position) < 3) {
                         isOverLapping = true;
                     }
                 }
                 if (!isOverLapping) {
-                    boids.Add(Boid.Spawn(position, _genderBias));
+                    Boids.Add(Boid.Spawn(position, _genderBias));
                 }
             }
         }
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public Boid FindBoid(GameObject gameObject) {
-            foreach (Boid boid in boids) {
+            foreach (Boid boid in Boids) {
                 if (boid.HasGameObject(gameObject)) {
                     return boid;
                 }
