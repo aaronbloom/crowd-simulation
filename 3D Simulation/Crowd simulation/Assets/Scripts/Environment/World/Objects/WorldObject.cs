@@ -1,16 +1,26 @@
 ﻿using System;
+using Assets.Scripts.Boid;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.Environment.World.Objects {
     public abstract class WorldObject {
         private string _identifer = String.Empty;
+        private string _tag = "Untagged";
 
         public string Identifier {
             get { return _identifer; }
             set {
                 if (_identifer == String.Empty) {
                     _identifer = value;
+                }
+            }
+        }
+        public string Tag {
+            get { return _tag; }
+            set {
+                if (_tag == "Untagged") {
+                    _tag = value;
                 }
             }
         }
@@ -120,8 +130,10 @@ namespace Assets.Scripts.Environment.World.Objects {
                     return new Wall();
                 case Entrance.IdentifierStatic:
                     return new Entrance();
-                case Toilet.IdentifierStatic:
-                    return new Toilet();
+                case Toilet.IdentifierStatic + "Male":
+                    return new Toilet(Gender.MALE);
+                case Toilet.IdentifierStatic + "Female":
+                    return new Toilet(Gender.FEMALE);
                 case Stage.IdentifierStatic:
                     return new Stage();
                 case Bar.IdentifierStatic:

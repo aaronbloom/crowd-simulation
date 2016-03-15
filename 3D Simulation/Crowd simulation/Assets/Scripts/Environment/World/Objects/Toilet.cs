@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Boid;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
@@ -6,8 +7,9 @@ namespace Assets.Scripts.Environment.World.Objects {
         public const string IdentifierStatic = "Cubicle";
         public static Vector3 SizeStatic = new Vector3(4, 4, 4);
 
-        public Toilet() : base() {
+        public Toilet(Gender gender) : base() {
             this.Identifier = IdentifierStatic;
+            this.Tag = gender.ToString();
             this.InitialRotationOffSet = Quaternion.Euler(90, 180, 180);
             this.InitialPositionOffSet = new Vector3(0, -2, 0);
             this.Size = SizeStatic;
