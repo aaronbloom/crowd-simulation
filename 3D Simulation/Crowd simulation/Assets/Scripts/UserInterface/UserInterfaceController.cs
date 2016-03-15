@@ -100,11 +100,17 @@ namespace Assets.Scripts.UserInterface {
 
         public void GenerateHeatMap() {
             BootStrapper.BoidManager.DisplayHeatMap();
+            analysisInterface.statisticsInformationWindow.Hide();
         }
 
         public void ShowDrinksBought() {
-            analysisInterface.Populate();
-            analysisInterface.View();
+            analysisInterface.PopulateChart();
+            analysisInterface.ViewChart();
+            analysisInterface.statisticsInformationWindow.Hide();
+        }
+
+        public void ShowStatistics() {
+            analysisInterface.statisticsInformationWindow.Show();
         }
 
         public void SetCurrentPlacementObject(string objectName) {

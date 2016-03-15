@@ -9,8 +9,11 @@ namespace Assets.Scripts.UserInterface {
         private BarChart barChartData;
         private ChartFrame barChartFrame;
         private GameObject chartBackgroundPlane;
+        public StatisticsInformationWindow statisticsInformationWindow { get; private set; }
 
-        public AnalysisInterface() {}
+        public AnalysisInterface() {
+            statisticsInformationWindow = new StatisticsInformationWindow();
+        }
 
         private void AddCharts() {
             chartBackgroundPlane = BootStrapper.Initialise("Charts/ChartBackground") as GameObject;
@@ -19,7 +22,7 @@ namespace Assets.Scripts.UserInterface {
             barChartFrame = barChartObject.GetComponentInChildren<ChartFrame>();
         }
 
-        public void Populate() {
+        public void PopulateChart() {
             AddCharts();
             barChartData.UpdateData(
                 BootStrapper.BoidManager.Boids.Select(boid => boid.Statistics.DrinksBought)
@@ -40,8 +43,12 @@ namespace Assets.Scripts.UserInterface {
             barChartFrame.row_max = 0;
         }
 
-        public void View() {
+        public void ViewChart() {
             BootStrapper.CameraManager.SwitchToStatsCamera(chartPosition, Vector3.forward);
+        }
+
+        public void HideChart() {
+            BootStrapper.CameraManager.SwitchToRTSCamera();
         }
     }
 }
