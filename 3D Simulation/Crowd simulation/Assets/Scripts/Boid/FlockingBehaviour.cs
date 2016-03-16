@@ -47,19 +47,18 @@ namespace Assets.Scripts.Boid {
         }
 
         protected List<global::Assets.Scripts.Boid.Boid> FindBoidsWithinView() {
-            GameObject[] boids = GameObject.FindGameObjectsWithTag(BoidTag);
-            List<global::Assets.Scripts.Boid.Boid> closeBoids = new List<global::Assets.Scripts.Boid.Boid>();
-            foreach (GameObject otherBoid in boids) {
+            List<Boid> closeBoids = new List<Boid>();
+            foreach (Boid otherBoid in BootStrapper.BoidManager.Boids) {
                 if (!object.ReferenceEquals(this.boid, otherBoid) && isWithinView(boid, otherBoid)) {
-                    closeBoids.Add(BootStrapper.BoidManager.FindBoid(otherBoid));
+                    closeBoids.Add(otherBoid);
                 }
             }
             return closeBoids;
         }
 
-        private bool isWithinView(global::Assets.Scripts.Boid.Boid boid, GameObject otherBoid) {
+        private bool isWithinView(Boid boid, Boid otherBoid) {
             Vector3 boidPosition = boid.Position;
-            Vector3 otherBoidPosition = otherBoid.transform.position;
+            Vector3 otherBoidPosition = otherBoid.Position;
             float distance = Vector3.Distance(boidPosition, otherBoidPosition);
             return distance < boid.ViewingDistance && distance != 0;
         }
