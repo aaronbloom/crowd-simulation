@@ -8,7 +8,6 @@ namespace Assets.Scripts.UserInterface {
         private  readonly Vector3 barChartPositionOffset = new Vector3(-0.5f, -0.5f, 0);
         private GameObject barChartObject;
         private BarChart barChartData;
-        private ChartFrame barChartFrame;
         private GameObject chartBackgroundPlane;
         public StatisticsInformationWindow statisticsInformationWindow { get; private set; }
 
@@ -20,7 +19,6 @@ namespace Assets.Scripts.UserInterface {
             chartBackgroundPlane = BootStrapper.Initialise("Charts/ChartBackground") as GameObject;
             barChartObject = BootStrapper.Initialise("Charts/BarChart_Standard") as GameObject;
             barChartData = barChartObject.GetComponentInChildren<BarChart>();
-            barChartFrame = barChartObject.GetComponentInChildren<ChartFrame>();
         }
 
         public void PopulateChart() {
@@ -58,11 +56,11 @@ namespace Assets.Scripts.UserInterface {
             Text StageViewingMinText = GameObject.Find("StageViewingMinText").GetComponent<Text>();
             Text StageViewingMaxText = GameObject.Find("StageViewingMaxText").GetComponent<Text>();
 
-            DistanceCoveredAverageText.text = BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.DistanceCovered).ToString();
-            DistanceCoveredMinText.text = BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.DistanceCovered).ToString();
-            DistanceCoveredMaxText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DistanceCovered).ToString();
+            DistanceCoveredAverageText.text = ((int)BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.DistanceCovered)).ToString();
+            DistanceCoveredMinText.text = ((int)BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.DistanceCovered)).ToString();
+            DistanceCoveredMaxText.text = ((int)BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DistanceCovered)).ToString();
             DrinksBoughtTotalText.text = BootStrapper.BoidManager.Boids.Sum(boid => boid.Statistics.DrinksBought).ToString();
-            StageViewingAverageText.text = BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.StageWatchedAmount).ToString();
+            StageViewingAverageText.text = ((int)BootStrapper.BoidManager.Boids.Average(boid => boid.Statistics.StageWatchedAmount)).ToString();
             StageViewingMaxText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.StageWatchedAmount).ToString();
             StageViewingMinText.text = BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.StageWatchedAmount).ToString();
         }
