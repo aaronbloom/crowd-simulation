@@ -30,22 +30,19 @@ namespace Assets.Scripts.UserInterface {
                 .Select(drinksBought => (float)drinksBought).OrderBy(drinksBought => (float)drinksBought).ToArray());
             barChartObject.transform.position = chartPosition + barChartPositionOffset;
             chartBackgroundPlane.transform.position = chartPosition + Vector3.forward*2;
-            barChartData.mBarWidth = 0.4f;
 
-            barChartData.UpdateForEditor = true;
-            barChartFrame.UpdateForEditor = true;
+            TextMesh chartXLabel = GameObject.Find("ChartXLabel").GetComponent<TextMesh>();
+            TextMesh chartYLabel = GameObject.Find("ChartYLabel").GetComponent<TextMesh>();
+            TextMesh chartYText = GameObject.Find("ChartYText").GetComponent<TextMesh>();
 
-            barChartFrame.mThickness = 0.002f;
-            barChartFrame.MarginBottom = 0;
-            barChartFrame.MarginLeft = 0;
-            barChartFrame.MarginRight = 0.1f;
-            barChartFrame.MarginTop = 0.1f;
-            barChartFrame.col_max = 10;
-            barChartFrame.row_max = 0;
+            chartXLabel.transform.position = chartPosition + Vector3.down*0.5f;
+            chartYLabel.transform.position = chartPosition + Vector3.left*0.5f;
+            chartYText.transform.position = chartPosition + Vector3.left*0.5f + Vector3.up*0.5f;
+            chartYText.text = ((int) BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DrinksBought)).ToString();
         }
 
         public void ViewChart() {
-            BootStrapper.CameraManager.SwitchToStatsCamera(chartPosition, Vector3.forward);
+            BootStrapper.CameraManager.SwitchToStatsCamera(chartPosition + Vector3.left*0.4f, Vector3.forward);
         }
 
         public void HideChart() {
