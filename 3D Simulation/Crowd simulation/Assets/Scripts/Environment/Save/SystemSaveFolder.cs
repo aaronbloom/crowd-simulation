@@ -44,8 +44,11 @@ namespace Assets.Scripts.Environment.Save {
         }
 
         public static int AmountOfFilesWithNameInFolder(string fileName) {
-            return 3;
+            int number = 0;
+            foreach (var file in Directory.GetFiles(System.Environment.CurrentDirectory)) {
+                if (file.Contains(fileName)) number++;
+            }
+            return number;
         }
-
     }
 }
