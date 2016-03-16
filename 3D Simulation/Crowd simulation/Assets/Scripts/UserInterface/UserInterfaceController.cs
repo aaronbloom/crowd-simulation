@@ -1,10 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
-using Assets.Scripts.Boid;
-using UnityEngine.UI;
 
-namespace Assets.Scripts.UserInterface
-{
+namespace Assets.Scripts.UserInterface {
     public class UserInterfaceController : MonoBehaviour {
 
         private const int LeftMouseButton = 0;
@@ -18,6 +15,7 @@ namespace Assets.Scripts.UserInterface
         private GameObject analysisMenu;
         private BoidInformationWindow boidInformationWindow;
         private UserWorldBuilder userWorldBuilder;
+        private AnalysisInterface analysisInterface;
 
         void Awake() {
             mainMenu = GameObject.Find("MainMenu");
@@ -26,7 +24,7 @@ namespace Assets.Scripts.UserInterface
             simulationMenu = GameObject.Find("SimulationMenu");
             demographicMenu = GameObject.Find("DemographicMenu");
             analysisMenu = GameObject.Find("AnalysisMenu");
-            boidInformationWindow = new BoidInformationWindow();
+            analysisInterface = new AnalysisInterface();
         }
 
         void Start () {
@@ -52,11 +50,12 @@ namespace Assets.Scripts.UserInterface
                 }
             }
 
-            if (Input.GetMouseButtonDown(LeftMouseButton)) {
-                boidInformationWindow.FindBoid(Input.mousePosition);
+            if (boidInformationWindow != null) {
+                if (Input.GetMouseButtonDown(LeftMouseButton)) {
+                    boidInformationWindow.FindBoid(Input.mousePosition);
+                }
+                boidInformationWindow.Update();
             }
-
-            boidInformationWindow.Update();
         }
 
         public void NewSimulation() {
@@ -72,7 +71,6 @@ namespace Assets.Scripts.UserInterface
             HideMenu(setupMenu);
             ShowMenu(environmentBuilderMenu);
             userWorldBuilder = new UserWorldBuilder();
-            //BootStrapper.CameraController.LookAtEnvironmentCenter();
         }
 
         public void DemographicSetup() {
@@ -92,9 +90,11 @@ namespace Assets.Scripts.UserInterface
             float genderBias = menuControlController.GenderBiasValue;
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids, genderBias);
             ShowMenu(simulationMenu);
+            boidInformationWindow = new BoidInformationWindow();
         }
 
         public void StopSimulation() {
+            boidInformationWindow = null;
             HideMenu(simulationMenu);
             ShowMenu(analysisMenu);
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
@@ -102,6 +102,18 @@ namespace Assets.Scripts.UserInterface
 
         public void GenerateHeatMap() {
             BootStrapper.BoidManager.DisplayHeatMap();
+            analysisInterface.statisticsInformationWindow.Hide();
+        }
+
+        public void ShowDrinksBought() {
+            analysisInterface.PopulateChart();
+            analysisInterface.ViewChart();
+            analysisInterface.statisticsInformationWindow.Hide();
+        }
+
+        public void ShowStatistics() {
+            analysisInterface.statisticsInformationWindow.Show();
+            analysisInterface.SetStatisticsValues();
         }
 
         public void SetCurrentPlacementObject(string objectName) {
