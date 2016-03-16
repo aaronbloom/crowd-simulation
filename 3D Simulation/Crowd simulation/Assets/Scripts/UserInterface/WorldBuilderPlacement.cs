@@ -81,6 +81,7 @@ namespace Assets.Scripts.UserInterface {
 
         public void Place(WorldObject worldObject, Vector3 position, Vector3 wallNormal) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
+            worldObject.InitialWallNormal = wallNormal;
             worldObject.LookTowardsNormal(wallNormal);
             RecalcBars();
         }
