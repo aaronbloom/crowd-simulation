@@ -16,6 +16,7 @@ namespace Assets.Scripts.Boid {
         private readonly HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
+        private static readonly int maxSpawnRate = 10;
 
         public BoidManager(int numOfBoids, float genderBias) {
             EnvironmentManager = EnvironmentManager.Shared();
@@ -26,7 +27,7 @@ namespace Assets.Scripts.Boid {
         }
 
         public void AttemptBoidSpawn() {
-            for (int i = 0; i < NumberOfBoids - Boids.Count; i++) {
+            for (int i = 0; i < NumberOfBoids - Boids.Count && i < maxSpawnRate; i++) {
                 spawnBoid();
             }
         }
