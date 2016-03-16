@@ -6,12 +6,22 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Assets.Scripts.Environment.World.Objects;
+using UnityEngine;
+using UnityEngineInternal;
 
 namespace Assets.Scripts.Environment.Save {
 
-    public class SaveableEnvironment {
+    [Serializable]
+    public class SaveableEnvironment
+    {
 
-        private List<WorldObjectBuildInfo> saveableItems = new List<WorldObjectBuildInfo>();
+        public SerialisableVector3 environmentBounds { get; private set; }
+        public List<WorldObjectBuildInfo> saveableItems { get; private set; }
+
+        public SaveableEnvironment(Vector3 environmentBounds) {
+            this.environmentBounds = new SerialisableVector3(environmentBounds);
+            saveableItems = new List<WorldObjectBuildInfo>();
+        }
 
         public void SaveWorldObjects(List<WorldObject> worldObjects) {
             foreach (var worldObject in worldObjects) {
@@ -25,7 +35,7 @@ namespace Assets.Scripts.Environment.Save {
 
         public void BuildWorldWith(IBuilder builder) {
             foreach (var savedItem in saveableItems) {
-                builder.Place(WorldObject.DetermineObject(savedItem.type), savedItem.position, savedItem.wallNormal);
+                builder.Place(WorldObject.DetermineObject(savedItem.type), savedItem.position.Vector3(), savedItem.wallNormal.Vector3());
             }
         }
 

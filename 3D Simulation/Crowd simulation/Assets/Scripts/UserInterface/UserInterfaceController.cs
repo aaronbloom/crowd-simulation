@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
 using Assets.Scripts.Boid;
+using Assets.Scripts.Environment.Save;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface
@@ -29,7 +30,8 @@ namespace Assets.Scripts.UserInterface
             boidInformationWindow = new BoidInformationWindow();
         }
 
-        void Start () {
+        void Start() {
+            SetupMainMenu();
             ShowMenu(mainMenu);
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
@@ -37,7 +39,7 @@ namespace Assets.Scripts.UserInterface
             HideMenu(demographicMenu);
             HideMenu(analysisMenu);
         }
-	
+
         void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
@@ -65,10 +67,7 @@ namespace Assets.Scripts.UserInterface
         }
 
         public void StartEnvironmentBuilder() {
-            int environmentHeight = 50;
-            int environmentSize = setupMenu.GetComponent<MenuControlController>().EnvironmentSizeValue;
-            Vector3 bounds = new Vector3(environmentSize, environmentHeight, environmentSize);
-            EnvironmentManager.Shared().InitialiseEnvironment(bounds);
+            EnvironmentManager.Shared().InitialiseEnvironment(setupMenu.GetComponent<MenuControlController>().EnvironmentSizeValue);
             HideMenu(setupMenu);
             ShowMenu(environmentBuilderMenu);
             userWorldBuilder = new UserWorldBuilder();
@@ -121,6 +120,23 @@ namespace Assets.Scripts.UserInterface
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
             if (canvasGroup != null) {
                 canvasGroup.blocksRaycasts = true;
+            }
+        }
+
+        public void SaveWorld() {
+            BootStrapper.EnvironmentManager.CurrentEnvironment.SaveEnvironment();
+        }
+
+        public void LoadWorld(string worldFileName) {
+            HideMenu(mainMenu);
+            BootStrapper.EnvironmentManager.LoadEnvironmentFromFile(worldFileName);
+            ShowMenu(environmentBuilderMenu);
+            userWorldBuilder = new UserWorldBuilder();
+        }
+
+        private void SetupMainMenu() {
+            for (int i = 0; i < SystemSaveFolder.AmountOfFilesWithNameInFolder("World"); i++) {
+                var button = BootStrapper.Initialise("LoadSimulationButton") as GameObject;
             }
         }
     }

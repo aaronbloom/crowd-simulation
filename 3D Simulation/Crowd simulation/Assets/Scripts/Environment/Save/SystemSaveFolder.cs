@@ -7,9 +7,12 @@ using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.Save {
-    static class FileHandler {
+    static class SystemSaveFolder
+    {
 
-        public static void WriteToFile(string preferedFileName, object serialisable) {
+        static readonly string systemSaveFolder = System.Environment.SpecialFolder.MyDocuments.ToString();
+
+        public static void WriteObjectToFolder(string preferedFileName, object serialisable) {
 
             int fileNumber = 0;
             string fileName;
@@ -28,7 +31,7 @@ namespace Assets.Scripts.Environment.Save {
             }
         }
 
-        public static object LoadFromFile(string fileName) {
+        public static object LoadFileFromFolder(string fileName) {
             try {
                 if(!File.Exists(fileName)) throw new FileNotFoundException();
                 using (Stream stream = File.Open(fileName, FileMode.Open)) {
@@ -38,6 +41,10 @@ namespace Assets.Scripts.Environment.Save {
                 Debug.Log("Save Failed: " + e.Message);
             }
             return null;
+        }
+
+        public static int AmountOfFilesWithNameInFolder(string fileName) {
+            return 3;
         }
 
     }

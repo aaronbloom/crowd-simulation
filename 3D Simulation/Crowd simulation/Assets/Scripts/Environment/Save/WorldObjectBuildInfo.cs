@@ -8,15 +8,16 @@ using UnityEngine;
 namespace Assets.Scripts.Environment.Save {
 
     [Serializable]
-    class WorldObjectBuildInfo {
+    public class WorldObjectBuildInfo {
 
         public string type { get; set; }
-        public Vector3 position { get; set; }
-        public Vector3 wallNormal { get; set; }
+        public SerialisableVector3 position { get; set; }
+        public SerialisableVector3 wallNormal { get; set; }
 
         public WorldObjectBuildInfo(WorldObject obj) {
             type = obj.Identifier;
-            position = obj.GameObject.transform.position;
+            position = new SerialisableVector3(obj.GameObject.transform.position);
+            wallNormal = new SerialisableVector3(obj.InitialWallNormal);
         }
     }
 }
