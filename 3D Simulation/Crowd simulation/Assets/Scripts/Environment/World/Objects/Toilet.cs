@@ -8,7 +8,7 @@ namespace Assets.Scripts.Environment.World.Objects {
         public static Vector3 SizeStatic = new Vector3(4, 4, 4);
 
         public Toilet(Gender gender) : base() {
-            this.Identifier = IdentifierStatic + gender;
+            this.Identifier = IdentifierStatic;
             this.Tag = gender.ToString();
             this.InitialRotationOffSet = Quaternion.Euler(90, 180, 180);
             this.InitialPositionOffSet = new Vector3(0, -2, 0);
