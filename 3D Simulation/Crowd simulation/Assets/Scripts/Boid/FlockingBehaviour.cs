@@ -12,6 +12,10 @@ namespace Assets.Scripts.Boid {
         private EnvironmentManager environmentManager;
         public float SeparationFactor { get; protected set; }
 
+        private static readonly int closeBoidsCacheTime = 25;
+        private int closeBoidsCacheCurrent = closeBoidsCacheTime;
+        private List<Boid> closeBoids;
+
         public FlockingBehaviour(Boid boid) {
             this.MaxForce = 0.05f;
             this.VelocityDamping = 1f;
@@ -26,11 +30,11 @@ namespace Assets.Scripts.Boid {
         }
 
         public override Vector3 updateAcceleration() {
-            List<global::Assets.Scripts.Boid.Boid> boids = FindBoidsWithinView();
+            FindBoidsWithinView();
 
-            Vector3 cohesionDirection = Cohesion(boids);
-            Vector3 seperationDirection = Separation(boids);
-            Vector3 alignmentDirection = Alignment(boids);
+            Vector3 cohesionDirection = Cohesion(closeBoids);
+            Vector3 seperationDirection = Separation(closeBoids);
+            Vector3 alignmentDirection = Alignment(closeBoids);
             Vector3 boundaryAvoidance = PlaneAvoidance();
 
             Vector3 acceleration = Vector3.zero;
@@ -46,20 +50,23 @@ namespace Assets.Scripts.Boid {
             throw new NotImplementedException();
         }
 
-        protected List<global::Assets.Scripts.Boid.Boid> FindBoidsWithinView() {
-            GameObject[] boids = GameObject.FindGameObjectsWithTag(BoidTag);
-            List<global::Assets.Scripts.Boid.Boid> closeBoids = new List<global::Assets.Scripts.Boid.Boid>();
-            foreach (GameObject otherBoid in boids) {
-                if (!object.ReferenceEquals(this.boid, otherBoid) && isWithinView(boid, otherBoid)) {
-                    closeBoids.Add(BootStrapper.BoidManager.FindBoid(otherBoid));
+        protected List<Boid> FindBoidsWithinView() {
+            closeBoidsCacheCurrent++;
+            if (closeBoidsCacheCurrent >= closeBoidsCacheTime) {
+                closeBoidsCacheCurrent = 0;
+                closeBoids = new List<Boid>();
+                foreach (Boid otherBoid in BootStrapper.BoidManager.Boids) {
+                    if (!object.ReferenceEquals(this.boid, otherBoid) && isWithinView(otherBoid)) {
+                        closeBoids.Add(otherBoid);
+                    }
                 }
             }
             return closeBoids;
         }
 
-        private bool isWithinView(global::Assets.Scripts.Boid.Boid boid, GameObject otherBoid) {
+        private bool isWithinView(Boid otherBoid) {
             Vector3 boidPosition = boid.Position;
-            Vector3 otherBoidPosition = otherBoid.transform.position;
+            Vector3 otherBoidPosition = otherBoid.Position;
             float distance = Vector3.Distance(boidPosition, otherBoidPosition);
             return distance < boid.ViewingDistance && distance != 0;
         }
