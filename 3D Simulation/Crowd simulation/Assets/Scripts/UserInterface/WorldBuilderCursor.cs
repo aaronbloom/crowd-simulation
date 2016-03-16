@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -77,6 +78,17 @@ namespace Assets.Scripts.UserInterface {
                 Environment.Environment.PositionToLocation(secondCursorPosition,
                     primaryCursor.Size) + cursorHeight;
             secondCursor.GameObject.transform.rotation = primaryCursor.GameObject.transform.rotation;
+
+            if (!primaryCursor.GridPlaceable) { // wall placement
+                Vector3 position;
+                Vector3 normal;
+                if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
+                    secondCursor.LookTowardsNormal(normal);
+                    SetCursorValid(secondCursor);
+                } else {
+                    SetCursorInvalid(secondCursor);
+                }
+            }
         }
 
         public void SetPlacementObject(string objectName, Vector3 groundPosition) {
@@ -93,9 +105,6 @@ namespace Assets.Scripts.UserInterface {
                         if (worldBuilderPlacement.WallPlacement(out currentPlacementNormal, out position, primaryCursor)) {
                             startPlacement = position;
                             startedPlacement = true;
-                        } else {
-                            startPlacement = groundPosition;
-                            startedPlacement = true;
                         }
                     } else {
                         startPlacement = groundPosition;
@@ -111,8 +120,11 @@ namespace Assets.Scripts.UserInterface {
                 if (UserWorldBuilder.NotOverUI()) {
                     if (startedPlacement) {
                         if (!primaryCursor.GridPlaceable) {
-                            Vector3 endPlacement = secondCursor.GameObject.transform.position; //current cursor position (along wall)
-                            worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentPlacementNormal, currentItem);
+                            Vector3 position;
+                            if (worldBuilderPlacement.WallPlacement(out currentPlacementNormal, out position, primaryCursor)) {
+                                Vector3 endPlacement = position;
+                                worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentPlacementNormal, currentItem);
+                            } 
                         } else {
                             worldBuilderPlacement.PlaceLine(startPlacement, groundPosition, Vector3.forward, currentItem);
                         }
