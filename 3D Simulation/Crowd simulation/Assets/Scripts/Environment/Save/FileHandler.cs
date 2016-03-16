@@ -20,7 +20,7 @@ namespace Assets.Scripts.Environment.Save {
             
             try {
                 using (Stream stream = File.Open(fileName, FileMode.Create)) {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(stream, serialisable);
                 }
             } catch (IOException e) {
