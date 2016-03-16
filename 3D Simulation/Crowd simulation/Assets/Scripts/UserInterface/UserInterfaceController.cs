@@ -135,8 +135,29 @@ namespace Assets.Scripts.UserInterface
         }
 
         private void SetupMainMenu() {
+            int x = 0;
+            int y = +90;
+            int z = 0;
+
             for (int i = 0; i < SystemSaveFolder.AmountOfFilesWithNameInFolder("World"); i++) {
                 var button = BootStrapper.Initialise("LoadSimulationButton") as GameObject;
+                button.transform.parent = mainMenu.transform;
+                var textItem = button.GetComponentInChildren<Text>();
+                textItem.text = "World (" + i + ")";
+                button.GetComponent<Button>().onClick.AddListener(delegate { LoadWorld(textItem.text); });
+                button.GetComponent<RectTransform>().localPosition = new Vector3(x,y,z);
+                x += 150;
+                if (x > 150) {
+                    x = -150;
+                    y -= 150;
+                }
+            }
+            while (x <= 150)
+            {
+                var blank = BootStrapper.Initialise("Button Background") as GameObject;
+                blank.transform.parent = mainMenu.transform;
+                blank.GetComponent<RectTransform>().localPosition = new Vector3(x, y, z);
+                x += 150;
             }
         }
     }
