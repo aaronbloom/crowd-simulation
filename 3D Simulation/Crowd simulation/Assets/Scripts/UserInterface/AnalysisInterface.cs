@@ -44,7 +44,7 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public void HideChart() {
-            BootStrapper.CameraManager.SwitchToRTSCamera();
+            BootStrapper.CameraManager.ActivateRTSCamera();
         }
 
         public void SetStatisticsValues() {

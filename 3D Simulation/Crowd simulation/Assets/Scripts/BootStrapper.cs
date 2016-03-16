@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Assets.Scripts.Boid;
 using Assets.Scripts.Environment;
-using RTS_Cam;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,7 +8,6 @@ namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
 
         private static readonly string PrefabFilepath = "Prefabs/";
-        private static readonly string CameraPrefab = "RTS_Camera";
 
         //System Fields
         public static BoidManager BoidManager { get; private set; }
@@ -25,12 +23,14 @@ namespace Assets.Scripts {
             CameraManager = new CameraManager();
         }
 
-        void Start() {}
-
         void Update() {
             if (BoidManager != null) {
                 BoidManager.Update();
             }
+        }
+
+        void Start() {        
+            CameraManager.ActivateRTSCamera();
         }
 
         public void StartSimulation(int numberOfBoids, float genderBias) {

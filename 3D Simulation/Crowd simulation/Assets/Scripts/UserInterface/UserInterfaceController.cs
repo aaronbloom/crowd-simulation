@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Environment;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UserInterface {
     public class UserInterfaceController : MonoBehaviour {
@@ -56,6 +57,10 @@ namespace Assets.Scripts.UserInterface {
                 }
                 boidInformationWindow.Update();
             }
+
+            if (Input.GetKey(KeyCode.Escape)) {
+                BootStrapper.CameraManager.ActivateRTSCamera();
+            }
         }
 
         public void NewSimulation() {
@@ -98,6 +103,11 @@ namespace Assets.Scripts.UserInterface {
             HideMenu(simulationMenu);
             ShowMenu(analysisMenu);
             GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
+        }
+
+        public void BoidsEyeView() {
+            BootStrapper.CameraManager.ActivateFirstPersonCamera();
+            EventSystem.current.SetSelectedGameObject(null, null);
         }
 
         public void GenerateHeatMap() {

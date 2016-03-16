@@ -37,7 +37,7 @@ namespace Assets.Scripts.Boid {
 
         public void DisplayHeatMap() {
             heatMap.Display();
-            BootStrapper.CameraManager.SwitchToRTSCamera();
+            BootStrapper.CameraManager.ActivateRTSCamera();
         }
 
         public void Update() {
