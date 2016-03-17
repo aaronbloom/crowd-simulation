@@ -108,13 +108,15 @@ namespace Assets.Scripts.Boid {
             }
         }
 
-        public void ChooseClosestFromList<T>(List<T> goals) where T : Goal {
+        public T ChooseClosestFromList<T>(List<T> goals) where T : Goal {
             if (goals.Count > 0) {
                 Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
+                return (T) targetGoal;
             } else {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
+            return null;
         }
 
         public void ChooseClosestFromList<T>(List<T> goals, String constraint) where T : Goal {
