@@ -108,7 +108,7 @@ namespace Assets.Scripts.Environment.Navigation {
         public void DrawGraphGizmo() {
             foreach (Node node in Nodes) {
                 foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
-                    //Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
+                    Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
                 }
             }
         }

@@ -31,5 +31,9 @@ namespace Assets.Scripts.Environment
             return shared;
         }
 
+        public void OnDrawGizmos() {
+            CurrentEnvironment.OnDrawGizmos();
+        }
+
     }
 }
