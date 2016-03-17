@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 463050}
   - 33: {fileID: 3345648}
   - 23: {fileID: 2334486}
+  - 64: {fileID: 6451632}
   m_Layer: 0
   m_Name: CubicleMale
   m_TagString: Untagged
@@ -61,6 +62,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 114390}
+  m_Mesh: {fileID: 4300000, guid: 2e9d2030cd0c5cb4db3f1f81dfa2583c, type: 3}
+--- !u!64 &6451632
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114390}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 2e9d2030cd0c5cb4db3f1f81dfa2583c, type: 3}
 --- !u!1001 &100100000
 Prefab:
