@@ -1,41 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &118676
+--- !u!1 &162470
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 427904}
-  - 33: {fileID: 3321540}
-  - 23: {fileID: 2379282}
-  - 95: {fileID: 9565856}
+  - 4: {fileID: 440096}
+  - 33: {fileID: 3396708}
+  - 23: {fileID: 2379498}
+  - 95: {fileID: 9507686}
   m_Layer: 0
-  m_Name: VoxelStageLeft
+  m_Name: stageCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &427904
+--- !u!4 &440096
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118676}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 162470}
+  m_LocalRotation: {x: -0.000000059604645, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 1.4e-14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2379282
+--- !u!23 &2379498
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118676}
+  m_GameObject: {fileID: 162470}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,22 +59,22 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3321540
+--- !u!33 &3396708
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118676}
-  m_Mesh: {fileID: 4300000, guid: 613dbbc30c8dfdb4db374192bba315fb, type: 3}
---- !u!95 &9565856
+  m_GameObject: {fileID: 162470}
+  m_Mesh: {fileID: 4300000, guid: a22ef0212ad3f3340bf8f5ff4f18d0ff, type: 3}
+--- !u!95 &9507686
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118676}
+  m_GameObject: {fileID: 162470}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 613dbbc30c8dfdb4db374192bba315fb, type: 3}
+  m_Avatar: {fileID: 9000000, guid: a22ef0212ad3f3340bf8f5ff4f18d0ff, type: 3}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -92,5 +92,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 118676}
+  m_RootGameObject: {fileID: 162470}
   m_IsPrefabParent: 1

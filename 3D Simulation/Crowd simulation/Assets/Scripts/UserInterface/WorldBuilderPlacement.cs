@@ -82,11 +82,13 @@ namespace Assets.Scripts.UserInterface {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
             worldObject.LookTowardsNormal(wallNormal);
             BarPlacement.RecalcBars();
+            StagePlacement.RecalcStages();
         }
 
         public void Place(WorldObject worldObject, Vector3 position) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
             BarPlacement.RecalcBars();
+            StagePlacement.RecalcStages();
         }
 
         public WorldObject[] PlaceLine(Vector3 start, Vector3 end, Vector3 wallNormal, String objectName) {

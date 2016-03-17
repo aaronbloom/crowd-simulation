@@ -5,40 +5,37 @@ using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
-    internal class BarPlacement {
+    internal class StagePlacement {
         private static readonly int left = 0;
         private static readonly int back = 90;
         private static readonly int right = 180;
         private static readonly int forward = 270;
 
-        public static void RecalcBars() {
-            List<Bar> bars = new List<Bar>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
-            foreach (Bar bar in bars) {
-                int[] directionsBlocked = BarPlacement.directionsBlocked(bar);
+        public static void RecalcStages() {
+            List<Stage> stages = new List<Stage>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
+            foreach (Stage stage in stages) {
+                int[] directionsBlocked = StagePlacement.directionsBlocked(stage);
                 int sides = directionsBlocked.Sum();
                 string pattern = string.Join("", directionsBlocked.Select(x => x.ToString()).ToArray());
                 string barShape = "";
                 int direction = -1;
                 switch (sides) {
-                    case 4:
-                        barShape = "bar/bar¬";
-                        direction = GetDirectionFourSides(bar.placementPattern);
-                        break;
                     case 3:
-                        barShape = "bar/barI";
+                        barShape = "stage/stageMiddle";
                         direction = GetDirectionThreeSides(pattern);
                         break;
                     case 2:
-                        barShape = "bar/barL";
+                        barShape = "stage/stageCorner";
                         direction = GetDirectionTwoSides(pattern);
+                      
                         break;
                     case 1:
-                        barShape = "bar/barU";
+                        barShape = "stage/stageFull";
                         direction = GetDirectionOneSide(pattern);
                         break;
                 }
                 if (direction != -1 && barShape != "") {
-                    tryUpdatePattern(pattern, barShape, bar, direction);
+                    tryUpdatePattern(pattern, barShape, stage, direction);
                 }
             }
         }
@@ -63,11 +60,11 @@ namespace Assets.Scripts.UserInterface {
             return world.SpaceAlreadyOccupied(location) ? 1 : 0;
         }
 
-        private static void tryUpdatePattern(string pattern, string prefab, Bar bar, int yVal) {
-            if (bar.IsNewPlacementPattern(pattern)) {
-                bar.placementPattern = pattern;
-                bar.ChangePrefab(prefab);
-                bar.GameObject.transform.rotation = rotateToY(bar, yVal);
+        private static void tryUpdatePattern(string pattern, string prefab, Stage stage, int yVal) {
+            if (stage.IsNewPlacementPattern(pattern)) {
+                stage.placementPattern = pattern;
+                stage.ChangePrefab(prefab);
+                stage.GameObject.transform.rotation = rotateToY(stage, yVal);
             }
         }
 
@@ -134,25 +131,6 @@ namespace Assets.Scripts.UserInterface {
                     break;
                 case "1110":
                     direction = left;
-                    break;
-            }
-            return direction;
-        }
-
-        private static int GetDirectionFourSides(string previousPattern) {
-            int direction = -1;
-            switch (previousPattern) {
-                case "0111":
-                    direction = right;
-                    break;
-                case "1011":
-                    direction = left;
-                    break;
-                case "1101":
-                    direction = right;
-                    break;
-                case "1110":
-                    direction = forward;
                     break;
             }
             return direction;
