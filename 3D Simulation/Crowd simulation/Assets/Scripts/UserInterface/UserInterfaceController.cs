@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Assets.Scripts.Environment.Save;
-using UnityEditor;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface {
@@ -50,6 +49,11 @@ namespace Assets.Scripts.UserInterface {
                 if (Input.GetMouseButtonUp(LeftMouseButton)) {
                     userWorldBuilder.EndPlaceWorldObject();
                 }
+
+                //button only active when environment is valid
+                var isValidWorld = EnvironmentManager.Shared().CurrentEnvironment.World.IsValidWorld();
+                GameObject.Find("DemographicSetupButton").GetComponent<Button>().interactable = isValidWorld;
+                GameObject.Find("EnvironmentBuilderInformation").GetComponent<Text>().enabled = !isValidWorld
             }
 
             if (boidInformationWindow != null) {
@@ -82,8 +86,6 @@ namespace Assets.Scripts.UserInterface {
                 userWorldBuilder = null;
                 HideMenu(environmentBuilderMenu);
                 ShowMenu(demographicMenu);
-            } else {
-                DisplayInvalidEnvironmentDialog();
             }
         }
 
@@ -189,13 +191,6 @@ namespace Assets.Scripts.UserInterface {
                 blank.GetComponent<RectTransform>().localPosition = new Vector3(x, y, z);
                 x += offset;
             }
-        }
-
-        private void DisplayInvalidEnvironmentDialog() {
-            EditorUtility.DisplayDialog(
-                    "Invalid environment",
-                    "Environments must contain at least 1 of each world object to start the simulation.",
-                    "OK");
         }
     }
 }
