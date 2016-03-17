@@ -11,13 +11,15 @@ namespace Assets.Scripts.Environment.Save {
     {
 
         static readonly string systemSaveFolder = System.Environment.SpecialFolder.MyDocuments.ToString();
+        public static readonly string Extension = ".RAFT";
+        public static readonly string WorldSaveName = "World";
 
         public static void WriteObjectToFolder(string preferedFileName, object serialisable) {
 
             int fileNumber = 0;
             string fileName;
             do {
-                fileName = preferedFileName + " (" + fileNumber + ")";
+                fileName = preferedFileName + " (" + fileNumber + ")" + Extension;
                 fileNumber++;
             } while (File.Exists(fileName));
             
@@ -32,6 +34,7 @@ namespace Assets.Scripts.Environment.Save {
         }
 
         public static object LoadFileFromFolder(string fileName) {
+            fileName = fileName + Extension;
             try {
                 if(!File.Exists(fileName)) throw new FileNotFoundException();
                 using (Stream stream = File.Open(fileName, FileMode.Open)) {

@@ -143,7 +143,7 @@ namespace Assets.Scripts.UserInterface
                 var button = BootStrapper.Initialise("LoadSimulationButton") as GameObject;
                 button.transform.parent = mainMenu.transform;
                 var textItem = button.GetComponentInChildren<Text>();
-                textItem.text = "World (" + i + ")";
+                textItem.text = SystemSaveFolder.WorldSaveName + " (" + i + ")";
                 button.GetComponent<Button>().onClick.AddListener(delegate { LoadWorld(textItem.text); });
                 button.GetComponent<RectTransform>().localPosition = new Vector3(x,y,z);
                 x += 150;

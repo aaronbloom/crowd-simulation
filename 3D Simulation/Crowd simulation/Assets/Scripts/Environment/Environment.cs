@@ -114,7 +114,7 @@ namespace Assets.Scripts.Environment {
         public void SaveEnvironment() {
             var savedEnvironment = new SaveableEnvironment(this.Bounds);
             savedEnvironment.SaveWorldObjects(World.Objects);
-            SystemSaveFolder.WriteObjectToFolder("World", savedEnvironment);
+            SystemSaveFolder.WriteObjectToFolder(SystemSaveFolder.WorldSaveName, savedEnvironment);
         }
 
     }
