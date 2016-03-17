@@ -119,16 +119,5 @@ namespace Assets.Scripts.Boid {
             return null;
         }
 
-        public void ChooseClosestFromList<T>(List<T> goals, String constraint) where T : Goal {
-            if (goals.Count > 0) {
-                Goal targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)]; ;
-                while (targetGoal.Tag != constraint) {
-                    targetGoal = goals[(int) UnityEngine.Random.Range(0, goals.Count)];
-                }
-                Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
-            } else {
-                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
-            }
-        }
     }
 }

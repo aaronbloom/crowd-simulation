@@ -10,7 +10,10 @@ namespace Assets.Scripts.Environment.World {
         public List<Goal> Goals;
         public List<Entrance> Entrances;
         public List<Wall> Walls;
-        public List<Toilet> Toilets;
+        public List<ToiletFemale> FemaleToilets;
+        public List<ToiletMale> MaleToilets;
+        public List<Goal> MaleGoalToilets;
+        public List<Goal> FemaleGoalToilets;
         public List<Stage> Stages;
         public List<Bar> Bars;
         public List<Collidable> Collidables;
@@ -28,7 +31,8 @@ namespace Assets.Scripts.Environment.World {
             Goals = ObjectSublist<Goal>();
             Entrances = ObjectSublist<Entrance>();
             Walls = ObjectSublist<Wall>();
-            Toilets = ObjectSublist<Toilet>();
+            FemaleToilets = ObjectSublist<ToiletFemale>();
+            MaleToilets = ObjectSublist<ToiletMale>();
             Stages = ObjectSublist<Stage>();
             Bars = ObjectSublist<Bar>();
             

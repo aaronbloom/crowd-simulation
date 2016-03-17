@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
 
@@ -22,7 +24,14 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void navigateToToilet() {
             GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
-            gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Toilets, owner.Properties.Gender.ToString());
+            if (owner.Properties.Gender == Gender.MALE) {
+                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
+            } else if (owner.Properties.Gender == Gender.FEMALE) {
+                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
+            } else {
+                UnityEngine.Debug.LogError("Toilet Gender Unavailable");
+            }
+            
             owner.behaviour = gsb;
             NextStep();
         }

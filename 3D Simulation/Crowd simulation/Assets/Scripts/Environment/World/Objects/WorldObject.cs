@@ -16,14 +16,6 @@ namespace Assets.Scripts.Environment.World.Objects {
                 }
             }
         }
-        public string Tag {
-            get { return _tag; }
-            set {
-                if (_tag == String.Empty) {
-                    _tag = value;
-                }
-            }
-        }
 
         public bool GridPlaceable { get; protected set; }
         public Quaternion InitialRotationOffSet { get; protected set; }
@@ -132,10 +124,10 @@ namespace Assets.Scripts.Environment.World.Objects {
                     return new Wall();
                 case Entrance.IdentifierStatic:
                     return new Entrance();
-                case Toilet.IdentifierStatic + "Male":
-                    return new Toilet(Gender.MALE);
-                case Toilet.IdentifierStatic + "Female":
-                    return new Toilet(Gender.FEMALE);
+                case ToiletMale.IdentifierStatic:
+                    return new ToiletMale();
+                case ToiletFemale.IdentifierStatic:
+                    return new ToiletFemale();
                 case Stage.IdentifierStatic:
                     return new Stage();
                 case Bar.IdentifierStatic:
