@@ -2,6 +2,7 @@
 using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
@@ -15,6 +16,7 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public void StartPlaceWorldObject() {
+            EventSystem.current.SetSelectedGameObject(null, null);
             if (deletionToolActive) {
                 this.DeleteWorldObject();
             } else {
@@ -29,11 +31,13 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public void SetCurrentPlacementObject(string objectName) {
+            EventSystem.current.SetSelectedGameObject(null, null);
             deletionToolActive = false;
             cursor.SetPlacementObject(objectName, MousePositionToGroundPosition());
         }
 
         public void EnableDeletionTool() {
+            EventSystem.current.SetSelectedGameObject(null, null);
             deletionToolActive = true;
             cursor.DestroyCursors();
         }
@@ -59,6 +63,7 @@ namespace Assets.Scripts.UserInterface {
         }
 
         public static bool NotOverUI() { // is mouse pointer not over a menu ui
+            EventSystem.current.SetSelectedGameObject(null, null);
             return !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1);
         }
 
