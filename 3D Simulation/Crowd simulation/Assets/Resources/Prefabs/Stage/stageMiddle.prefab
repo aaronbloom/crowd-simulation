@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3336616}
   - 23: {fileID: 2365886}
   - 95: {fileID: 9532522}
+  - 64: {fileID: 6407656}
   m_Layer: 0
   m_Name: stageMiddle
   m_TagString: Untagged
@@ -64,6 +65,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115586}
+  m_Mesh: {fileID: 4300000, guid: f922f8c0f2e2a2d4f9f77f1de192a672, type: 3}
+--- !u!64 &6407656
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115586}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: f922f8c0f2e2a2d4f9f77f1de192a672, type: 3}
 --- !u!95 &9532522
 Animator:

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Environment.World.Objects {
         }
 
         public bool GridPlaceable { get; protected set; }
+        public Vector3 CursorHeight { get; protected set; }
         public Quaternion InitialRotationOffSet { get; protected set; }
         public Vector3 InitialPositionOffSet { get; protected set; }
         public Vector3 Size { get; protected set; }
@@ -32,6 +33,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             InitialRotationOffSet = Quaternion.identity;
             FacingDirection = Vector3.forward;
             FrontPadding = 0;
+            CursorHeight = new Vector3(0, 0.1f, 0);
         }
 
         //basic withinbounds checker, simple AABB collision detection

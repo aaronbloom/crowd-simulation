@@ -7,21 +7,35 @@ namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
 
         private WorldBuilderCursor cursor;
+        private bool deletionToolActive;
 
         public UserWorldBuilder() {
             cursor = new WorldBuilderCursor();
+            deletionToolActive = false;
         }
 
         public void StartPlaceWorldObject() {
-            cursor.StartPlaceWorldObject(MousePositionToGroundPosition());
+            if (deletionToolActive) {
+                this.DeleteWorldObject();
+            } else {
+                cursor.StartPlaceWorldObject(MousePositionToGroundPosition());
+            }
         }
 
         public void EndPlaceWorldObject() {
-            cursor.EndPlaceWorldObject(MousePositionToGroundPosition());
+            if (!deletionToolActive) {
+                cursor.EndPlaceWorldObject(MousePositionToGroundPosition());
+            }
         }
 
         public void SetCurrentPlacementObject(string objectName) {
+            deletionToolActive = false;
             cursor.SetPlacementObject(objectName, MousePositionToGroundPosition());
+        }
+
+        public void EnableDeletionTool() {
+            deletionToolActive = true;
+            cursor.DestroyCursors();
         }
 
         public void DeleteWorldObject() {

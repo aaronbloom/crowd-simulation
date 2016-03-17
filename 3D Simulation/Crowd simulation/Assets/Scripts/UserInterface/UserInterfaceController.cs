@@ -49,9 +49,6 @@ namespace Assets.Scripts.UserInterface {
                 if (Input.GetMouseButtonUp(LeftMouseButton)) {
                     userWorldBuilder.EndPlaceWorldObject();
                 }
-                if (Input.GetMouseButtonDown(RightMouseButton)) {
-                    userWorldBuilder.DeleteWorldObject();
-                }
             }
 
             if (boidInformationWindow != null) {
@@ -128,6 +125,10 @@ namespace Assets.Scripts.UserInterface {
 
         public void SetCurrentPlacementObject(string objectName) {
             userWorldBuilder.SetCurrentPlacementObject(objectName);
+        }
+
+        public void EnableDeletionTool() {
+            userWorldBuilder.EnableDeletionTool();
         }
 
         public static void HideMenu(GameObject menu) {
