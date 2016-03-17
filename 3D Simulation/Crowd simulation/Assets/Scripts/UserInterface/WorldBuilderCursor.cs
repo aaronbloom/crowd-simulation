@@ -44,18 +44,19 @@ namespace Assets.Scripts.UserInterface {
                     Vector3 normal;
                     if (worldBuilderPlacement.WallPlacement(out normal, out position, primaryCursor)) {
                         primaryCursor.GameObject.transform.position =
-                            Environment.Environment.PositionToLocation(position,
-                            primaryCursor.Size) + cursorHeight;
+                            Environment.Environment.PositionToLocation(position, primaryCursor.Size);
+                        SetCursorHeight(primaryCursor);
                         primaryCursor.LookTowardsNormal(normal);
                         SetCursorValid(primaryCursor);
                     } else {
-                        primaryCursor.GameObject.transform.position =
-                            Environment.Environment.PositionToLocation(groundPosition, primaryCursor.Size) + cursorHeight;
+                        primaryCursor.GameObject.transform.position = Environment.Environment.PositionToLocation(groundPosition, primaryCursor.Size);
+                        SetCursorHeight(primaryCursor);
                         SetCursorInvalid(primaryCursor);
                     }
                 } else { // floor placement
                     primaryCursor.GameObject.transform.position =
-                        Environment.Environment.PositionToGridLocation(groundPosition, primaryCursor.Size) + cursorHeight;
+                        Environment.Environment.PositionToGridLocation(groundPosition, primaryCursor.Size);
+                    SetCursorHeight(primaryCursor);
                 }
             }
         }
@@ -76,7 +77,8 @@ namespace Assets.Scripts.UserInterface {
 
             secondCursor.GameObject.transform.position =
                 Environment.Environment.PositionToLocation(secondCursorPosition,
-                    primaryCursor.Size) + cursorHeight;
+                    primaryCursor.Size);
+            SetCursorHeight(secondCursor);
             secondCursor.GameObject.transform.rotation = primaryCursor.GameObject.transform.rotation;
 
             if (!primaryCursor.GridPlaceable) { // wall placement
@@ -146,6 +148,11 @@ namespace Assets.Scripts.UserInterface {
 
         private void SetCursorInvalid(WorldObject cursor) {
             cursor.GameObject.GetComponent<Renderer>().material = invalidCursorMaterial;
+        }
+
+        private void SetCursorHeight(WorldObject cursor) {
+            var position = cursor.GameObject.transform.position;
+            cursor.GameObject.transform.position = new Vector3(position.x, cursorHeight.y, position.z);
         }
 
         private WorldObject NewCursor(WorldObject worldObject, Vector3 groundPosition) {
