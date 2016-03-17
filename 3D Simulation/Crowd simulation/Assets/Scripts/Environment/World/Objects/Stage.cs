@@ -15,7 +15,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.Identifier = IdentifierStatic;
             this.InitialRotationOffSet = Quaternion.Euler(0, 0, 0);
             this.InitialPositionOffSet = new Vector3(0, -1, 0);
-            this.FrontPadding = 4;
+            this.FrontPadding = 2;
             this.Size = SizeStatic;
             this.GridPlaceable = false;
         }
