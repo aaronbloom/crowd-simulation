@@ -194,7 +194,7 @@ namespace Assets.Scripts.UserInterface {
         private void DisplayInvalidEnvironmentDialog() {
             EditorUtility.DisplayDialog(
                     "Invalid environment",
-                    "Environments must contain at least 1 of each world object to be simulated.",
+                    "Environments must contain at least 1 of each world object to start the simulation.",
                     "OK");
         }
     }
