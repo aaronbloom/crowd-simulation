@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Environment.Save;
+using Assets.Scripts.UserInterface;
+using UnityEngine;
 
 namespace Assets.Scripts.Environment
 {
@@ -15,6 +17,24 @@ namespace Assets.Scripts.Environment
         public void InitialiseEnvironment(Vector3 bounds) {
             CurrentEnvironment = new Environment(bounds);
             CurrentEnvironment.Setup();
+        }
+
+        public void InitialiseEnvironment(int size) {
+            int environmentHeight = 50;
+            Vector3 bounds = new Vector3(size, environmentHeight, size);
+            EnvironmentManager.Shared().InitialiseEnvironment(bounds);
+        }
+
+        public void LoadEnvironmentFromFile(string fileName) {
+            var savedEnv = SystemSaveFolder.LoadFileFromFolder(fileName) as SaveableEnvironment;
+            if (savedEnv != null) {
+                LoadEnvironment(savedEnv);
+            }
+        }
+
+        public void LoadEnvironment(SaveableEnvironment savedEnvironment) {
+            BootStrapper.EnvironmentManager.InitialiseEnvironment(savedEnvironment.environmentBounds.Vector3());
+            savedEnvironment.BuildWorldWith(new WorldBuilderPlacement());
         }
 
         private void initSingleton() {

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Environment;
+using Assets.Scripts.Environment.Save;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
-    class WorldBuilderPlacement {
+    class WorldBuilderPlacement : IBuilder {
 
         public WorldBuilderPlacement() {}
 
@@ -80,6 +81,7 @@ namespace Assets.Scripts.UserInterface {
 
         public void Place(WorldObject worldObject, Vector3 position, Vector3 wallNormal) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
+            worldObject.InitialWallNormal = wallNormal;
             worldObject.LookTowardsNormal(wallNormal);
             BarPlacement.RecalcBars();
             StagePlacement.RecalcStages();

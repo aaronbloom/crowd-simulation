@@ -63,7 +63,7 @@ namespace Assets.Scripts.Analysis {
                             (z*HeatMapTile.TileSize) + halfTileSize);
                         HeatMapTile heatMapTile = new HeatMapTile();
                         BootStrapper.EnvironmentManager.CurrentEnvironment.World.AddObject(
-                            WorldObject.Initialise(heatMapTile, position));
+                            WorldObject.Initialise(heatMapTile, position, Vector3.zero));
                         heatMapTile.GameObject.GetComponent<Renderer>().material.color = new Color(displayMap[x, z], 0,
                             0, 1);
                     }

@@ -1,8 +1,8 @@
 ﻿using Assets.Scripts.Environment.Navigation;
-using Assets.Scripts.Environment.World;
 using Assets.Scripts.Environment.World.Objects;
 using Assets.Scripts.UserInterface;
 using UnityEngine;
+using Assets.Scripts.Environment.Save;
 
 namespace Assets.Scripts.Environment {
     public class Environment {
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Environment {
             } else {
                 location = PositionToLocation(position, worldObject.Size);
             }
-            World.AddObject(WorldObject.Initialise(worldObject, location));
+            World.AddObject(WorldObject.Initialise(worldObject, location, Vector3.zero));
         }
 
         public static Vector3 PositionToLocation(Vector3 position, Vector3 objectSize) {
@@ -109,6 +109,12 @@ namespace Assets.Scripts.Environment {
 
         public void OnDrawGizmos() {
             Graph.DrawGraphGizmo();
+        }
+
+        public void SaveEnvironment() {
+            var savedEnvironment = new SaveableEnvironment(this.Bounds);
+            savedEnvironment.SaveWorldObjects(World.Objects);
+            SystemSaveFolder.WriteObjectToFolder(SystemSaveFolder.WorldSaveName, savedEnvironment);
         }
     }
 }
