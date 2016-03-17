@@ -27,7 +27,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             if (owner.Properties.Gender == Gender.MALE) {
                 gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
             } else if (owner.Properties.Gender == Gender.FEMALE) {
-                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
+                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.FemaleToilets);
             } else {
                 UnityEngine.Debug.LogError("Toilet Gender Unavailable");
             }
