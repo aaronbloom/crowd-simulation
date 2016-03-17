@@ -83,6 +83,14 @@ namespace Assets.Scripts.Environment.World {
             return false;
         }
 
+        public bool IsValidWorld() {
+            return Entrances.Count > 0 &&
+                   MaleToilets.Count > 0 &&
+                   FemaleToilets.Count > 0 &&
+                   Bars.Count > 0 &&
+                   Stages.Count > 0;
+        }
+
     }
 }
 
