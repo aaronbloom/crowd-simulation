@@ -1,12 +1,8 @@
-﻿using System;
-using Assets.Scripts.Environment.Navigation;
-using Assets.Scripts.Environment.World;
+﻿using Assets.Scripts.Environment.Navigation;
 using Assets.Scripts.Environment.World.Objects;
 using Assets.Scripts.UserInterface;
 using UnityEngine;
-using System.Collections.Generic;
 using Assets.Scripts.Environment.Save;
-using JetBrains.Annotations;
 
 namespace Assets.Scripts.Environment {
     public class Environment {
@@ -119,7 +115,4 @@ namespace Assets.Scripts.Environment {
 
     }
 
-    
-
-    
 }
