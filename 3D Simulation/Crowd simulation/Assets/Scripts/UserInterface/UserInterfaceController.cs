@@ -53,7 +53,7 @@ namespace Assets.Scripts.UserInterface {
                 //button only active when environment is valid
                 var isValidWorld = EnvironmentManager.Shared().CurrentEnvironment.World.IsValidWorld();
                 GameObject.Find("DemographicSetupButton").GetComponent<Button>().interactable = isValidWorld;
-                GameObject.Find("EnvironmentBuilderInformation").GetComponent<Text>().enabled = !isValidWorld
+                GameObject.Find("EnvironmentBuilderInformation").GetComponent<Text>().enabled = !isValidWorld;
             }
 
             if (boidInformationWindow != null) {
