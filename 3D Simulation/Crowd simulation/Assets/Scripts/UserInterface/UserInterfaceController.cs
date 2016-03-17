@@ -173,7 +173,7 @@ namespace Assets.Scripts.UserInterface {
 
             for (int i = 0; i < SystemSaveFolder.AmountOfFilesWithNameInFolder("World"); i++) {
                 var button = BootStrapper.Initialise("LoadSimulationButton") as GameObject;
-                button.transform.parent = mainMenu.transform;
+                button.transform.SetParent(mainMenu.transform);
                 var textItem = button.GetComponentInChildren<Text>();
                 textItem.text = SystemSaveFolder.WorldSaveName + " (" + i + ")";
                 button.GetComponent<Button>().onClick.AddListener(delegate { LoadWorld(textItem.text); });
@@ -187,7 +187,7 @@ namespace Assets.Scripts.UserInterface {
             while (x <= offset)
             {
                 var blank = BootStrapper.Initialise("Button Background") as GameObject;
-                blank.transform.parent = mainMenu.transform;
+                blank.transform.SetParent(mainMenu.transform);
                 blank.GetComponent<RectTransform>().localPosition = new Vector3(x, y, z);
                 x += offset;
             }
