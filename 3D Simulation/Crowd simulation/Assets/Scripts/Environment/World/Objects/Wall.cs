@@ -11,6 +11,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.Identifier = IdentifierStatic;
             this.Size = SizeStatic;
             this.GridPlaceable = true;
+            this.CursorHeight = new Vector3(0, 2.1f, 0);
         }
 
         WorldObject Collidable.getObject() {

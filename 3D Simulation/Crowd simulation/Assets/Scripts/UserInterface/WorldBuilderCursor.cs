@@ -11,7 +11,6 @@ namespace Assets.Scripts.UserInterface {
         private WorldObject secondCursor;
         private readonly Material cursorMaterial;
         private readonly Material invalidCursorMaterial;
-        private readonly Vector3 cursorHeight = new Vector3(0, 0.2f, 0);
 
         private string currentItem;
         private Vector3 startPlacement;
@@ -152,7 +151,7 @@ namespace Assets.Scripts.UserInterface {
 
         private void SetCursorHeight(WorldObject cursor) {
             var position = cursor.GameObject.transform.position;
-            cursor.GameObject.transform.position = new Vector3(position.x, cursorHeight.y, position.z);
+            cursor.GameObject.transform.position = new Vector3(position.x, cursor.CursorHeight.y, position.z);
         }
 
         private WorldObject NewCursor(WorldObject worldObject, Vector3 groundPosition) {
