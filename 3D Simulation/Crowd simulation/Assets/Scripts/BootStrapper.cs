@@ -33,6 +33,10 @@ namespace Assets.Scripts {
             CameraManager.ActivateRTSCamera();
         }
 
+        void OnDrawGizmos() {
+            EnvironmentManager.OnDrawGizmos();
+        }
+
         public void StartSimulation(int numberOfBoids, float genderBias) {
             EnvironmentManager.CurrentEnvironment.Build();
 

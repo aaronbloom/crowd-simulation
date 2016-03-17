@@ -106,5 +106,9 @@ namespace Assets.Scripts.Environment {
 
             return boundaries;
         }
+
+        public void OnDrawGizmos() {
+            Graph.DrawGraphGizmo();
+        }
     }
 }

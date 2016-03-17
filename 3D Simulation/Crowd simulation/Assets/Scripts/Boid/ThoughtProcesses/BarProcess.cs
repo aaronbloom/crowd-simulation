@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class BarProcess : ThoughtProcess {
@@ -9,6 +10,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private Boid owner;
         private Need ownerDesire;
         private int satisfactionMultiplier = 3;
+        private Goal currentGoal;
 
         public BarProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -21,7 +23,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void navigateToBar() {
             GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
-            gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
+            currentGoal = gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
             owner.behaviour = gsb;
             NextStep();
         }
@@ -40,6 +42,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private void drink()
         {
             ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate* satisfactionMultiplier);
+            owner.LookAt(currentGoal.GameObject.transform.position);
         }
     }
 }
