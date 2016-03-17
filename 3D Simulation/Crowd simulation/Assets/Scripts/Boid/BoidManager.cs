@@ -75,12 +75,12 @@ namespace Assets.Scripts.Boid {
             List<Entrance> entrances = EnvironmentManager.CurrentEnvironment.World.Entrances;
             if (entrances.Count > 0) {
                 Entrance entrance = entrances[Random.Range(0, entrances.Count)];
-                float halfEntranceX = entrance.Size.x / 2;
-                float halfEntranceY = entrance.Size.z / 2;
+                float spawnAreaX = entrance.Size.x / 3;
+                float spawnAreaY = entrance.Size.z / 3;
                 Vector3 internalOffSet = new Vector3(
-                    Random.Range(-halfEntranceX, halfEntranceX),
+                    Random.Range(-spawnAreaX, spawnAreaX),
                     boidHeight, //spawn on ground
-                    Random.Range(-halfEntranceY, halfEntranceY));
+                    Random.Range(-spawnAreaY, spawnAreaY));
                 Vector3 position = entrance.GameObject.transform.position + internalOffSet;
                 return position;
             }
