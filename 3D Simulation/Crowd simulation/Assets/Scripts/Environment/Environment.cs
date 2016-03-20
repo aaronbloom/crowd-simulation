@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.Environment.Navigation;
-using Assets.Scripts.Environment.World;
 using Assets.Scripts.Environment.World.Objects;
+using Assets.Scripts.UserInterface;
 using UnityEngine;
+using Assets.Scripts.Environment.Save;
 
 namespace Assets.Scripts.Environment {
     public class Environment {
@@ -31,29 +32,44 @@ namespace Assets.Scripts.Environment {
             this.World = new World.World();
         }
 
+        public void Setup() {
+            new WorldBuilderPlacement().PlacePerimeterWall(Origin, Bounds);
+        }
+
         public void Build() {
             constructNavMesh();
         }
 
-        public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, Vector3 halfObjectSize)
-        {
+        public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, Vector3 objectSize) {
+            var halfObjectSize = objectSize/2;
             position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize.x, origin.x + bounds.x - halfObjectSize.x);
             position.y = Mathf.Clamp(position.y, origin.y, origin.y + bounds.y - halfObjectSize.y);
             position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize.z, origin.z + bounds.z - halfObjectSize.z);
             return position;
         }
 
-        public void Place(WorldObject worldObject, Vector3 position)
-        {
-            var location = PositionToGridPosition(position, worldObject.Size);
-            if (!World.AddObject(WorldObject.Initialise(worldObject, location)))
-            {
-                Debug.Log("Could not add new world object - Already occupied");
-                worldObject.Destroy();
-            }
+        public static Vector3 ConstrainVectorToEnvironment(Vector3 position, Vector3 objectSize) {
+            Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
+            Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
+            return ConstrainVector(position, origin, bounds, objectSize);
         }
 
-        public static Vector3 PositionToGridPosition(Vector3 position, Vector3 objectSize)
+        public void Place(WorldObject worldObject, Vector3 position) {
+            Vector3 location;
+            if (worldObject.GridPlaceable) {
+                location = PositionToGridLocation(position, worldObject.Size);
+            } else {
+                location = PositionToLocation(position, worldObject.Size);
+            }
+            World.AddObject(WorldObject.Initialise(worldObject, location, Vector3.zero));
+        }
+
+        public static Vector3 PositionToLocation(Vector3 position, Vector3 objectSize) {
+            var location = new Vector3(position.x, objectSize.y / 2, position.z);
+            return ConstrainVectorToEnvironment(location, objectSize);
+        }
+
+        public static Vector3 PositionToGridLocation(Vector3 position, Vector3 objectSize)
         {
             var gridPosition = position;
             gridPosition -= (objectSize / 2);
@@ -62,9 +78,7 @@ namespace Assets.Scripts.Environment {
                 0, // so it sits at ground level
                 Mathf.Round(gridPosition.z / objectSize.z) * objectSize.z);
             gridPosition += (objectSize / 2);
-            Vector3 bounds = EnvironmentManager.Shared().CurrentEnvironment.Bounds;
-            Vector3 origin = EnvironmentManager.Shared().CurrentEnvironment.Origin;
-            return ConstrainVector(gridPosition, origin, bounds, objectSize / 2);
+            return ConstrainVectorToEnvironment(gridPosition, objectSize);
         }
 
         private void CreateGroundArea(Vector3 bounds) {
@@ -91,6 +105,16 @@ namespace Assets.Scripts.Environment {
             boundaries[5] = new Plane(Vector3.left, origin + bounds);       //right
 
             return boundaries;
+        }
+
+        public void OnDrawGizmos() {
+            Graph.DrawGraphGizmo();
+        }
+
+        public void SaveEnvironment() {
+            var savedEnvironment = new SaveableEnvironment(this.Bounds);
+            savedEnvironment.SaveWorldObjects(World.Objects);
+            SystemSaveFolder.WriteObjectToFolder(SystemSaveFolder.WorldSaveName, savedEnvironment);
         }
     }
 }

@@ -1,45 +1,54 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Assets.Scripts.Boid;
-using Assets.Scripts.Camera;
 using Assets.Scripts.Environment;
 using UnityEngine;
-using UnityEngineInternal;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
 
         private static readonly string PrefabFilepath = "Prefabs/";
-        private static readonly string Camera = "Camera";
 
         //System Fields
         public static BoidManager BoidManager { get; private set; }
         public static EnvironmentManager EnvironmentManager { get; private set; }
-        public static CameraController CameraController { get; private set; }
+        public static CameraManager CameraManager { get; private set; }
         public static bool Pause { get; private set; }
+        private const string CaptureHeatMap = "BoidHeatMap";
+        private const string BoidSpawning = "BoidSpawningTimer";
 
         void Awake() {
             Pause = false;
             EnvironmentManager = new EnvironmentManager();
+            CameraManager = new CameraManager();
         }
 
-        void Start() {
-            CameraController = ((GameObject) Initialise(Camera)).GetComponent<CameraController>();
+        void Update() {
+            if (BoidManager != null) {
+                BoidManager.Update();
+            }
         }
 
-        public void StartSimulation(int numberOfBoids) {
+        void Start() {        
+            CameraManager.ActivateRTSCamera();
+        }
+
+        void OnDrawGizmos() {
+            EnvironmentManager.OnDrawGizmos();
+        }
+
+        public void StartSimulation(int numberOfBoids, float genderBias) {
             EnvironmentManager.CurrentEnvironment.Build();
 
-            BoidManager = new BoidManager(numberOfBoids);
-            StartCoroutine("BoidSpawningTimer");
-            StartCoroutine("BoidHeatMap");
+            BoidManager = new BoidManager(numberOfBoids, genderBias);
+            StartCoroutine(CaptureHeatMap);
+            StartCoroutine(BoidSpawning);
         }
 
         public void StopSimulation() {
             Pause = true;
-            BoidManager.DisplayHeatMap();
-            //Time.timeScale = 0;
+            StopCoroutine(CaptureHeatMap);
+            StopCoroutine(BoidSpawning);
         }
 
         public static Object Initialise(string prefabName) {
@@ -57,10 +66,8 @@ namespace Assets.Scripts {
             }
         }
 
-        private IEnumerator BoidHeatMap()
-        {
-            while (true)
-            {
+        private IEnumerator BoidHeatMap() {
+            while (true) {
                 BoidManager.CaptureAnalysisData();
                 yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait
             }

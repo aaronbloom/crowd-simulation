@@ -37,7 +37,7 @@ namespace Assets.Scripts.Environment.Navigation {
         public void Cull(Collidable collidable) {
             WorldObject obj = collidable.getObject();
             Vector3 position = ZeroY(obj.GameObject.transform.position);
-            Vector3 size = ZeroY(obj.GameObject.transform.localScale);
+            Vector3 size = ZeroY(obj.Size);
             List<Node> culled = getCulledNodes(position, size);
             removeCulledNodes(culled);
         }

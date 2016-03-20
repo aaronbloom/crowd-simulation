@@ -3,33 +3,31 @@ using Assets.Scripts.Analysis;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
     public class BoidManager {
 
         private const int boidHeight = 2;
-        private static readonly string[] MalePrefab = {"chr_mike", "chr_bro", "chr_beardo2"};
-        private static readonly string[] FemalePrefab = {"chr_brookie", "chr_brookie", "chr_goth2"};
 
         private readonly int NumberOfBoids;
-        private readonly Quaternion rotation;
+        private readonly float _genderBias;
         private readonly EnvironmentManager EnvironmentManager;
-        private readonly List<GameObject> boids;
+        public List<Boid> Boids { get; protected set; }
         private readonly HeatMap heatMap;
         public static readonly float SpawningIntervalSeconds = 0.5f;
         public static readonly float HeatMapCaptureIntervalSeconds = 1f;
+        private static readonly int maxSpawnRate = 10;
 
-        public BoidManager(int numOfBoids) {
+        public BoidManager(int numOfBoids, float genderBias) {
             EnvironmentManager = EnvironmentManager.Shared();
             NumberOfBoids = numOfBoids;
-            rotation = Quaternion.identity;
-            boids = new List<GameObject>(NumberOfBoids);
-            heatMap = new HeatMap(boids);
+            _genderBias = genderBias;
+            Boids = new List<Boid>(NumberOfBoids);
+            heatMap = new HeatMap(Boids);
         }
 
         public void AttemptBoidSpawn() {
-            for (int i = 0; i < NumberOfBoids - boids.Count; i++) {
+            for (int i = 0; i < NumberOfBoids - Boids.Count && i < maxSpawnRate; i++) {
                 spawnBoid();
             }
         }
@@ -40,6 +38,13 @@ namespace Assets.Scripts.Boid {
 
         public void DisplayHeatMap() {
             heatMap.Display();
+            BootStrapper.CameraManager.ActivateRTSCamera();
+        }
+
+        public void Update() {
+            foreach (Boid boid in Boids) {
+                boid.Update();
+            }
         }
 
         private void spawnBoid() {
@@ -47,18 +52,13 @@ namespace Assets.Scripts.Boid {
                 Vector3 positionOffset = FindRandomEntrancePosition();
                 Vector3 position = Vector3.zero + positionOffset;
                 bool isOverLapping = false;
-                foreach (var boid in boids) {
-                    if (Vector3.Distance(position, boid.transform.position) < 3) {
+                foreach (Boid boid in Boids) {
+                    if (Vector3.Distance(position, boid.Position) < 3) {
                         isOverLapping = true;
                     }
                 }
                 if (!isOverLapping) {
-                    BoidProperties boidProperties = new BoidProperties();
-                    position.y = 0.1f;
-                    Gender boidGender = boidProperties.Gender;
-                    int index = Random.Range(0, 3);
-                    string boidPrefab = boidGender == Gender.MALE ? MalePrefab[index] : FemalePrefab[index];
-                    boids.Add((GameObject) BootStrapper.Initialise("mmmm/" + boidPrefab, position, rotation));
+                    Boids.Add(Boid.Spawn(position, _genderBias));
                 }
             }
         }
@@ -75,12 +75,12 @@ namespace Assets.Scripts.Boid {
             List<Entrance> entrances = EnvironmentManager.CurrentEnvironment.World.Entrances;
             if (entrances.Count > 0) {
                 Entrance entrance = entrances[Random.Range(0, entrances.Count)];
-                float halfEntranceX = entrance.Size.x / 2;
-                float halfEntranceY = entrance.Size.z / 2;
+                float spawnAreaX = entrance.Size.x / 3;
+                float spawnAreaY = entrance.Size.z / 3;
                 Vector3 internalOffSet = new Vector3(
-                    Random.Range(-halfEntranceX, halfEntranceX),
+                    Random.Range(-spawnAreaX, spawnAreaX),
                     boidHeight, //spawn on ground
-                    Random.Range(-halfEntranceY, halfEntranceY));
+                    Random.Range(-spawnAreaY, spawnAreaY));
                 Vector3 position = entrance.GameObject.transform.position + internalOffSet;
                 return position;
             }
@@ -89,6 +89,15 @@ namespace Assets.Scripts.Boid {
 
         private bool EntranceAvaliable() {
             return EnvironmentManager.CurrentEnvironment.World.Entrances.Count > 0;
+        }
+
+        public Boid FindBoid(GameObject gameObject) {
+            foreach (Boid boid in Boids) {
+                if (boid.HasGameObject(gameObject)) {
+                    return boid;
+                }
+            }
+            return null;
         }
     }
 }

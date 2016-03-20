@@ -1,14 +1,27 @@
-﻿using UnityEngine;
+﻿using System.Linq.Expressions;
+using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
-    public class Stage : Goal {
+    public class Stage : Goal, Collidable {
+        public const string IdentifierStatic = "Stage/stageFull";
+        public static Vector3 SizeStatic = new Vector3(4, 2, 4);
+        public string placementPattern { get; set; }
 
-        public Stage() : base() {
-            this.Identifier = "Stage";
-            this.InitialRotationOffSet = Quaternion.Euler(90, 0, 0);
-            this.InitialPositionOffSet = new Vector3(0, 0.01f, 0);
-            this.Size = new Vector3(4, 0, 4);
+        public bool IsNewPlacementPattern(string pattern) {
+            return pattern != placementPattern;
         }
 
+        public Stage() : base() {
+            this.Identifier = IdentifierStatic;
+            this.InitialRotationOffSet = Quaternion.Euler(0, 0, 0);
+            this.InitialPositionOffSet = new Vector3(0, -1, 0);
+            this.FrontPadding = 2;
+            this.Size = SizeStatic;
+            this.GridPlaceable = false;
+        }
+
+        public WorldObject getObject() {
+            return this;
+        }
     }
 }

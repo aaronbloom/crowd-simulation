@@ -6,7 +6,6 @@ namespace Assets.Scripts.Boid {
 
         protected global::Assets.Scripts.Boid.Boid boid;
 
-        public float MaxSpeed { get; protected set; }
         public float MaxForce { get; protected set; }
         public bool BehaviourComplete { get; protected set; }
 
@@ -19,9 +18,9 @@ namespace Assets.Scripts.Boid {
         public abstract void DrawGraphGizmo();
 
         protected Vector3 SteerTowardsPoint(Vector3 target) {
-            Vector3 aim = target - boid.transform.position;
+            Vector3 aim = target - boid.Position;
             aim.Normalize();
-            aim *= MaxSpeed;
+            aim *= boid.Properties.MoveSpeed;
             Vector3 steeringDirection = aim - boid.Velocity;
             steeringDirection = Vector3.ClampMagnitude(steeringDirection, MaxForce);
             return steeringDirection;

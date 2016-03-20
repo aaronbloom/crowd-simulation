@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+<<<<<<< HEAD
+guid: e4577a0f0e7e09249b7043f10129d8f9
+timeCreated: 1458059253
+=======
+guid: 9dbacc9b95ed86c409a8e616b3abced0
+timeCreated: 1455824359
+>>>>>>> origin/features/CS-142--BoidsEyeView
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

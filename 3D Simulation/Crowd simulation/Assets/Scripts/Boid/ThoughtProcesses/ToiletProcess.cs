@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
 
@@ -9,6 +11,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private Boid owner;
         private Need ownerDesire;
+        private int satisfactionRate = 20;
 
         public ToiletProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -16,11 +19,19 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             processList.Add((Action)navigateToToilet);
             processList.Add((Action)continueWalkToToilet);
             processList.Add((Action)reachToilet);
+            processList.Add((Action)pee);
         }
 
         private void navigateToToilet() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
-            gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Toilets);
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
+            if (owner.Properties.Gender == Gender.MALE) {
+                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
+            } else if (owner.Properties.Gender == Gender.FEMALE) {
+                gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.FemaleToilets);
+            } else {
+                UnityEngine.Debug.LogError("Toilet Gender Unavailable");
+            }
+            
             owner.behaviour = gsb;
             NextStep();
         }
@@ -32,8 +43,13 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachToilet() {
-            ownerDesire.Satisfy();
+            owner.Statistics.LogToiletBreak();
             NextStep();
+        }
+
+        private void pee()
+        {
+            ownerDesire.SatisfyByValue(satisfactionRate);
         }
 
     }

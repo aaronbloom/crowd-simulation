@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class BarProcess : ThoughtProcess {
+
         private Boid owner;
         private Need ownerDesire;
+        private int satisfactionMultiplier = 3;
+        private Goal currentGoal;
 
         public BarProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -14,11 +18,12 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             processList.Add((Action)navigateToBar);
             processList.Add((Action)continueWalkToBar);
             processList.Add((Action)reachBar);
+            processList.Add((Action)drink);
         }
 
         private void navigateToBar() {
-            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner, owner.viewingDistance, owner.minimumDistance);
-            gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
+            GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
+            currentGoal = gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
             owner.behaviour = gsb;
             NextStep();
         }
@@ -30,8 +35,14 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void reachBar() {
-            ownerDesire.Satisfy();
+            owner.Statistics.LogDrinkBought();
             NextStep();
+        }
+
+        private void drink()
+        {
+            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate* satisfactionMultiplier);
+            owner.LookAt(currentGoal.GameObject.transform.position);
         }
     }
 }

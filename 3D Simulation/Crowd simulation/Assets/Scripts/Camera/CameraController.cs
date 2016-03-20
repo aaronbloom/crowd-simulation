@@ -35,12 +35,6 @@ namespace Assets.Scripts.Camera
             checkForMouseMovement();
         }
 
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            this.environmentManager.CurrentEnvironment.Graph.DrawGraphGizmo();
-        }
-
         public void LookAt(Vector3 position)
         {
             transform.LookAt(position);
