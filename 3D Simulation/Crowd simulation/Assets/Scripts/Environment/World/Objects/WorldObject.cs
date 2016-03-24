@@ -7,7 +7,7 @@ namespace Assets.Scripts.Environment.World.Objects {
     public abstract class WorldObject {
         private string _identifer = String.Empty;
         private string _tag = String.Empty;
-        
+
         public string Identifier {
             get { return _identifer; }
             set {

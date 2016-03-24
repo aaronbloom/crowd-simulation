@@ -118,7 +118,7 @@ namespace Assets.Scripts.Boid {
         public void SatifyToThreshhold() {
             Value = Math.Max(Min,satisfactionThreshold-ThresholdModifier);
         }
-        
+
         //Decreases Need by value
         public void SatisfyByValue(int val) {
             Value-= val;

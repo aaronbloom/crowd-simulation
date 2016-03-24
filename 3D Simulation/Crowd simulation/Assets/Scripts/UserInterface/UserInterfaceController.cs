@@ -39,7 +39,7 @@ namespace Assets.Scripts.UserInterface {
             HideMenu(demographicMenu);
             HideMenu(analysisMenu);
         }
-	
+
         void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();

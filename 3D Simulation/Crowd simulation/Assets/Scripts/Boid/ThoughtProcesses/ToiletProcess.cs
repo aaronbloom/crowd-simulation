@@ -31,7 +31,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             } else {
                 UnityEngine.Debug.LogError("Toilet Gender Unavailable");
             }
-            
+
             owner.behaviour = gsb;
             NextStep();
         }

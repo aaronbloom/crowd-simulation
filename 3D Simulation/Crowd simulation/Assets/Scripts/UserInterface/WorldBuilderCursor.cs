@@ -125,7 +125,7 @@ namespace Assets.Scripts.UserInterface {
                             if (worldBuilderPlacement.WallPlacement(out currentPlacementNormal, out position, primaryCursor)) {
                                 Vector3 endPlacement = position;
                                 worldBuilderPlacement.PlaceLine(startPlacement, endPlacement, currentPlacementNormal, currentItem);
-                            } 
+                            }
                         } else {
                             worldBuilderPlacement.PlaceLine(startPlacement, groundPosition, Vector3.forward, currentItem);
                         }

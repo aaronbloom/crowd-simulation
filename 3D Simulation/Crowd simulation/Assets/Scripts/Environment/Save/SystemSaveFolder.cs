@@ -18,7 +18,7 @@ namespace Assets.Scripts.Environment.Save {
                 fileName = preferedFileName + " (" + fileNumber + ")" + Extension;
                 fileNumber++;
             } while (File.Exists(fileName));
-            
+
             try {
                 using (Stream stream = File.Open(fileName, FileMode.Create)) {
                     var binaryFormatter = new BinaryFormatter();

@@ -27,7 +27,7 @@ namespace Assets.Scripts.UserInterface {
                     case 2:
                         barShape = "stage/stageCorner";
                         direction = GetDirectionTwoSides(pattern);
-                      
+
                         break;
                     case 1:
                         barShape = "stage/stageFull";

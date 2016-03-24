@@ -33,7 +33,7 @@ namespace Assets.Scripts.Environment.Save {
             }
         }
 
-        
+
 
     }
 }

@@ -52,7 +52,7 @@ namespace Assets.Scripts.Environment.Navigation {
 
             HeuristicalNode start = new HeuristicalNode(startNode);
             HeuristicalNode goal = new HeuristicalNode(goalNode);
-        
+
             //Special case for startNode
             openSet.Add(start.Node.Position, start);
             start.ValueF = 0;

@@ -29,7 +29,7 @@ namespace Assets.Scripts {
             }
         }
 
-        void Start() {        
+        void Start() {
             CameraManager.ActivateRTSCamera();
         }
 

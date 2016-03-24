@@ -18,7 +18,7 @@ namespace Assets.Scripts.Boid {
         private static List<string> femaleFirstNames = new List<string>();
         private static List<string> secondNames = new List<string>();
         private static List<string> generatedNames = new List<string>();
-        
+
         public static string GenerateFairlyUniqueName(Gender gender) {
             string potentialName = GenerateName(gender);
             for (int i = 0; i < 3 && !generatedNames.Contains(potentialName); i++) {
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Boid {
             } else {
                 return femaleFirstNames[random.Next(0, femaleFirstNames.Count)];
             }
-             
+
         }
 
         public static string GenerateSecondName() {

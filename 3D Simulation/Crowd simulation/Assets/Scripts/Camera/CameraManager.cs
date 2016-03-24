@@ -11,7 +11,7 @@ namespace Assets.Scripts {
         public RTS_Camera RTSCameraScript { get; private set; }
         public GameObject StatsCamera { get; private set; }
         public GameObject FirstPersonCamera { get; private set; }
-            
+
         public CameraManager() {
             FirstPersonCamera = (GameObject)BootStrapper.Initialise(FirstPersonCameraName);
             StatsCamera = (GameObject)BootStrapper.Initialise(StatsCameraName);
@@ -39,7 +39,7 @@ namespace Assets.Scripts {
         public void ActivateFirstPersonCamera() {
             deactivateRTSCamera();
             deactivateStatsCamera();
-            FirstPersonCamera.transform.position = 
+            FirstPersonCamera.transform.position =
                 BootStrapper.EnvironmentManager.CurrentEnvironment.World.Entrances[0].FrontPosition();
             FirstPersonCamera.SetActive(true);
         }

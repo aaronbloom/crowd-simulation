@@ -22,7 +22,7 @@ namespace Assets.Scripts.UserInterface {
 
         public BoidInformationWindow() {
             boidInformationWindow = GameObject.Find(BoidInformationPanelName);
-            
+
 
             ThirstSlider = GameObject.Find("ThirstSlider").GetComponent<Slider>();
             ToiletSlider = GameObject.Find("ToiletSlider").GetComponent<Slider>();
