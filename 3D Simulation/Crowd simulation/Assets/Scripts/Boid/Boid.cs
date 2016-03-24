@@ -1,10 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Assets.Scripts.Environment.Navigation;
-using UnityEngine;
-using UnityEngine.Networking;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
     public class Boid {

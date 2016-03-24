@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
@@ -12,7 +9,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private const int SatisfactionMultiplier = 3;
         private Goal currentGoal;
 
-        public BarProcess(Boid boid, Need toSatisfy) : base() {
+        public BarProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
             processList.Add((Action)navigateToBar);

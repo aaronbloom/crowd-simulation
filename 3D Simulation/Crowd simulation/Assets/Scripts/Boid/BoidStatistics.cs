@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace Assets.Scripts.Boid {
+﻿namespace Assets.Scripts.Boid {
     public class BoidStatistics {
         public float DistanceCovered { get; private set; }
         public int StageWatchedAmount { get; private set; }

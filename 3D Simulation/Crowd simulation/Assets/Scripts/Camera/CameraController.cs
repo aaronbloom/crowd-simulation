@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Environment;
-
+﻿using Assets.Scripts.Environment;
+using UnityEngine;
 
 namespace Assets.Scripts.Camera
 {

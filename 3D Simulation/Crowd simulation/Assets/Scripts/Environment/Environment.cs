@@ -1,8 +1,8 @@
 ﻿using Assets.Scripts.Environment.Navigation;
+using Assets.Scripts.Environment.Save;
 using Assets.Scripts.Environment.World.Objects;
 using Assets.Scripts.UserInterface;
 using UnityEngine;
-using Assets.Scripts.Environment.Save;
 
 namespace Assets.Scripts.Environment {
     public class Environment {

@@ -64,7 +64,7 @@ namespace Assets.Scripts.UserInterface {
 
         public static bool NotOverUI() { // is mouse pointer not over a menu ui
             EventSystem.current.SetSelectedGameObject(null, null);
-            return !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1);
+            return !EventSystem.current.IsPointerOverGameObject(-1);
         }
 
         public static bool Raycast(out RaycastHit hit, out GameObject gameObject) {

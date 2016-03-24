@@ -7,7 +7,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private readonly Need ownerDesire;
         private Goal currentGoal;
 
-        public DanceProcess(Boid boid, Need toSatisfy) : base() {
+        public DanceProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
             processList.Add((Action)navigateToStage);

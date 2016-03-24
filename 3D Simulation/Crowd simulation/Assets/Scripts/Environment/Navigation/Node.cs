@@ -51,7 +51,7 @@ namespace Assets.Scripts.Environment.Navigation {
 
         internal void Disconnect() {
             //Avoid out of sync error by storing in list
-            List<Transition> transitions = Transitions.Values.ToList<Transition>();
+            List<Transition> transitions = Transitions.Values.ToList();
             foreach(Transition t in transitions) {
                 removeTransition(t);
             }

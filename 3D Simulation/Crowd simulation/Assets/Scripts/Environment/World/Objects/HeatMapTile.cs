@@ -5,7 +5,7 @@ namespace Assets.Scripts.Environment.World.Objects {
 
         public static int TileSize = 2;
 
-        public HeatMapTile() : base() {
+        public HeatMapTile() {
             this.Identifier = "HeatMapTile";
             this.InitialRotationOffSet = Quaternion.Euler(90, 0, 0);
             this.InitialPositionOffSet = new Vector3(0, 0.02f, 0);

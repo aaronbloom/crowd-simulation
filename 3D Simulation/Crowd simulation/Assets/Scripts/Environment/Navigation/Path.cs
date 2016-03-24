@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Environment.Navigation {
     internal class Path : Graph {
@@ -26,11 +27,11 @@ namespace Assets.Scripts.Environment.Navigation {
 
             Node currNode = loiterNode;
             path.Add(loiterNode);
-            int nodesToLoiter = UnityEngine.Random.Range(minLoiterNodes, maxLoiterNodes);
+            int nodesToLoiter = Random.Range(minLoiterNodes, maxLoiterNodes);
             for (; nodesToLoiter > 0; nodesToLoiter--) {
                 List<Node> potentialNodes = new List<Node>(currNode.TransitionsTo);
                 while (potentialNodes.Count > 0) {
-                    int index = (int)UnityEngine.Random.Range(0, potentialNodes.Count);
+                    int index = Random.Range(0, potentialNodes.Count);
                     Node potentialNode = potentialNodes[index];
                     if (Node.distanceBetween(potentialNode, loiterNode) < maxLoiterDist) {
                         path.Add(potentialNode);
@@ -83,7 +84,7 @@ namespace Assets.Scripts.Environment.Navigation {
                     float potentialF = candidatePromising.calculateF();
 
                     //check this is the best route we know to the candidate
-                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF && UnityEngine.Random.Range(0f,1f) > NavigationAccuracy) {
+                    if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF && Random.Range(0f,1f) > NavigationAccuracy) {
                         //Not interested
                     } else if (closedSet.ContainsKey(candidatePromising.Node.Position) && closedSet[candidatePromising.Node.Position].ValueF < potentialF) {
                         //Not interested

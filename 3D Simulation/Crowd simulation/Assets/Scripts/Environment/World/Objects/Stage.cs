@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
     public class Stage : Goal, Collidable {
@@ -11,7 +10,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             return pattern != placementPattern;
         }
 
-        public Stage() : base() {
+        public Stage() {
             this.Identifier = IdentifierStatic;
             this.InitialRotationOffSet = Quaternion.Euler(0, 0, 0);
             this.InitialPositionOffSet = new Vector3(0, -1, 0);

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Environment.World.Objects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
     internal class LineOfSightGoalSeekingBehaviour : GoalSeekingBehaviour {

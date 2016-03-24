@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Environment.Navigation;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
     public class GoalSeekingBehaviour : FlockingBehaviour {
@@ -60,7 +61,7 @@ namespace Assets.Scripts.Boid {
 
         public override Vector3 updateAcceleration() {
             if (!BehaviourComplete) {
-                List<global::Assets.Scripts.Boid.Boid> boids = FindBoidsWithinView();
+                List<Boid> boids = FindBoidsWithinView();
 
                 Vector3 seperationDirection = Separation(boids);
 
@@ -101,7 +102,7 @@ namespace Assets.Scripts.Boid {
             //Do something more intelligent here.            
             List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
             if (goals.Count > 0) {
-                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
+                Goal targetGoal = goals[Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
             } else {
                 BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
@@ -110,12 +111,11 @@ namespace Assets.Scripts.Boid {
 
         public T ChooseClosestFromList<T>(List<T> goals) where T : Goal {
             if (goals.Count > 0) {
-                Goal targetGoal = goals[(int)UnityEngine.Random.Range(0, goals.Count)];
+                Goal targetGoal = goals[Random.Range(0, goals.Count)];
                 Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
                 return (T) targetGoal;
-            } else {
-                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             }
+            BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
             return null;
         }
 

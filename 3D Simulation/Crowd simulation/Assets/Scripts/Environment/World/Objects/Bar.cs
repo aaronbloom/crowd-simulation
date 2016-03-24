@@ -11,7 +11,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             return pattern != placementPattern;
         }
 
-        public Bar() : base() {
+        public Bar() {
             this.Identifier = IdentifierStatic;
             this.InitialRotationOffSet = Quaternion.Euler(90, 0, 0);
             this.InitialPositionOffSet = new Vector3(0, 0, 0);

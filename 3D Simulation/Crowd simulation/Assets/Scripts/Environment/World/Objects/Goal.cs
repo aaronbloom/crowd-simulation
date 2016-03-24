@@ -1,5 +1,3 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.Environment.World.Objects {
+﻿namespace Assets.Scripts.Environment.World.Objects {
     public abstract class Goal : WorldObject {}
 }

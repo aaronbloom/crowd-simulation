@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = System.Random;
@@ -12,7 +9,7 @@ namespace Assets.Scripts.Boid {
     {
 
         private static readonly Random random = new Random();
-        private static bool listsLoaded = false;
+        private static bool listsLoaded;
 
         private static List<string> maleFirstNames = new List<string>();
         private static List<string> femaleFirstNames = new List<string>();
@@ -36,10 +33,8 @@ namespace Assets.Scripts.Boid {
             if(!listsLoaded) loadLists();
             if (gender == Gender.MALE) {
                 return maleFirstNames[random.Next(0, maleFirstNames.Count)];
-            } else {
-                return femaleFirstNames[random.Next(0, femaleFirstNames.Count)];
             }
-
+            return femaleFirstNames[random.Next(0, femaleFirstNames.Count)];
         }
 
         public static string GenerateSecondName() {

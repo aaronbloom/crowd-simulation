@@ -1,5 +1,5 @@
 ﻿﻿using RTS_Cam;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts {
     public class CameraManager {

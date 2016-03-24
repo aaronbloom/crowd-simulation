@@ -1,13 +1,11 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
     public class Wall : WorldObject, Collidable {
         public const string IdentifierStatic = "Wall";
         public static Vector3 SizeStatic = new Vector3(1, 4, 1);
 
-        public Wall() : base() {
+        public Wall() {
             this.Identifier = IdentifierStatic;
             this.Size = SizeStatic;
             this.GridPlaceable = true;

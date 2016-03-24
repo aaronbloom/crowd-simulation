@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Environment;
+using Assets.Scripts.Environment.Save;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Assets.Scripts.Environment.Save;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface {

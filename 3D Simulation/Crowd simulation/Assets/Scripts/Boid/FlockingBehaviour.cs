@@ -56,7 +56,7 @@ namespace Assets.Scripts.Boid {
                 closeBoidsCacheCurrent = 0;
                 closeBoids = new List<Boid>();
                 foreach (Boid otherBoid in BootStrapper.BoidManager.Boids) {
-                    if (!object.ReferenceEquals(this.boid, otherBoid) && isWithinView(otherBoid)) {
+                    if (!ReferenceEquals(this.boid, otherBoid) && isWithinView(otherBoid)) {
                         closeBoids.Add(otherBoid);
                     }
                 }
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Boid {
             return distance < boid.ViewingDistance && distance != 0;
         }
 
-        protected Vector3 Cohesion(List<global::Assets.Scripts.Boid.Boid> boids) {
+        protected Vector3 Cohesion(List<Boid> boids) {
             if (boids.Count > 0) {
                 Vector3 averagePosition = getAveragePosition(boids);
                 Vector3 aim = averagePosition - boid.Position;
@@ -84,27 +84,27 @@ namespace Assets.Scripts.Boid {
             return Vector3.zero;
         }
 
-        private static Vector3 getAveragePosition(List<global::Assets.Scripts.Boid.Boid> boids) {
+        private static Vector3 getAveragePosition(List<Boid> boids) {
             Vector3 averagePosition = Vector3.zero;
 
-            foreach (global::Assets.Scripts.Boid.Boid otherBoid in boids) {
+            foreach (Boid otherBoid in boids) {
                 averagePosition += otherBoid.Position;
             }
 
             return averagePosition / boids.Count;
         }
 
-        protected Vector3 Separation(List<global::Assets.Scripts.Boid.Boid> boids) {
+        protected Vector3 Separation(List<Boid> boids) {
             Vector3 steeringDirectionAggregator = Vector3.zero;
             int count = 0;
-            foreach (global::Assets.Scripts.Boid.Boid otherBoid in boids) {
+            foreach (Boid otherBoid in boids) {
                 count++;
                 steeringDirectionAggregator += calculateSteeringDirection(otherBoid);
             }
             return calculateAverageSteeringDirection(steeringDirectionAggregator, count);
         }
 
-        private Vector3 calculateSteeringDirection(global::Assets.Scripts.Boid.Boid otherBoid) {
+        private Vector3 calculateSteeringDirection(Boid otherBoid) {
             Vector3 steeringDirection = Vector3.zero;
             float distance = Vector3.Distance(boid.Position, otherBoid.Position);
             if (distance < boid.MinimumDistance) {
@@ -129,7 +129,7 @@ namespace Assets.Scripts.Boid {
             return averageSteeringDirection;
         }
 
-        protected Vector3 Alignment(List<global::Assets.Scripts.Boid.Boid> boids) {
+        protected Vector3 Alignment(List<Boid> boids) {
             if (boids.Count > 0) {
                 Vector3 averageHeading = getAverageHeading(boids);
                 averageHeading.Normalize();
@@ -141,9 +141,9 @@ namespace Assets.Scripts.Boid {
             return Vector3.zero;
         }
 
-        private static Vector3 getAverageHeading(List<global::Assets.Scripts.Boid.Boid> boids) {
+        private static Vector3 getAverageHeading(List<Boid> boids) {
             Vector3 averageHeading = Vector3.zero;
-            foreach (global::Assets.Scripts.Boid.Boid otherBoid in boids) {
+            foreach (Boid otherBoid in boids) {
                 averageHeading += otherBoid.Velocity;
             }
             averageHeading /= boids.Count;

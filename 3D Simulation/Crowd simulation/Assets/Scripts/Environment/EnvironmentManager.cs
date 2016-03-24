@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Environment.Save;
+﻿using System;
+using Assets.Scripts.Environment.Save;
 using Assets.Scripts.UserInterface;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Environment
         public void InitialiseEnvironment(int size) {
             int environmentHeight = 50;
             Vector3 bounds = new Vector3(size, environmentHeight, size);
-            EnvironmentManager.Shared().InitialiseEnvironment(bounds);
+            Shared().InitialiseEnvironment(bounds);
         }
 
         public void LoadEnvironmentFromFile(string fileName) {
@@ -42,7 +43,7 @@ namespace Assets.Scripts.Environment
             if (shared == null) {
                 shared = this;
             } else {
-                throw new System.InvalidOperationException("Singleton already setup");
+                throw new InvalidOperationException("Singleton already setup");
             }
         }
 

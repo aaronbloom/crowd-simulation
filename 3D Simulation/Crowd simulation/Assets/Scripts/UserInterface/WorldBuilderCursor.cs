@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.Environment;
-using Assets.Scripts.Environment.World.Objects;
+﻿using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
     internal class WorldBuilderCursor {
@@ -14,7 +10,7 @@ namespace Assets.Scripts.UserInterface {
 
         private string currentItem;
         private Vector3 startPlacement;
-        private bool startedPlacement = false;
+        private bool startedPlacement;
         private Vector3 currentPlacementNormal;
 
         private readonly WorldBuilderPlacement worldBuilderPlacement;

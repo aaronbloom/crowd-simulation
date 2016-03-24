@@ -25,7 +25,7 @@ namespace Assets.Scripts.UserInterface {
             AddCharts();
             barChartData.UpdateData(
                 BootStrapper.BoidManager.Boids.Select(boid => boid.Statistics.DrinksBought)
-                .Select(drinksBought => (float)drinksBought).OrderBy(drinksBought => (float)drinksBought).ToArray());
+                .Select(drinksBought => (float)drinksBought).OrderBy(drinksBought => drinksBought).ToArray());
             barChartObject.transform.position = chartPosition + barChartPositionOffset;
             chartBackgroundPlane.transform.position = chartPosition + Vector3.forward*2;
 
@@ -36,7 +36,7 @@ namespace Assets.Scripts.UserInterface {
             chartXLabel.transform.position = chartPosition + Vector3.down*0.5f;
             chartYLabel.transform.position = chartPosition + Vector3.left*0.5f;
             chartYText.transform.position = chartPosition + Vector3.left*0.5f + Vector3.up*0.5f;
-            chartYText.text = ((int) BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DrinksBought)).ToString();
+            chartYText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DrinksBought).ToString();
         }
 
         public void ViewChart() {

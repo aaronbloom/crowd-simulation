@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Environment.World.Objects;
+using UnityEngine;
 
 namespace Assets.Scripts.Analysis {
     public class HeatMap {
@@ -9,7 +8,7 @@ namespace Assets.Scripts.Analysis {
         private readonly float[,] map;
         private readonly int width;
         private readonly int length;
-        private bool displayed = false;
+        private bool displayed;
 
         public HeatMap(List<Boid.Boid> boids) {
             this.boids = boids;

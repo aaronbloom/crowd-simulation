@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Environment.World.Objects;
+using UnityEngine;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class ToiletProcess : ThoughtProcess {
@@ -12,7 +8,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         private readonly Need ownerDesire;
         private const int SatisfactionRate = 20;
 
-        public ToiletProcess(Boid boid, Need toSatisfy) : base() {
+        public ToiletProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
             processList.Add((Action)navigateToToilet);
@@ -28,7 +24,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
             } else if (owner.Properties.Gender == Gender.FEMALE) {
                 gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.FemaleToilets);
             } else {
-                UnityEngine.Debug.LogError("Toilet Gender Unavailable");
+                Debug.LogError("Toilet Gender Unavailable");
             }
 
             owner.behaviour = gsb;

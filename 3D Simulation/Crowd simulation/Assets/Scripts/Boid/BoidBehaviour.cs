@@ -4,7 +4,7 @@ namespace Assets.Scripts.Boid {
     public abstract class BoidBehaviour
     {
 
-        protected global::Assets.Scripts.Boid.Boid boid;
+        protected Boid boid;
 
         public float MaxForce { get; protected set; }
         public bool BehaviourComplete { get; protected set; }

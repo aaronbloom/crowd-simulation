@@ -1,5 +1,4 @@
 ﻿using System;
-using Assets.Scripts.Boid;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

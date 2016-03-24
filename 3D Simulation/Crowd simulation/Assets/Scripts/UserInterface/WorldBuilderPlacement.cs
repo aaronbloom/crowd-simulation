@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Environment;
 using Assets.Scripts.Environment.Save;
 using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     internal class WorldBuilderPlacement : IBuilder {
-
-        public WorldBuilderPlacement() {}
-
         public bool WallPlacement(out Vector3 normal, out Vector3 position, WorldObject cursor) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;

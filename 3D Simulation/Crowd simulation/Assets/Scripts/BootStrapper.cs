@@ -2,7 +2,6 @@
 using Assets.Scripts.Boid;
 using Assets.Scripts.Environment;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
@@ -52,11 +51,11 @@ namespace Assets.Scripts {
         }
 
         public static Object Initialise(string prefabName) {
-            return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName));
+            return Instantiate(Resources.Load(PrefabFilepath + prefabName));
         }
 
         public static Object Initialise(string prefabName, Vector3 position, Quaternion rotation) {
-            return MonoBehaviour.Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
+            return Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
         }
 
         private IEnumerator BoidSpawningTimer() {
