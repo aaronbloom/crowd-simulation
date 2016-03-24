@@ -7,11 +7,7 @@ namespace Assets.Scripts.Environment.Navigation {
 
         public Vector3 Position { get; private set; }
         public Dictionary<Node, Transition> Transitions { get; private set; }
-        public List<Node> TransitionsTo {
-            get {
-                return Transitions.Keys.ToList();
-            }
-        }
+        public List<Node> TransitionsTo { get {return Transitions.Keys.ToList();}}
 
         public Node (Vector3 position) {
             this.Position = position;
@@ -31,6 +27,18 @@ namespace Assets.Scripts.Environment.Navigation {
             }
         }
 
+        public static float distanceBetween(Node a, Node b) {
+            return (a.Position - b.Position).magnitude;
+        }
+
+        internal void Disconnect() {
+            //Avoid out of sync error by storing in list
+            List<Transition> transitions = Transitions.Values.ToList();
+            foreach (Transition t in transitions) {
+                removeTransition(t);
+            }
+        }
+
         private void removeTransition(Transition transition) {
             Node otherNode;
             if (transition.Nodes[0] == this) {
@@ -43,22 +51,7 @@ namespace Assets.Scripts.Environment.Navigation {
         }
 
         private bool hasTransition(Node target) {
-            foreach (var transition in Transitions.Values) {
-                if (transition.Nodes[0] == target || transition.Nodes[1] == target) return true;
-            }
-            return false;
-        }
-
-        internal void Disconnect() {
-            //Avoid out of sync error by storing in list
-            List<Transition> transitions = Transitions.Values.ToList();
-            foreach(Transition t in transitions) {
-                removeTransition(t);
-            }
-        }
-
-        public static float distanceBetween(Node a, Node b) {
-            return (a.Position - b.Position).magnitude;
+            return Transitions.Values.Any(transition => (transition.Nodes[0] == target) || (transition.Nodes[1] == target));
         }
     }
 }

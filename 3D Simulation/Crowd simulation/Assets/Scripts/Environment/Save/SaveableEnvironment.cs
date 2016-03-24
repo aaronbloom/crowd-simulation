@@ -6,8 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.Environment.Save {
 
     [Serializable]
-    public class SaveableEnvironment
-    {
+    public class SaveableEnvironment {
 
         public SerialisableVector3 environmentBounds { get; private set; }
         public List<WorldObjectBuildInfo> saveableItems { get; private set; }
@@ -32,8 +31,5 @@ namespace Assets.Scripts.Environment.Save {
                 builder.Place(WorldObject.DetermineObject(savedItem.type), savedItem.position.Vector3(), savedItem.wallNormal.Vector3());
             }
         }
-
-
-
     }
 }

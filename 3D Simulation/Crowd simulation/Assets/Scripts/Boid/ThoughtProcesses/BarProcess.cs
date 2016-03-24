@@ -4,29 +4,31 @@ using Assets.Scripts.Environment.World.Objects;
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class BarProcess : ThoughtProcess {
 
+        private const int SatisfactionMultiplier = 3;
+
         private readonly Boid owner;
         private readonly Need ownerDesire;
-        private const int SatisfactionMultiplier = 3;
+
         private Goal currentGoal;
 
         public BarProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            processList.Add((Action)navigateToBar);
-            processList.Add((Action)continueWalkToBar);
-            processList.Add((Action)reachBar);
-            processList.Add((Action)drink);
+            ProcessList.Add((Action)navigateToBar);
+            ProcessList.Add((Action)continueWalkToBar);
+            ProcessList.Add((Action)reachBar);
+            ProcessList.Add((Action)drink);
         }
 
         private void navigateToBar() {
             GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
             currentGoal = gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
-            owner.behaviour = gsb;
+            owner.Behaviour = gsb;
             NextStep();
         }
 
         private void continueWalkToBar() {
-            if (owner.behaviour.BehaviourComplete) {
+            if (owner.Behaviour.BehaviourComplete) {
                 NextStep();
             }
         }

@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Boid {
+namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class ThoughtProcess {
 
-        protected int processStep;
-        protected List<object> processList;
+        protected int ProcessStep;
+        protected List<object> ProcessList;
 
         public ThoughtProcess() {
-            processStep = 0;
-            processList = new List<object>();
+            ProcessStep = 0;
+            ProcessList = new List<object>();
         }
 
         public void NextStep() {
-            processStep++;
+            ProcessStep++;
         }
 
         public void RunCurrentProcess() {
-            if (processStep < processList.Count) {
+            if (ProcessStep < ProcessList.Count) {
                 //perform current step in process flow
-                callProcess(processStep);
+                callProcess(ProcessStep);
             } else {
                 //reached end of process flow
-                //boid should now have satisfied need
+                //Boid should now have satisfied need
                 //in which case mind will discard this process
                 //if mind decides the need is not satisfied:
                 //  Reset to zero, so we can start again
-                processStep = 0;
+                ProcessStep = 0;
             }
         }
 
         private void callProcess(int step) {
-            ((Action)processList[step])();
+            ((Action)ProcessList[step])();
         }
     }
 }

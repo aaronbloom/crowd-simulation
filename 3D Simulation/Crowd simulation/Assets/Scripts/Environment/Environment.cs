@@ -32,16 +32,8 @@ namespace Assets.Scripts.Environment {
             this.World = new World.World();
         }
 
-        public void Setup() {
-            new WorldBuilderPlacement().PlacePerimeterWall(Origin, Bounds);
-        }
-
-        public void Build() {
-            constructNavMesh();
-        }
-
         public static Vector3 ConstrainVector(Vector3 position, Vector3 origin, Vector3 bounds, Vector3 objectSize) {
-            var halfObjectSize = objectSize/2;
+            var halfObjectSize = objectSize / 2;
             position.x = Mathf.Clamp(position.x, origin.x + halfObjectSize.x, origin.x + bounds.x - halfObjectSize.x);
             position.y = Mathf.Clamp(position.y, origin.y, origin.y + bounds.y - halfObjectSize.y);
             position.z = Mathf.Clamp(position.z, origin.z + halfObjectSize.z, origin.z + bounds.z - halfObjectSize.z);
@@ -54,23 +46,12 @@ namespace Assets.Scripts.Environment {
             return ConstrainVector(position, origin, bounds, objectSize);
         }
 
-        public void Place(WorldObject worldObject, Vector3 position) {
-            Vector3 location;
-            if (worldObject.GridPlaceable) {
-                location = PositionToGridLocation(position, worldObject.Size);
-            } else {
-                location = PositionToLocation(position, worldObject.Size);
-            }
-            World.AddObject(WorldObject.Initialise(worldObject, location, Vector3.zero));
-        }
-
         public static Vector3 PositionToLocation(Vector3 position, Vector3 objectSize) {
             var location = new Vector3(position.x, objectSize.y / 2, position.z);
             return ConstrainVectorToEnvironment(location, objectSize);
         }
 
-        public static Vector3 PositionToGridLocation(Vector3 position, Vector3 objectSize)
-        {
+        public static Vector3 PositionToGridLocation(Vector3 position, Vector3 objectSize) {
             var gridPosition = position;
             gridPosition -= (objectSize / 2);
             gridPosition = new Vector3(
@@ -81,21 +62,43 @@ namespace Assets.Scripts.Environment {
             return ConstrainVectorToEnvironment(gridPosition, objectSize);
         }
 
-        private void CreateGroundArea(Vector3 bounds) {
+        public void Setup() {
+            new WorldBuilderPlacement().PlacePerimeterWall(Origin, Bounds);
+        }
+
+        public void Build() {
+            constructNavMesh();
+        }
+
+        public void Place(WorldObject worldObject, Vector3 position) {
+            Vector3 location;
+            if (worldObject.GridPlaceable) {
+                location = PositionToGridLocation(position, worldObject.Size);
+            } else {
+                location = PositionToLocation(position, worldObject.Size);
+            }
+            World.AddObject(WorldObject.Initialise(worldObject, location, Vector3.zero));
+        }
+
+        public void OnDrawGizmos() {
+            if (Graph != null)
+                Graph.DrawGraphGizmo();
+        }
+
+        public void SaveEnvironment() {
+            var savedEnvironment = new SaveableEnvironment(this.Bounds);
+            savedEnvironment.SaveWorldObjects(World.Objects);
+            SystemSaveFolder.WriteObjectToFolder(SystemSaveFolder.WorldSaveName, savedEnvironment);
+        }
+
+        private static void CreateGroundArea(Vector3 bounds) {
             Vector3 position = bounds * 0.5f;
             position.y = 0; //set to ground level
             GameObject groundArea = (GameObject)BootStrapper.Initialise("GroundQuad", position, Quaternion.Euler(90, 0, 0));
             groundArea.transform.localScale = new Vector3(bounds.x, bounds.z, bounds.y); //swapped axis due to quad rotation
         }
 
-        private void constructNavMesh() {
-            this.Graph = Graph.ConstructGraph(this, 1f);
-            foreach (var collidable in World.Collidables) {
-                this.Graph.Cull(collidable);
-            }
-        }
-
-        private Plane[] constructCuboidBoundary(Vector3 bounds, Vector3 origin) {
+        private static Plane[] constructCuboidBoundary(Vector3 bounds, Vector3 origin) {
             Plane[] boundaries = new Plane[6];
             boundaries[0] = new Plane(Vector3.up, origin);                  //bottom (ground) plane
             boundaries[1] = new Plane(Vector3.forward, origin);             //front
@@ -107,14 +110,11 @@ namespace Assets.Scripts.Environment {
             return boundaries;
         }
 
-        public void OnDrawGizmos() {
-            Graph.DrawGraphGizmo();
-        }
-
-        public void SaveEnvironment() {
-            var savedEnvironment = new SaveableEnvironment(this.Bounds);
-            savedEnvironment.SaveWorldObjects(World.Objects);
-            SystemSaveFolder.WriteObjectToFolder(SystemSaveFolder.WorldSaveName, savedEnvironment);
+        private void constructNavMesh() {
+            this.Graph = Graph.ConstructGraph(this, 1f);
+            foreach (var collidable in World.Collidables) {
+                this.Graph.Cull(collidable);
+            }
         }
     }
 }

@@ -3,16 +3,20 @@ using Assets.Scripts.Environment.Save;
 using Assets.Scripts.UserInterface;
 using UnityEngine;
 
-namespace Assets.Scripts.Environment
-{
+namespace Assets.Scripts.Environment {
     public class EnvironmentManager {
 
-        private static EnvironmentManager shared;
         public Environment CurrentEnvironment { get; private set; }
+        private static EnvironmentManager shared;
 
         // Setup the static instance of this EnvironmentManager
         public EnvironmentManager() {
             initSingleton();
+        }
+
+        // Return the static instance of this EnvironmentManager
+        public static EnvironmentManager Shared() {
+            return shared;
         }
 
         public void InitialiseEnvironment(Vector3 bounds) {
@@ -38,6 +42,10 @@ namespace Assets.Scripts.Environment
             savedEnvironment.BuildWorldWith(new WorldBuilderPlacement());
         }
 
+        public void OnDrawGizmos() {
+            if (CurrentEnvironment != null) CurrentEnvironment.OnDrawGizmos();
+        }
+
         private void initSingleton() {
             // Set the 'shared' variable as this environment manager
             if (shared == null) {
@@ -46,15 +54,5 @@ namespace Assets.Scripts.Environment
                 throw new InvalidOperationException("Singleton already setup");
             }
         }
-
-        // Return the static instance of this EnvironmentManager
-        public static EnvironmentManager Shared() {
-            return shared;
-        }
-
-        public void OnDrawGizmos() {
-            if (CurrentEnvironment != null) CurrentEnvironment.OnDrawGizmos();
-        }
-
     }
 }

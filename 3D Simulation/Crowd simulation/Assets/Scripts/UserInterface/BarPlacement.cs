@@ -6,10 +6,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     internal class BarPlacement {
-        private static readonly int left = 0;
-        private static readonly int back = 90;
-        private static readonly int right = 180;
-        private static readonly int forward = 270;
+
+        private const int Left = 0;
+        private const int Back = 90;
+        private const int Right = 180;
+        private const int Forward = 270;
+        private const float WhiskerDepth = 0.1f;
 
         public static void RecalcBars() {
             List<Bar> bars = new List<Bar>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Bars);
@@ -22,7 +24,7 @@ namespace Assets.Scripts.UserInterface {
                 switch (sides) {
                     case 4:
                         barShape = "bar/bar¬";
-                        direction = GetDirectionFourSides(bar.placementPattern);
+                        direction = GetDirectionFourSides(bar.PlacementPattern);
                         break;
                     case 3:
                         barShape = "bar/barI";
@@ -37,17 +39,16 @@ namespace Assets.Scripts.UserInterface {
                         direction = GetDirectionOneSide(pattern);
                         break;
                 }
-                if (direction != -1 && barShape != "") {
+                if ((direction != -1) && (barShape != "")) {
                     tryUpdatePattern(pattern, barShape, bar, direction);
                 }
             }
         }
 
         private static int[] directionsBlocked(WorldObject obj) {
-            float whiskerDepth = 0.1f;
             Vector3 position = obj.GameObject.transform.position;
-            Vector3 offsetX = new Vector3(obj.Size.x/2 + whiskerDepth, 0, 0);
-            Vector3 offsetZ = new Vector3(0, 0, obj.Size.z/2 + whiskerDepth);
+            Vector3 offsetX = new Vector3(obj.Size.x/2 + WhiskerDepth, 0, 0);
+            Vector3 offsetZ = new Vector3(0, 0, obj.Size.z/2 + WhiskerDepth);
 
             int[] directionsBlocked = new int[4];
             directionsBlocked[0] = IsSpaceAlreadyOccupied(position - offsetX);
@@ -65,7 +66,7 @@ namespace Assets.Scripts.UserInterface {
 
         private static void tryUpdatePattern(string pattern, string prefab, Bar bar, int yVal) {
             if (bar.IsNewPlacementPattern(pattern)) {
-                bar.placementPattern = pattern;
+                bar.PlacementPattern = pattern;
                 bar.ChangePrefab(prefab);
                 bar.GameObject.transform.rotation = rotateToY(bar, yVal);
             }
@@ -80,16 +81,16 @@ namespace Assets.Scripts.UserInterface {
             int direction = -1;
             switch (pattern) {
                 case "1000":
-                    direction = back;
+                    direction = Back;
                     break;
                 case "0100":
-                    direction = forward;
+                    direction = Forward;
                     break;
                 case "0010":
-                    direction = left;
+                    direction = Left;
                     break;
                 case "0001":
-                    direction = right;
+                    direction = Right;
                     break;
             }
             return direction;
@@ -102,19 +103,19 @@ namespace Assets.Scripts.UserInterface {
                     // =
                     break;
                 case "0110":
-                    direction = forward;
+                    direction = Forward;
                     break;
                 case "1100":
                     // =
                     break;
                 case "1010":
-                    direction = left;
+                    direction = Left;
                     break;
                 case "0101":
-                    direction = right;
+                    direction = Right;
                     break;
                 case "1001":
-                    direction = back;
+                    direction = Back;
                     break;
             }
             return direction;
@@ -124,16 +125,16 @@ namespace Assets.Scripts.UserInterface {
             int direction = -1;
             switch (pattern) {
                 case "0111":
-                    direction = forward;
+                    direction = Forward;
                     break;
                 case "1011":
-                    direction = back;
+                    direction = Back;
                     break;
                 case "1101":
-                    direction = right;
+                    direction = Right;
                     break;
                 case "1110":
-                    direction = left;
+                    direction = Left;
                     break;
             }
             return direction;
@@ -143,16 +144,16 @@ namespace Assets.Scripts.UserInterface {
             int direction = -1;
             switch (previousPattern) {
                 case "0111":
-                    direction = right;
+                    direction = Right;
                     break;
                 case "1011":
-                    direction = left;
+                    direction = Left;
                     break;
                 case "1101":
-                    direction = right;
+                    direction = Right;
                     break;
                 case "1110":
-                    direction = forward;
+                    direction = Forward;
                     break;
             }
             return direction;

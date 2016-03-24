@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Environment.World.Objects {
-    public class ToiletMale : Goal, Collidable {
+    public class ToiletMale : Goal, ICollidable {
+
         public const string IdentifierStatic = "CubicleMale";
-        public static Vector3 SizeStatic = new Vector3(4, 4, 4);
+        public static readonly Vector3 SizeStatic = new Vector3(4, 4, 4);
+        private static readonly Quaternion initialRotationOffSet = Quaternion.Euler(90, 180, 180);
+        private static readonly Vector3 initialPositionOffSet = new Vector3(0, -2, 0);
 
         public ToiletMale() {
             this.Identifier = IdentifierStatic;
-            this.InitialRotationOffSet = Quaternion.Euler(90, 180, 180);
-            this.InitialPositionOffSet = new Vector3(0, -2, 0);
+            this.InitialRotationOffSet = initialRotationOffSet;
+            this.InitialPositionOffSet = initialPositionOffSet;
             this.Size = SizeStatic;
             this.GridPlaceable = false;
         }
 
-        public WorldObject getObject() {
+        public WorldObject GetObject() {
             return this;
         }
     }

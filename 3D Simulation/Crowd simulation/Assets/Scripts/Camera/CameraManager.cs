@@ -1,11 +1,12 @@
-﻿﻿using RTS_Cam;
-﻿using UnityEngine;
+﻿using RTS_Cam;
+using UnityEngine;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts.Camera {
     public class CameraManager {
-        private static readonly string FirstPersonCameraName = "FirstPersonCharacterParent";
-        private static readonly string RTSCameraName = "RTS_Camera";
-        private static readonly string StatsCameraName = "StatsCamera";
+
+        private const string FirstPersonCameraName = "FirstPersonCharacterParent";
+        private const string RTSCameraName = "RTS_Camera";
+        private const string StatsCameraName = "StatsCamera";
 
         public GameObject RTSCamera { get; private set; }
         public RTS_Camera RTSCameraScript { get; private set; }

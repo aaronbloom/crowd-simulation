@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Analysis {
     public class HeatMap {
+
         private readonly List<Boid.Boid> boids;
         private readonly float[,] map;
         private readonly int width;
         private readonly int length;
+
         private bool displayed;
 
         public HeatMap(List<Boid.Boid> boids) {

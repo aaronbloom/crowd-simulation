@@ -8,25 +8,31 @@ namespace Assets.Scripts.UserInterface {
     internal class BoidInformationWindow {
 
         private const string BoidInformationPanelName = "BoidInformationPanel";
+        private const string ThirstSlider = "ThirstSlider";
+        private const string ToiletSlider = "ToiletSlider";
+        private const string DanceSlider = "DanceSlider";
+        private const string BoidNameText = "BoidNameText";
+        private const string BoidDemographicText = "BoidDemographicText";
+        private const string CurrentNeedText = "CurrentNeedText";
+        private const string Boid = "Boid";
+        private const string Fill = "Fill";
+
         private readonly GameObject boidInformationWindow;
-        private readonly Color MaxHealthColor = Color.red;
-        private readonly Color MinHealthColor = Color.green;
-        private readonly Slider ThirstSlider;
-        private readonly Slider ToiletSlider;
-        private readonly Slider DanceSlider;
+        private readonly Color maxHealthColor = Color.red;
+        private readonly Color minHealthColor = Color.green;
+        private readonly Slider thirstSlider;
+        private readonly Slider toiletSlider;
+        private readonly Slider danceSlider;
 
-        private String currentNeed;
-
+        private string currentNeed;
         private Boid.Boid currentBoid;
         private GameObject selectionGameObject;
 
         public BoidInformationWindow() {
             boidInformationWindow = GameObject.Find(BoidInformationPanelName);
-
-
-            ThirstSlider = GameObject.Find("ThirstSlider").GetComponent<Slider>();
-            ToiletSlider = GameObject.Find("ToiletSlider").GetComponent<Slider>();
-            DanceSlider = GameObject.Find("DanceSlider").GetComponent<Slider>();
+            thirstSlider = GameObject.Find(ThirstSlider).GetComponent<Slider>();
+            toiletSlider = GameObject.Find(ToiletSlider).GetComponent<Slider>();
+            danceSlider = GameObject.Find(DanceSlider).GetComponent<Slider>();
 
             UserInterfaceController.HideMenu(boidInformationWindow);
         }
@@ -35,11 +41,10 @@ namespace Assets.Scripts.UserInterface {
             RaycastHit raycastHit;
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPosition);
             if (Physics.Raycast(ray, out raycastHit, 100)) {
-                if (raycastHit.transform.tag == "Boid") {
+                if (raycastHit.transform.tag == Boid) {
                     UserInterfaceController.ShowMenu(boidInformationWindow);
                     currentBoid = BootStrapper.BoidManager.FindBoid(raycastHit.transform.gameObject);
-                }
-                else {
+                } else {
                     currentBoid = null;
                     Object.Destroy(selectionGameObject);
                     selectionGameObject = null;
@@ -52,12 +57,12 @@ namespace Assets.Scripts.UserInterface {
             if (currentBoid != null) {
                 UpdateSelectionGameObject();
                 float totalNeed = currentBoid.Thirst + currentBoid.ToiletNeed + currentBoid.DanceNeed;
-                setSliderValue(ThirstSlider, currentBoid.Thirst / totalNeed);
-                setSliderValue(ToiletSlider, currentBoid.ToiletNeed / totalNeed);
-                setSliderValue(DanceSlider, currentBoid.DanceNeed / totalNeed);
-                GameObject.Find("BoidNameText").GetComponent<Text>().text = "Name: " + currentBoid.Properties.HumanName;
-                GameObject.Find("BoidDemographicText").GetComponent<Text>().text = "Trait: " + currentBoid.Properties.DemographicProperties;
-                GameObject.Find("CurrentNeedText").GetComponent<Text>().text = "Current need: " + currentBoid.CurrentNeed;
+                setSliderValue(thirstSlider, currentBoid.Thirst / totalNeed);
+                setSliderValue(toiletSlider, currentBoid.ToiletNeed / totalNeed);
+                setSliderValue(danceSlider, currentBoid.DanceNeed / totalNeed);
+                GameObject.Find(BoidNameText).GetComponent<Text>().text = "Name: " + currentBoid.Properties.HumanName;
+                GameObject.Find(BoidDemographicText).GetComponent<Text>().text = "Trait: " + currentBoid.Properties.DemographicProperties;
+                GameObject.Find(CurrentNeedText).GetComponent<Text>().text = "Current need: " + currentBoid.CurrentNeed;
             }
         }
 
@@ -67,12 +72,12 @@ namespace Assets.Scripts.UserInterface {
         }
 
         private void InterpolateColour(Slider slider) {
-            Image fill = slider.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
-            fill.color = Color.Lerp(MinHealthColor, MaxHealthColor, slider.value/1);
+            Image fill = slider.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == Fill);
+            fill.color = Color.Lerp(minHealthColor, maxHealthColor, slider.value/1);
         }
 
         private void UpdateSelectionGameObject() {
-            if (selectionGameObject == null || currentNeed != currentBoid.CurrentNeed) {
+            if ((selectionGameObject == null) || (currentNeed != currentBoid.CurrentNeed)) {
                 if (selectionGameObject != null) {
                     Object.Destroy(selectionGameObject);
                 }

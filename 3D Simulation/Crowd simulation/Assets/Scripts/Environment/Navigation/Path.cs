@@ -6,23 +6,13 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Environment.Navigation {
     internal class Path : Graph {
+
         private const float NavigationAccuracy = 0.5f;
 
         //Constructs Path from ordered node list
-        public Path(List<Node> nodes) : base(nodes) {
-        }
-
-        public void DrawGraphGizmo() {
-            foreach (Node node in Nodes) {
-                foreach (KeyValuePair<Node, Transition> entry in node.Transitions) {
-                    Gizmos.DrawLine(entry.Value.Nodes[0].Position, entry.Value.Nodes[1].Position);
-                }
-            }
-            //Gizmos.DrawSphere(Nodes[Nodes.Count-1].Position, 1);
-        }
+        public Path(List<Node> nodes) : base(nodes) {}
 
         public static Path Loiter(Graph graph, Node loiterNode, int maxLoiterDist, int minLoiterNodes, int maxLoiterNodes) {
-
             List<Node> path = new List<Node>();
 
             Node currNode = loiterNode;
@@ -79,9 +69,9 @@ namespace Assets.Scripts.Environment.Navigation {
                     }
 
                     //calculate heuristics for candiate node
-                    candidatePromising.setG(mostPromising);
-                    candidatePromising.setH(goal);
-                    float potentialF = candidatePromising.calculateF();
+                    candidatePromising.SetG(mostPromising);
+                    candidatePromising.SetH(goal);
+                    float potentialF = candidatePromising.CalculateF();
 
                     //check this is the best route we know to the candidate
                     if (openSet.ContainsKey(candidatePromising.Node.Position) && openSet[candidatePromising.Node.Position].ValueF < potentialF && Random.Range(0f,1f) > NavigationAccuracy) {
@@ -90,7 +80,7 @@ namespace Assets.Scripts.Environment.Navigation {
                         //Not interested
                     } else {
                         //this is the best route to the candidate node
-                        candidatePromising.setF();
+                        candidatePromising.SetF();
 
                         //set parent for pathing
                         candidatePromising.Parent = mostPromising;
@@ -110,8 +100,7 @@ namespace Assets.Scripts.Environment.Navigation {
 
         //Convert Dictionary Linkages to Linear Ordered List
         private static List<Node> convertParentageToList(HeuristicalNode goal) {
-            List<Node> list = new List<Node>();
-            list.Add(goal.Node);
+            List<Node> list = new List<Node> {goal.Node};
             for (HeuristicalNode n = goal; n != null; n = n.Parent) {
                 list.Add(n.Node);
             }
@@ -136,11 +125,12 @@ namespace Assets.Scripts.Environment.Navigation {
         //Extension for Node providing storage and calculation for pathing heuristics
         private class HeuristicalNode {
 
-            public float ValueG { get; set; }
-            public float ValueH { get; set; }
             public float ValueF { get; set; }
             public HeuristicalNode Parent { get; set; }
-            public Node Node { get; set; }
+            public Node Node { get; private set; }
+
+            private float ValueG { get; set; }
+            private float ValueH { get; set; }
 
             public HeuristicalNode(Node node) {
                 ValueG = 0;
@@ -151,29 +141,29 @@ namespace Assets.Scripts.Environment.Navigation {
             }
 
             //calculates and sets heurisitics
-            public void setG(HeuristicalNode parentNode) {
+            public void SetG(HeuristicalNode parentNode) {
                 ValueG = calculateG(parentNode);
             }
-            public void setH(HeuristicalNode goalNode) {
+            public void SetH(HeuristicalNode goalNode) {
                 ValueH = calculateH(goalNode);
             }
-            public void setF() {
-                ValueF = calculateF();
+            public void SetF() {
+                ValueF = CalculateF();
             }
 
             //calculates G (Cost Complete)
-            public float calculateG(HeuristicalNode parentNode) {
+            private float calculateG(HeuristicalNode parentNode) {
                 return parentNode.ValueG + distanceBetween(this.Node, parentNode.Node);
                 //return distanceBetween(this.Node, startNode.Node);
             }
 
             //calculates H (Cost remaining [guessed])
-            public float calculateH(HeuristicalNode goalNode) {
+            private float calculateH(HeuristicalNode goalNode) {
                 return distanceBetween(this.Node, goalNode.Node);
             }
 
             //calculates F (Total Cost)
-            public float calculateF() {
+            public float CalculateF() {
                 return ValueG + ValueH;
             }
 

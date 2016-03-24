@@ -1,38 +1,40 @@
 ﻿using System.Collections;
 using Assets.Scripts.Boid;
+using Assets.Scripts.Camera;
 using Assets.Scripts.Environment;
 using UnityEngine;
 
 namespace Assets.Scripts {
     public class BootStrapper : MonoBehaviour {
 
-        private static readonly string PrefabFilepath = "Prefabs/";
+        private const string PrefabFilepath = "Prefabs/";
+        private const string CaptureHeatMap = "boidHeatMap";
+        private const string BoidSpawning = "boidSpawningTimer";
 
         //System Fields
         public static BoidManager BoidManager { get; private set; }
         public static EnvironmentManager EnvironmentManager { get; private set; }
         public static CameraManager CameraManager { get; private set; }
         public static bool Pause { get; private set; }
-        private const string CaptureHeatMap = "BoidHeatMap";
-        private const string BoidSpawning = "BoidSpawningTimer";
 
-        private void Awake() {
+        void Awake() {
             Pause = false;
             EnvironmentManager = new EnvironmentManager();
             CameraManager = new CameraManager();
         }
 
-        private void Update() {
+        void Update() {
             if (BoidManager != null) {
                 BoidManager.Update();
             }
         }
 
-        private void Start() {
+        void Start() {
             CameraManager.ActivateRTSCamera();
         }
 
-        private void OnDrawGizmos() {
+        void OnDrawGizmos() {
+            if (EnvironmentManager != null)
             EnvironmentManager.OnDrawGizmos();
         }
 
@@ -58,14 +60,16 @@ namespace Assets.Scripts {
             return Instantiate(Resources.Load(PrefabFilepath + prefabName), position, rotation);
         }
 
-        private IEnumerator BoidSpawningTimer() {
+        // ReSharper disable once UnusedMember.Local - Called with StartCoroutine above
+        private IEnumerator boidSpawningTimer() {
             while (true) {
                 yield return new WaitForSeconds(BoidManager.SpawningIntervalSeconds); //wait
                 BoidManager.AttemptBoidSpawn();
             }
         }
 
-        private IEnumerator BoidHeatMap() {
+        // ReSharper disable once UnusedMember.Local - Called with StartCoroutine above
+        private IEnumerator boidHeatMap() {
             while (true) {
                 BoidManager.CaptureAnalysisData();
                 yield return new WaitForSeconds(BoidManager.HeatMapCaptureIntervalSeconds); //wait

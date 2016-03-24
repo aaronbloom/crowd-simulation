@@ -4,6 +4,7 @@ using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.Environment.World.Objects {
     public abstract class WorldObject {
+
         private string _identifer = String.Empty;
         private string _tag = String.Empty;
 
@@ -49,7 +50,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             var halfWidthSum = halfSize.x + otherHalfSize.x;
             var halfLengthSum = halfSize.z + otherHalfSize.z;
 
-            return xDifference < halfWidthSum && zDifference < halfLengthSum; //AABB
+            return (xDifference < halfWidthSum) && (zDifference < halfLengthSum); //AABB
         }
 
         //Return true if arg within WorldObject bounds
@@ -57,8 +58,8 @@ namespace Assets.Scripts.Environment.World.Objects {
             Vector3 position = GameObject.transform.position;
             Vector3 halfSize = this.Size / 2;
 
-            bool x = targetPosition.x <= (position.x + halfSize.x) && targetPosition.x >= (position.x - halfSize.x);
-            bool z = targetPosition.z <= (position.z + halfSize.z) && targetPosition.z >= (position.z - halfSize.z);
+            bool x = (targetPosition.x <= (position.x + halfSize.x)) && (targetPosition.x >= (position.x - halfSize.x));
+            bool z = (targetPosition.z <= (position.z + halfSize.z)) && (targetPosition.z >= (position.z - halfSize.z));
 
             return x && z;
         }

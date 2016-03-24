@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.Boid {
     public class BoidStatistics {
+
         public float DistanceCovered { get; private set; }
         public int StageWatchedAmount { get; private set; }
         public int DrinksBought { get; private set; }

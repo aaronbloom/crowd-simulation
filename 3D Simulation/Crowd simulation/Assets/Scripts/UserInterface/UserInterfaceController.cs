@@ -8,7 +8,21 @@ namespace Assets.Scripts.UserInterface {
     public class UserInterfaceController : MonoBehaviour {
 
         private const int LeftMouseButton = 0;
-        private const int RightMouseButton = 1;
+        private const int Z = 0;
+        private const int Offset = 150;
+        private const string Mainmenu = "MainMenu";
+        private const string Setupmenu = "SetupMenu";
+        private const string Environmentbuildermenu = "EnvironmentBuilderMenu";
+        private const string Simulationmenu = "SimulationMenu";
+        private const string Demographicmenu = "DemographicMenu";
+        private const string Analysismenu = "AnalysisMenu";
+
+        private const string Demographicsetupbutton = "DemographicSetupButton";
+        private const string Environmentbuilderinformation = "EnvironmentBuilderInformation";
+        private const string Bootstrapper = "Bootstrapper";
+        private const string FileName = "World";
+        private const string PrefabName = "LoadSimulationButton";
+        private const string ButtonBackground = "Button Background";
 
         private GameObject mainMenu;
         private GameObject setupMenu;
@@ -20,18 +34,18 @@ namespace Assets.Scripts.UserInterface {
         private UserWorldBuilder userWorldBuilder;
         private AnalysisInterface analysisInterface;
 
-        private void Awake() {
-            mainMenu = GameObject.Find("MainMenu");
-            setupMenu = GameObject.Find("SetupMenu");
-            environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
-            simulationMenu = GameObject.Find("SimulationMenu");
-            demographicMenu = GameObject.Find("DemographicMenu");
-            analysisMenu = GameObject.Find("AnalysisMenu");
+        void Awake() {
+            mainMenu = GameObject.Find(Mainmenu);
+            setupMenu = GameObject.Find(Setupmenu);
+            environmentBuilderMenu = GameObject.Find(Environmentbuildermenu);
+            simulationMenu = GameObject.Find(Simulationmenu);
+            demographicMenu = GameObject.Find(Demographicmenu);
+            analysisMenu = GameObject.Find(Analysismenu);
             analysisInterface = new AnalysisInterface();
         }
 
-        private void Start() {
-            SetupMainMenu();
+        void Start() {
+            setupMainMenu();
             ShowMenu(mainMenu);
             HideMenu(setupMenu);
             HideMenu(environmentBuilderMenu);
@@ -40,7 +54,7 @@ namespace Assets.Scripts.UserInterface {
             HideMenu(analysisMenu);
         }
 
-        private void Update () {
+        void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
                 if (Input.GetMouseButtonDown(LeftMouseButton)) {
@@ -52,8 +66,8 @@ namespace Assets.Scripts.UserInterface {
 
                 //button only active when environment is valid
                 var isValidWorld = EnvironmentManager.Shared().CurrentEnvironment.World.IsValidWorld();
-                GameObject.Find("DemographicSetupButton").GetComponent<Button>().interactable = isValidWorld;
-                GameObject.Find("EnvironmentBuilderInformation").GetComponent<Text>().enabled = !isValidWorld;
+                GameObject.Find(Demographicsetupbutton).GetComponent<Button>().interactable = isValidWorld;
+                GameObject.Find(Environmentbuilderinformation).GetComponent<Text>().enabled = !isValidWorld;
             }
 
             if (boidInformationWindow != null) {
@@ -97,7 +111,7 @@ namespace Assets.Scripts.UserInterface {
             MenuControlController menuControlController = setupMenu.GetComponent<MenuControlController>();
             int numberOfBoids = menuControlController.NumberOfBoidsValue;
             float genderBias = menuControlController.GenderBiasValue;
-            GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StartSimulation(numberOfBoids, genderBias);
+            GameObject.Find(Bootstrapper).GetComponent<BootStrapper>().StartSimulation(numberOfBoids, genderBias);
             ShowMenu(simulationMenu);
             boidInformationWindow = new BoidInformationWindow();
         }
@@ -106,7 +120,7 @@ namespace Assets.Scripts.UserInterface {
             boidInformationWindow = null;
             HideMenu(simulationMenu);
             ShowMenu(analysisMenu);
-            GameObject.Find("Bootstrapper").GetComponent<BootStrapper>().StopSimulation();
+            GameObject.Find(Bootstrapper).GetComponent<BootStrapper>().StopSimulation();
         }
 
         public void BoidsEyeView() {
@@ -116,17 +130,17 @@ namespace Assets.Scripts.UserInterface {
 
         public void GenerateHeatMap() {
             BootStrapper.BoidManager.DisplayHeatMap();
-            analysisInterface.statisticsInformationWindow.Hide();
+            analysisInterface.StatisticsInformationWindow.Hide();
         }
 
         public void ShowDrinksBought() {
             analysisInterface.PopulateChart();
             analysisInterface.ViewChart();
-            analysisInterface.statisticsInformationWindow.Hide();
+            analysisInterface.StatisticsInformationWindow.Hide();
         }
 
         public void ShowStatistics() {
-            analysisInterface.statisticsInformationWindow.Show();
+            analysisInterface.StatisticsInformationWindow.Show();
             analysisInterface.SetStatisticsValues();
         }
 
@@ -165,31 +179,28 @@ namespace Assets.Scripts.UserInterface {
             userWorldBuilder = new UserWorldBuilder();
         }
 
-        private void SetupMainMenu() {
+        private void setupMainMenu() {
             int x = 0;
             int y = 90;
-            int z = 0;
-            int offset = 150;
 
-            for (int i = 0; i < SystemSaveFolder.AmountOfFilesWithNameInFolder("World"); i++) {
-                var button = BootStrapper.Initialise("LoadSimulationButton") as GameObject;
+            for (int i = 0; i < SystemSaveFolder.AmountOfFilesWithNameInFolder(FileName); i++) {
+                var button = BootStrapper.Initialise(PrefabName) as GameObject;
                 button.transform.SetParent(mainMenu.transform);
                 var textItem = button.GetComponentInChildren<Text>();
                 textItem.text = SystemSaveFolder.WorldSaveName + " (" + i + ")";
                 button.GetComponent<Button>().onClick.AddListener(delegate { LoadWorld(textItem.text); });
-                button.GetComponent<RectTransform>().localPosition = new Vector3(x,y,z);
-                x += offset;
-                if (x > offset) {
-                    x = -offset;
-                    y -= offset;
+                button.GetComponent<RectTransform>().localPosition = new Vector3(x,y,Z);
+                x += Offset;
+                if (x > Offset) {
+                    x = -Offset;
+                    y -= Offset;
                 }
             }
-            while (x <= offset)
-            {
-                var blank = BootStrapper.Initialise("Button Background") as GameObject;
+            while (x <= Offset) {
+                var blank = BootStrapper.Initialise(ButtonBackground) as GameObject;
                 blank.transform.SetParent(mainMenu.transform);
-                blank.GetComponent<RectTransform>().localPosition = new Vector3(x, y, z);
-                x += offset;
+                blank.GetComponent<RectTransform>().localPosition = new Vector3(x, y, Z);
+                x += Offset;
             }
         }
     }

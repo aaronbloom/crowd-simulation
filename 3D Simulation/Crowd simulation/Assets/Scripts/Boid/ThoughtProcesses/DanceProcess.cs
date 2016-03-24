@@ -3,27 +3,29 @@ using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class DanceProcess : ThoughtProcess {
+
         private readonly Boid owner;
         private readonly Need ownerDesire;
+
         private Goal currentGoal;
 
         public DanceProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            processList.Add((Action)navigateToStage);
-            processList.Add((Action)continueWalkToStage);
-            processList.Add((Action)reachStage);
+            ProcessList.Add((Action)navigateToStage);
+            ProcessList.Add((Action)continueWalkToStage);
+            ProcessList.Add((Action)reachStage);
         }
 
         private void navigateToStage() {
             GoalSeekingBehaviour behaviour = new LineOfSightGoalSeekingBehaviour(owner);
             this.currentGoal = behaviour.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
-            owner.behaviour = behaviour;
+            owner.Behaviour = behaviour;
             NextStep();
         }
 
         private void continueWalkToStage() {
-            if (owner.behaviour.BehaviourComplete) {
+            if (owner.Behaviour.BehaviourComplete) {
                 NextStep();
             }
         }

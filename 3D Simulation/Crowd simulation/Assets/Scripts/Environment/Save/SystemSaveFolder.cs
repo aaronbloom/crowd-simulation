@@ -1,16 +1,15 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.Save {
-    internal static class SystemSaveFolder
-    {
-        private static readonly string systemSaveFolder = System.Environment.SpecialFolder.MyDocuments.ToString();
-        public static readonly string Extension = ".RAFT";
-        public static readonly string WorldSaveName = "World";
+    internal static class SystemSaveFolder {
+
+        public const string Extension = ".RAFT";
+        public const string WorldSaveName = "World";
 
         public static void WriteObjectToFolder(string preferedFileName, object serialisable) {
-
             int fileNumber = 0;
             string fileName;
             do {
@@ -42,11 +41,7 @@ namespace Assets.Scripts.Environment.Save {
         }
 
         public static int AmountOfFilesWithNameInFolder(string fileName) {
-            int number = 0;
-            foreach (var file in Directory.GetFiles(System.Environment.CurrentDirectory)) {
-                if (file.Contains(fileName)) number++;
-            }
-            return number;
+            return Directory.GetFiles(System.Environment.CurrentDirectory).Count(file => file.Contains(fileName));
         }
     }
 }

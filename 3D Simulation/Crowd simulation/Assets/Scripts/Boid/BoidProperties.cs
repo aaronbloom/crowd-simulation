@@ -7,7 +7,6 @@ namespace Assets.Scripts.Boid {
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
         public DemographicProperties DemographicProperties { get; private set; }
-
         public float MoveSpeed { get { return DemographicProperties.MoveSpeed; } }
         public float ToiletNeedRate { get { return DemographicProperties.ToiletNeedRate; } }
         public float DrinkNeedRate { get { return DemographicProperties.DrinkNeedRate; } }
@@ -26,7 +25,7 @@ namespace Assets.Scripts.Boid {
 
         private Gender getRandomGender() {
             float value = Random.Range(0, 101);
-            return value < _genderBias ? Gender.MALE : Gender.FEMALE;
+            return value < _genderBias ? Gender.Male : Gender.Female;
         }
 
     }

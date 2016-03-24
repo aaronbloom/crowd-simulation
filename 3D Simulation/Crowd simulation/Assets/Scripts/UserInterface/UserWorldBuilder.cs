@@ -83,10 +83,7 @@ namespace Assets.Scripts.UserInterface {
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
             float distance;
-            if (plane.Raycast(ray, out distance)) {
-                return ray.GetPoint(distance);
-            }
-            return Vector3.zero;
+            return plane.Raycast(ray, out distance) ? ray.GetPoint(distance) : Vector3.zero;
         }
 
         public void Destroy() {

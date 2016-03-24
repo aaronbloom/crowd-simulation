@@ -3,22 +3,21 @@ using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     internal class WorldBuilderCursor {
+
+        private static readonly Material cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
+        private static readonly Material invalidCursorMaterial = Resources.Load("Materials/InvalidCursor", typeof(Material)) as Material;
+
+        private readonly WorldBuilderPlacement worldBuilderPlacement;
+
         private WorldObject primaryCursor;
         private WorldObject secondCursor;
-        private readonly Material cursorMaterial;
-        private readonly Material invalidCursorMaterial;
-
         private string currentItem;
         private Vector3 startPlacement;
         private bool startedPlacement;
         private Vector3 currentPlacementNormal;
 
-        private readonly WorldBuilderPlacement worldBuilderPlacement;
-
         public WorldBuilderCursor() {
             worldBuilderPlacement = new WorldBuilderPlacement();
-            cursorMaterial = Resources.Load("Materials/Cursor", typeof(Material)) as Material;
-            invalidCursorMaterial = Resources.Load("Materials/InvalidCursor", typeof(Material)) as Material;
         }
 
         public void Update(Vector3 groundPosition) {

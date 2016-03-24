@@ -33,21 +33,21 @@ namespace Assets.Scripts.Boid {
             setDefaultValues();
 
             switch (demographicType) {
-                case DemographicType.DEFAULT:
+                case DemographicType.Default:
                     //Do Nothing
                     break;
-                case DemographicType.SLOW:
+                case DemographicType.Slow:
                     MoveSpeed = 3f;
                     break;
-                case DemographicType.INCONTENENT:
+                case DemographicType.Incontenent:
                     MoveSpeed = 11f;
                     ToiletNeedRate = 1.5f;
                     break;
-                case DemographicType.ALCOHOLIC:
+                case DemographicType.Alcoholic:
                     MoveSpeed = 8f;
                     DrinkNeedRate = 6;
                     break;
-                case DemographicType.DANCER:
+                case DemographicType.Dancer:
                     MoveSpeed = 14f;
                     DanceNeedRate = 7;
                     break;
@@ -65,10 +65,10 @@ namespace Assets.Scripts.Boid {
     }
 
     public enum DemographicType {
-        DEFAULT,
-        SLOW,
-        INCONTENENT,
-        ALCOHOLIC,
-        DANCER
+        Default,
+        Slow,
+        Incontenent,
+        Alcoholic,
+        Dancer
     }
 }

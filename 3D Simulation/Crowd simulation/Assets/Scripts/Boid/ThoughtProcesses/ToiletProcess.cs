@@ -4,35 +4,36 @@ using UnityEngine;
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class ToiletProcess : ThoughtProcess {
 
+        private const int SatisfactionRate = 20;
+
         private readonly Boid owner;
         private readonly Need ownerDesire;
-        private const int SatisfactionRate = 20;
 
         public ToiletProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            processList.Add((Action)navigateToToilet);
-            processList.Add((Action)continueWalkToToilet);
-            processList.Add((Action)reachToilet);
-            processList.Add((Action)pee);
+            ProcessList.Add((Action)navigateToToilet);
+            ProcessList.Add((Action)continueWalkToToilet);
+            ProcessList.Add((Action)reachToilet);
+            ProcessList.Add((Action)pee);
         }
 
         private void navigateToToilet() {
             GoalSeekingBehaviour gsb = new GoalSeekingBehaviour(owner);
-            if (owner.Properties.Gender == Gender.MALE) {
+            if (owner.Properties.Gender == Gender.Male) {
                 gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.MaleToilets);
-            } else if (owner.Properties.Gender == Gender.FEMALE) {
+            } else if (owner.Properties.Gender == Gender.Female) {
                 gsb.ChooseClosestFromList(BootStrapper.EnvironmentManager.CurrentEnvironment.World.FemaleToilets);
             } else {
                 Debug.LogError("Toilet Gender Unavailable");
             }
 
-            owner.behaviour = gsb;
+            owner.Behaviour = gsb;
             NextStep();
         }
 
         private void continueWalkToToilet() {
-            if (owner.behaviour.BehaviourComplete) {
+            if (owner.Behaviour.BehaviourComplete) {
                 NextStep();
             }
         }

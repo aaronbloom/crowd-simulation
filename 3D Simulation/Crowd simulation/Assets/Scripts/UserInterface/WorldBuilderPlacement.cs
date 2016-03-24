@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
     internal class WorldBuilderPlacement : IBuilder {
+
         public bool WallPlacement(out Vector3 normal, out Vector3 position, WorldObject cursor) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;

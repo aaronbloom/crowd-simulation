@@ -16,7 +16,7 @@ namespace Assets.Scripts.Environment.World {
         public List<Goal> FemaleGoalToilets;
         public List<Stage> Stages;
         public List<Bar> Bars;
-        public List<Collidable> Collidables;
+        public List<ICollidable> Collidables;
 
         public World() {
             Objects = new List<WorldObject>();
@@ -36,7 +36,7 @@ namespace Assets.Scripts.Environment.World {
             Stages = ObjectSublist<Stage>();
             Bars = ObjectSublist<Bar>();
 
-            Collidables = Objects.OfType<Collidable>().ToList();
+            Collidables = Objects.OfType<ICollidable>().ToList();
         }
 
         public bool AddObject(WorldObject worldObject) {
@@ -60,12 +60,7 @@ namespace Assets.Scripts.Environment.World {
         }
 
         public bool PointAlreadyOccupied(Vector3 location) {
-            foreach (WorldObject worldObject in Objects) {
-                if (worldObject.SamePosition(location)) {
-                    return true;
-                }
-            }
-            return false;
+            return Objects.Any(worldObject => worldObject.SamePosition(location));
         }
 
         public bool SpaceAlreadyOccupied(Vector3 location)
@@ -75,20 +70,15 @@ namespace Assets.Scripts.Environment.World {
 
 
         public bool AlreadyOccupied(WorldObject worldObject) {
-            foreach (WorldObject otherWorldObject in Objects) {
-                if (otherWorldObject.WithinBounds(worldObject)) {
-                    return true;
-                }
-            }
-            return false;
+            return Objects.Any(otherWorldObject => otherWorldObject.WithinBounds(worldObject));
         }
 
         public bool IsValidWorld() {
-            return Entrances.Count > 0 &&
-                   MaleToilets.Count > 0 &&
-                   FemaleToilets.Count > 0 &&
-                   Bars.Count > 0 &&
-                   Stages.Count > 0;
+            return (Entrances.Count > 0) &&
+                   (MaleToilets.Count > 0) &&
+                   (FemaleToilets.Count > 0) &&
+                   (Bars.Count > 0) &&
+                   (Stages.Count > 0);
         }
 
     }
