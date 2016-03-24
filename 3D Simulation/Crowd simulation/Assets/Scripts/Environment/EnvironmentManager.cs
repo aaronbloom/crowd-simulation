@@ -52,7 +52,7 @@ namespace Assets.Scripts.Environment
         }
 
         public void OnDrawGizmos() {
-            CurrentEnvironment.OnDrawGizmos();
+            if (CurrentEnvironment != null) CurrentEnvironment.OnDrawGizmos();
         }
 
     }
