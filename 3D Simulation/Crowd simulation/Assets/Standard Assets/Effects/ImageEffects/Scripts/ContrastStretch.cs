@@ -88,7 +88,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void Start()
+        private void Start()
         {
             // Disable if we don't support image effects
             if (!SystemInfo.supportsImageEffects) {
@@ -102,7 +102,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             for( int i = 0; i < 2; ++i )
             {
@@ -113,7 +113,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             for( int i = 0; i < 2; ++i )
             {
@@ -132,7 +132,7 @@ namespace UnityStandardAssets.ImageEffects
 
 
         /// Apply the filter
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
         {
             // Blit to smaller RT and convert to luminance on the way
             const int TEMP_RATIO = 1; // 4x4 smaller

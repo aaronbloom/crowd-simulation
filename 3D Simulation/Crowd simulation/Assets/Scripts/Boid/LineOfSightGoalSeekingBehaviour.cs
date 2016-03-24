@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.Boid {
-    class LineOfSightGoalSeekingBehaviour : GoalSeekingBehaviour {
+    internal class LineOfSightGoalSeekingBehaviour : GoalSeekingBehaviour {
         private const int minimumDistance = 5;
         private const int maximumDistance = 15;
 

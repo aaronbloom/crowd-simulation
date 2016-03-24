@@ -5,14 +5,14 @@ namespace UnityStandardAssets.ImageEffects
 {
     [ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
-    class PostEffectsHelper : MonoBehaviour
+    internal class PostEffectsHelper : MonoBehaviour
     {
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
         {
             Debug.Log("OnRenderImage in Helper called ...");
         }
 
-        static void DrawLowLevelPlaneAlignedWithCamera (
+        private static void DrawLowLevelPlaneAlignedWithCamera (
             float dist ,
             RenderTexture source, RenderTexture dest ,
             Material material ,
@@ -70,7 +70,7 @@ namespace UnityStandardAssets.ImageEffects
             GL.PopMatrix();
         }
 
-        static void DrawBorder (
+        private static void DrawBorder (
             RenderTexture dest ,
             Material material )
 		{
@@ -150,7 +150,7 @@ namespace UnityStandardAssets.ImageEffects
             GL.PopMatrix();
         }
 
-        static void DrawLowLevelQuad (  float x1, float x2, float y1, float y2, RenderTexture source, RenderTexture dest, Material material )
+        private static void DrawLowLevelQuad (  float x1, float x2, float y1, float y2, RenderTexture source, RenderTexture dest, Material material )
 		{
             // Make the destination texture the target for all rendering
             RenderTexture.active = dest;

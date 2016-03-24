@@ -5,24 +5,24 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(EdgeDetection))]
-    class EdgeDetectionEditor : Editor
+    internal class EdgeDetectionEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty mode;
-        SerializedProperty sensitivityDepth;
-        SerializedProperty sensitivityNormals;
+        private SerializedProperty mode;
+        private SerializedProperty sensitivityDepth;
+        private SerializedProperty sensitivityNormals;
 
-        SerializedProperty lumThreshold;
+        private SerializedProperty lumThreshold;
 
-        SerializedProperty edgesOnly;
-        SerializedProperty edgesOnlyBgColor;
+        private SerializedProperty edgesOnly;
+        private SerializedProperty edgesOnlyBgColor;
 
-        SerializedProperty edgeExp;
-        SerializedProperty sampleDist;
+        private SerializedProperty edgeExp;
+        private SerializedProperty sampleDist;
 
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             mode = serObj.FindProperty("mode");

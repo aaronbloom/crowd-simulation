@@ -18,11 +18,10 @@ public class BarChart : Chart {
 	private Vector3[] vertices;
 	private int[] triangles;
 	private Vector2[] uvs;
-	private Color[] mColor; 
+	private Color[] mColor;
 
 
-	
-	BarChart() {
+    private BarChart() {
 		int length = 8; 
 		mData = new float[2][]; 
 		mData[0] = new float[length]; 

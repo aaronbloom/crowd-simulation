@@ -9,7 +9,7 @@ namespace UnityStandardAssets.ImageEffects
     public class CameraMotionBlur : PostEffectsBase
     {
         // make sure to match this to MAX_RADIUS in shader ('k' in paper)
-        static float MAX_RADIUS = 10.0f;
+        private static float MAX_RADIUS = 10.0f;
 
         public enum MotionBlurFilter {
             CameraMotion = 0,			// global screen blur based on cam motion
@@ -69,7 +69,7 @@ namespace UnityStandardAssets.ImageEffects
         }
 
 
-        new void Start () {
+        private new void Start () {
             CheckResources ();
 
             if (_camera == null)
@@ -81,7 +81,7 @@ namespace UnityStandardAssets.ImageEffects
             wasActive = false; // hack to fake position/rotation update and prevent bad blurs
         }
 
-        void OnEnable () {
+        private void OnEnable () {
 
             if (_camera == null)
                 _camera = GetComponent<Camera>();
@@ -89,7 +89,7 @@ namespace UnityStandardAssets.ImageEffects
             _camera.depthTextureMode |= DepthTextureMode.Depth;
         }
 
-        void OnDisable () {
+        private void OnDisable () {
             if (null != motionBlurMaterial) {
                 DestroyImmediate (motionBlurMaterial);
                 motionBlurMaterial = null;
@@ -119,7 +119,7 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             if (false == CheckResources ()) {
                 Graphics.Blit (source, destination);
                 return;
@@ -337,14 +337,14 @@ namespace UnityStandardAssets.ImageEffects
             RenderTexture.ReleaseTemporary (neighbourMax);
         }
 
-        void Remember () {
+        private void Remember () {
             prevViewProjMat = currentViewProjMat;
             prevFrameForward = transform.forward;
             prevFrameUp = transform.up;
             prevFramePos = transform.position;
         }
 
-        Camera GetTmpCam () {
+        private Camera GetTmpCam () {
             if (tmpCam == null) {
                 string name = "_" + _camera.name + "_MotionBlurTmpCam";
                 GameObject go = GameObject.Find (name);
@@ -367,13 +367,13 @@ namespace UnityStandardAssets.ImageEffects
             return tmpCam.GetComponent<Camera>();
         }
 
-        void StartFrame () {
+        private void StartFrame () {
             // take only x% of positional changes into account (camera motion)
             // TODO: possibly do the same for rotational part
             prevFramePos = Vector3.Slerp(prevFramePos, transform.position, 0.75f);
         }
 
-        static int divRoundUp (int x, int d)
+        private static int divRoundUp (int x, int d)
         {
             return (x + d - 1) / d;
         }

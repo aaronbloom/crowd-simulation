@@ -29,7 +29,7 @@ namespace UnityStandardAssets.ImageEffects
         [Range(0.25f, 5.5f)]
         public float blurSize = 1.0f;
 
-        Resolution resolution = Resolution.Low;
+        private Resolution resolution = Resolution.Low;
         [Range(1, 4)]
         public int blurIterations = 1;
 
@@ -50,13 +50,13 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnDisable ()
+        private void OnDisable ()
 		{
             if (fastBloomMaterial)
                 DestroyImmediate (fastBloomMaterial);
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources() == false)
 			{

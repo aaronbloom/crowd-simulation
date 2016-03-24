@@ -5,7 +5,7 @@ namespace UnityStandardAssets.ImageEffects
 {
     [RequireComponent (typeof(Camera))]
     [AddComponentMenu ("Image Effects/Camera/Tilt Shift (Lens Blur)")]
-    class TiltShift : PostEffectsBase {
+    internal class TiltShift : PostEffectsBase {
         public enum TiltShiftMode
         {
             TiltShiftMode,
@@ -44,7 +44,7 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             if (CheckResources() == false) {
                 Graphics.Blit (source, destination);
                 return;

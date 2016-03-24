@@ -6,7 +6,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
-    class WorldBuilderCursor {
+    internal class WorldBuilderCursor {
         private WorldObject primaryCursor;
         private WorldObject secondCursor;
         private readonly Material cursorMaterial;

@@ -5,42 +5,42 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(DepthOfFieldDeprecated))]
-    class DepthOfFieldDeprecatedEditor : Editor
+    internal class DepthOfFieldDeprecatedEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty simpleTweakMode;
+        private SerializedProperty simpleTweakMode;
 
-        SerializedProperty focalPoint;
-        SerializedProperty smoothness;
+        private SerializedProperty focalPoint;
+        private SerializedProperty smoothness;
 
-        SerializedProperty focalSize;
+        private SerializedProperty focalSize;
 
-        SerializedProperty focalZDistance;
-        SerializedProperty focalStartCurve;
-        SerializedProperty focalEndCurve;
+        private SerializedProperty focalZDistance;
+        private SerializedProperty focalStartCurve;
+        private SerializedProperty focalEndCurve;
 
-        SerializedProperty visualizeCoc;
+        private SerializedProperty visualizeCoc;
 
-        SerializedProperty resolution;
-        SerializedProperty quality;
+        private SerializedProperty resolution;
+        private SerializedProperty quality;
 
-        SerializedProperty objectFocus;
+        private SerializedProperty objectFocus;
 
-        SerializedProperty bokeh;
-        SerializedProperty bokehScale;
-        SerializedProperty bokehIntensity;
-        SerializedProperty bokehThresholdLuminance;
-        SerializedProperty bokehThresholdContrast;
-        SerializedProperty bokehDownsample;
-        SerializedProperty bokehTexture;
-        SerializedProperty bokehDestination;
+        private SerializedProperty bokeh;
+        private SerializedProperty bokehScale;
+        private SerializedProperty bokehIntensity;
+        private SerializedProperty bokehThresholdLuminance;
+        private SerializedProperty bokehThresholdContrast;
+        private SerializedProperty bokehDownsample;
+        private SerializedProperty bokehTexture;
+        private SerializedProperty bokehDestination;
 
-        SerializedProperty bluriness;
-        SerializedProperty maxBlurSpread;
-        SerializedProperty foregroundBlurExtrude;
+        private SerializedProperty bluriness;
+        private SerializedProperty maxBlurSpread;
+        private SerializedProperty foregroundBlurExtrude;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             simpleTweakMode = serObj.FindProperty ("simpleTweakMode");

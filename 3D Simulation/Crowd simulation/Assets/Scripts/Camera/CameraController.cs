@@ -21,13 +21,13 @@ namespace Assets.Scripts.Camera
         private EnvironmentManager environmentManager;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             this.environmentManager = EnvironmentManager.Shared();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             checkKeypress();
             checkMouseScroll();

@@ -5,24 +5,24 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(Tonemapping))]
-    class TonemappingEditor : Editor
+    internal class TonemappingEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty type;
+        private SerializedProperty type;
 
         // CURVE specific parameter
-        SerializedProperty remapCurve;
+        private SerializedProperty remapCurve;
 
-        SerializedProperty exposureAdjustment;
+        private SerializedProperty exposureAdjustment;
 
         // REINHARD specific parameter
-        SerializedProperty middleGrey;
-        SerializedProperty white;
-        SerializedProperty adaptionSpeed;
-        SerializedProperty adaptiveTextureSize;
+        private SerializedProperty middleGrey;
+        private SerializedProperty white;
+        private SerializedProperty adaptionSpeed;
+        private SerializedProperty adaptiveTextureSize;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             type = serObj.FindProperty ("type");

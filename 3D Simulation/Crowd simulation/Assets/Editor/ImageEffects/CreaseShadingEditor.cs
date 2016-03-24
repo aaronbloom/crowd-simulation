@@ -6,20 +6,20 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor(typeof(CreaseShading))]
-    class CreaseShadingEditor : Editor {
-        SerializedObject serObj;
+    internal class CreaseShadingEditor : Editor {
+        private SerializedObject serObj;
 
-        SerializedProperty m_intensity;
-        SerializedProperty m_softness;
-        SerializedProperty m_spread;
+        private SerializedProperty m_intensity;
+        private SerializedProperty m_softness;
+        private SerializedProperty m_spread;
 
-        AnimBool m_showSoftnessWarning = new AnimBool();
-        AnimBool m_showSpreadWarning = new AnimBool();
+        private AnimBool m_showSoftnessWarning = new AnimBool();
+        private AnimBool m_showSpreadWarning = new AnimBool();
 
         private bool softnessWarningValue { get { return m_softness.intValue > 4; } }
         private bool spreadWarningValue { get { return m_spread.floatValue > 4; } }
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             m_intensity = serObj.FindProperty("intensity");

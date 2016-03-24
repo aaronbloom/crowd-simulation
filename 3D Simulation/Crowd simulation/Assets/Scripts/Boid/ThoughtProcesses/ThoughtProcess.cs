@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Assets.Scripts.Boid {
-    class ThoughtProcess {
+    internal class ThoughtProcess {
 
         protected int processStep;
         protected List<object> processList;

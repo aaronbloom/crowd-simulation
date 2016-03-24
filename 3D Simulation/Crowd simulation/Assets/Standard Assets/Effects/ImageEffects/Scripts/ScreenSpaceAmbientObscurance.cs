@@ -6,7 +6,7 @@ namespace UnityStandardAssets.ImageEffects
     [ ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
     [AddComponentMenu ("Image Effects/Rendering/Screen Space Ambient Obscurance")]
-    class ScreenSpaceAmbientObscurance : PostEffectsBase {
+    internal class ScreenSpaceAmbientObscurance : PostEffectsBase {
         [Range (0,3)]
         public float intensity = 0.5f;
         [Range (0.1f,3)]
@@ -33,14 +33,14 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnDisable () {
+        private void OnDisable () {
             if (aoMaterial)
                 DestroyImmediate (aoMaterial);
             aoMaterial = null;
         }
 
         [ImageEffectOpaque]
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             if (CheckResources () == false) {
                 Graphics.Blit (source, destination);
                 return;

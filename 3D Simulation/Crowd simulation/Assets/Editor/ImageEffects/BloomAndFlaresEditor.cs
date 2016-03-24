@@ -5,37 +5,37 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(BloomAndFlares))]
-    class BloomAndFlaresEditor : Editor
+    internal class BloomAndFlaresEditor : Editor
     {
-        SerializedProperty tweakMode;
-        SerializedProperty screenBlendMode;
+        private SerializedProperty tweakMode;
+        private SerializedProperty screenBlendMode;
 
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty hdr;
-        SerializedProperty sepBlurSpread;
-        SerializedProperty useSrcAlphaAsMask;
+        private SerializedProperty hdr;
+        private SerializedProperty sepBlurSpread;
+        private SerializedProperty useSrcAlphaAsMask;
 
-        SerializedProperty bloomIntensity;
-        SerializedProperty bloomthreshold;
-        SerializedProperty bloomBlurIterations;
+        private SerializedProperty bloomIntensity;
+        private SerializedProperty bloomthreshold;
+        private SerializedProperty bloomBlurIterations;
 
-        SerializedProperty lensflares;
+        private SerializedProperty lensflares;
 
-        SerializedProperty hollywoodFlareBlurIterations;
+        private SerializedProperty hollywoodFlareBlurIterations;
 
-        SerializedProperty lensflareMode;
-        SerializedProperty hollyStretchWidth;
-        SerializedProperty lensflareIntensity;
-        SerializedProperty lensflarethreshold;
-        SerializedProperty flareColorA;
-        SerializedProperty flareColorB;
-        SerializedProperty flareColorC;
-        SerializedProperty flareColorD;
+        private SerializedProperty lensflareMode;
+        private SerializedProperty hollyStretchWidth;
+        private SerializedProperty lensflareIntensity;
+        private SerializedProperty lensflarethreshold;
+        private SerializedProperty flareColorA;
+        private SerializedProperty flareColorB;
+        private SerializedProperty flareColorC;
+        private SerializedProperty flareColorD;
 
-        SerializedProperty lensFlareVignetteMask;
+        private SerializedProperty lensFlareVignetteMask;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             screenBlendMode = serObj.FindProperty("screenBlendMode");

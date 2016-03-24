@@ -5,22 +5,22 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(SunShafts))]
-    class SunShaftsEditor : Editor
+    internal class SunShaftsEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty sunTransform;
-        SerializedProperty radialBlurIterations;
-        SerializedProperty sunColor;
-        SerializedProperty sunThreshold;
-        SerializedProperty sunShaftBlurRadius;
-        SerializedProperty sunShaftIntensity;
-        SerializedProperty useDepthTexture;
-        SerializedProperty resolution;
-        SerializedProperty screenBlendMode;
-        SerializedProperty maxRadius;
+        private SerializedProperty sunTransform;
+        private SerializedProperty radialBlurIterations;
+        private SerializedProperty sunColor;
+        private SerializedProperty sunThreshold;
+        private SerializedProperty sunShaftBlurRadius;
+        private SerializedProperty sunShaftIntensity;
+        private SerializedProperty useDepthTexture;
+        private SerializedProperty resolution;
+        private SerializedProperty screenBlendMode;
+        private SerializedProperty maxRadius;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             screenBlendMode = serObj.FindProperty("screenBlendMode");

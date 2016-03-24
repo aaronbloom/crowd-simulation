@@ -48,12 +48,12 @@ namespace UnityStandardAssets.ImageEffects
         }
 
 
-        new void Start ()
+        private new void Start ()
 		{
             oldMode	= mode;
         }
 
-        void SetCameraFlag ()
+        private void SetCameraFlag ()
 		{
             if (mode == EdgeDetectMode.SobelDepth || mode == EdgeDetectMode.SobelDepthThin)
                 GetComponent<Camera>().depthTextureMode |= DepthTextureMode.Depth;
@@ -61,13 +61,13 @@ namespace UnityStandardAssets.ImageEffects
                 GetComponent<Camera>().depthTextureMode |= DepthTextureMode.DepthNormals;
         }
 
-        void OnEnable ()
+        private void OnEnable ()
 		{
             SetCameraFlag();
         }
 
         [ImageEffectOpaque]
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources () == false)
 			{

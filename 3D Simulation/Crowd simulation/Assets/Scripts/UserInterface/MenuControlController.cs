@@ -28,7 +28,7 @@ namespace Assets.Scripts.UserInterface
             _environmentSizeValue = value;
         }
 
-        void Update() {
+        private void Update() {
         }
     }
 }

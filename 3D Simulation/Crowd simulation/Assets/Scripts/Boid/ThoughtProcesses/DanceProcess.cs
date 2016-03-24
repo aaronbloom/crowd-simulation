@@ -2,7 +2,7 @@
 using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
-    class DanceProcess : ThoughtProcess {
+    internal class DanceProcess : ThoughtProcess {
         private readonly Boid owner;
         private readonly Need ownerDesire;
         private Goal currentGoal;

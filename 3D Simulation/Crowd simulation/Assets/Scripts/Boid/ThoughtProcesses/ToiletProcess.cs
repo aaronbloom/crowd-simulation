@@ -6,8 +6,7 @@ using System.Text;
 using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
-
-    class ToiletProcess : ThoughtProcess {
+    internal class ToiletProcess : ThoughtProcess {
 
         private readonly Boid owner;
         private readonly Need ownerDesire;

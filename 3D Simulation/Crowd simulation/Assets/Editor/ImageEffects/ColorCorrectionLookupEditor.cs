@@ -5,11 +5,11 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(ColorCorrectionLookup))]
-    class ColorCorrectionLookupEditor : Editor
+    internal class ColorCorrectionLookupEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
         }
 

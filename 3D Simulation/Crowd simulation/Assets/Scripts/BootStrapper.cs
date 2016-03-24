@@ -17,23 +17,23 @@ namespace Assets.Scripts {
         private const string CaptureHeatMap = "BoidHeatMap";
         private const string BoidSpawning = "BoidSpawningTimer";
 
-        void Awake() {
+        private void Awake() {
             Pause = false;
             EnvironmentManager = new EnvironmentManager();
             CameraManager = new CameraManager();
         }
 
-        void Update() {
+        private void Update() {
             if (BoidManager != null) {
                 BoidManager.Update();
             }
         }
 
-        void Start() {
+        private void Start() {
             CameraManager.ActivateRTSCamera();
         }
 
-        void OnDrawGizmos() {
+        private void OnDrawGizmos() {
             EnvironmentManager.OnDrawGizmos();
         }
 

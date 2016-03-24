@@ -48,12 +48,12 @@ public abstract class Chart : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+    private void Start () {
 		CreateChartData(); 
 	}
 
 	// Update is called once per frame
-	void Update () {
+    private void Update () {
 		if(mData.Length == 0) {
 			Debug.LogError ("data is not set. "); 
 			return; 

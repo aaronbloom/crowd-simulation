@@ -6,7 +6,7 @@ namespace UnityStandardAssets.ImageEffects
     [ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
     [AddComponentMenu ("Image Effects/Rendering/Global Fog")]
-    class GlobalFog : PostEffectsBase
+    internal class GlobalFog : PostEffectsBase
 	{
 		[Tooltip("Apply distance-based fog?")]
         public bool  distanceFog = true;
@@ -39,7 +39,7 @@ namespace UnityStandardAssets.ImageEffects
         }
 
         [ImageEffectOpaque]
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources()==false || (!distanceFog && !heightFog))
             {
@@ -118,7 +118,7 @@ namespace UnityStandardAssets.ImageEffects
             CustomGraphicsBlit (source, destination, fogMaterial, pass);
         }
 
-        static void CustomGraphicsBlit (RenderTexture source, RenderTexture dest, Material fxMaterial, int passNr)
+        private static void CustomGraphicsBlit (RenderTexture source, RenderTexture dest, Material fxMaterial, int passNr)
 		{
             RenderTexture.active = dest;
 

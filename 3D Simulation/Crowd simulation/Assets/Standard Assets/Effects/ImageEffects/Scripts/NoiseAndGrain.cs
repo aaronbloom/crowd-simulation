@@ -57,7 +57,7 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources()==false || (null==noiseTexture))
 			{
@@ -119,7 +119,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        static void DrawNoiseQuadGrid (RenderTexture source, RenderTexture dest, Material fxMaterial, Texture2D noise, int passNr)
+        private static void DrawNoiseQuadGrid (RenderTexture source, RenderTexture dest, Material fxMaterial, Texture2D noise, int passNr)
 		{
             RenderTexture.active = dest;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.Navigation {
-    class Path : Graph {
+    internal class Path : Graph {
         private const float NavigationAccuracy = 0.5f;
 
         //Constructs Path from ordered node list

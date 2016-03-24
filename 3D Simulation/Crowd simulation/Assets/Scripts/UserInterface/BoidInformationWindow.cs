@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.UserInterface {
-    class BoidInformationWindow {
+    internal class BoidInformationWindow {
 
         private const string BoidInformationPanelName = "BoidInformationPanel";
         private readonly GameObject boidInformationWindow;

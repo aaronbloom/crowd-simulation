@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UserInterface {
-    class AnalysisInterface {
+    internal class AnalysisInterface {
         private readonly Vector3 chartPosition = new Vector3(100, -100, 100);
         private  readonly Vector3 barChartPositionOffset = new Vector3(-0.5f, -0.5f, 0);
         private GameObject barChartObject;

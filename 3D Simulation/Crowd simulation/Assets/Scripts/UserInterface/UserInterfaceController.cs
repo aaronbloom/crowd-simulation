@@ -20,7 +20,7 @@ namespace Assets.Scripts.UserInterface {
         private UserWorldBuilder userWorldBuilder;
         private AnalysisInterface analysisInterface;
 
-        void Awake() {
+        private void Awake() {
             mainMenu = GameObject.Find("MainMenu");
             setupMenu = GameObject.Find("SetupMenu");
             environmentBuilderMenu = GameObject.Find("EnvironmentBuilderMenu");
@@ -30,7 +30,7 @@ namespace Assets.Scripts.UserInterface {
             analysisInterface = new AnalysisInterface();
         }
 
-        void Start() {
+        private void Start() {
             SetupMainMenu();
             ShowMenu(mainMenu);
             HideMenu(setupMenu);
@@ -40,7 +40,7 @@ namespace Assets.Scripts.UserInterface {
             HideMenu(analysisMenu);
         }
 
-        void Update () {
+        private void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
                 if (Input.GetMouseButtonDown(LeftMouseButton)) {

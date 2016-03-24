@@ -5,26 +5,26 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(CameraMotionBlur))]
-    class CameraMotionBlurEditor : Editor
+    internal class CameraMotionBlurEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty filterType;
-        SerializedProperty preview;
-        SerializedProperty previewScale;
-        SerializedProperty movementScale;
-        SerializedProperty jitter;
-        SerializedProperty rotationScale;
-        SerializedProperty maxVelocity;
-        SerializedProperty minVelocity;
-        SerializedProperty velocityScale;
-        SerializedProperty velocityDownsample;
-        SerializedProperty noiseTexture;
-        SerializedProperty showVelocity;
-        SerializedProperty showVelocityScale;
-        SerializedProperty excludeLayers;
+        private SerializedProperty filterType;
+        private SerializedProperty preview;
+        private SerializedProperty previewScale;
+        private SerializedProperty movementScale;
+        private SerializedProperty jitter;
+        private SerializedProperty rotationScale;
+        private SerializedProperty maxVelocity;
+        private SerializedProperty minVelocity;
+        private SerializedProperty velocityScale;
+        private SerializedProperty velocityDownsample;
+        private SerializedProperty noiseTexture;
+        private SerializedProperty showVelocity;
+        private SerializedProperty showVelocityScale;
+        private SerializedProperty excludeLayers;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             filterType = serObj.FindProperty ("filterType");

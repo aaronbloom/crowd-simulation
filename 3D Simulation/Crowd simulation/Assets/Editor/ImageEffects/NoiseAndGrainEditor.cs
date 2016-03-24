@@ -5,28 +5,28 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof( NoiseAndGrain))]
-    class NoiseAndGrainEditor : Editor
+    internal class NoiseAndGrainEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedObject serObj;
 
-        SerializedProperty intensityMultiplier;
-        SerializedProperty generalIntensity;
-        SerializedProperty blackIntensity;
-        SerializedProperty whiteIntensity;
-        SerializedProperty midGrey;
+        private SerializedProperty intensityMultiplier;
+        private SerializedProperty generalIntensity;
+        private SerializedProperty blackIntensity;
+        private SerializedProperty whiteIntensity;
+        private SerializedProperty midGrey;
 
-        SerializedProperty dx11Grain;
-        SerializedProperty softness;
-        SerializedProperty monochrome;
+        private SerializedProperty dx11Grain;
+        private SerializedProperty softness;
+        private SerializedProperty monochrome;
 
-        SerializedProperty intensities;
-        SerializedProperty tiling;
-        SerializedProperty monochromeTiling;
+        private SerializedProperty intensities;
+        private SerializedProperty tiling;
+        private SerializedProperty monochromeTiling;
 
-        SerializedProperty noiseTexture;
-        SerializedProperty filterMode;
+        private SerializedProperty noiseTexture;
+        private SerializedProperty filterMode;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             intensityMultiplier = serObj.FindProperty("intensityMultiplier");

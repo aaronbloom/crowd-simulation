@@ -5,32 +5,32 @@ using UnityEngine;
 namespace UnityStandardAssets.ImageEffects
 {
     [CustomEditor (typeof(ColorCorrectionCurves))]
-    class ColorCorrectionCurvesEditor : Editor {
-        SerializedObject serObj;
+    internal class ColorCorrectionCurvesEditor : Editor {
+        private SerializedObject serObj;
 
-        SerializedProperty mode;
+        private SerializedProperty mode;
 
-        SerializedProperty redChannel;
-        SerializedProperty greenChannel;
-        SerializedProperty blueChannel;
+        private SerializedProperty redChannel;
+        private SerializedProperty greenChannel;
+        private SerializedProperty blueChannel;
 
-        SerializedProperty useDepthCorrection;
+        private SerializedProperty useDepthCorrection;
 
-        SerializedProperty depthRedChannel;
-        SerializedProperty depthGreenChannel;
-        SerializedProperty depthBlueChannel;
+        private SerializedProperty depthRedChannel;
+        private SerializedProperty depthGreenChannel;
+        private SerializedProperty depthBlueChannel;
 
-        SerializedProperty zCurveChannel;
+        private SerializedProperty zCurveChannel;
 
-        SerializedProperty saturation;
+        private SerializedProperty saturation;
 
-        SerializedProperty selectiveCc;
-        SerializedProperty selectiveFromColor;
-        SerializedProperty selectiveToColor;
+        private SerializedProperty selectiveCc;
+        private SerializedProperty selectiveFromColor;
+        private SerializedProperty selectiveToColor;
 
         private bool  applyCurveChanges = false;
 
-        void OnEnable () {
+        private void OnEnable () {
             serObj = new SerializedObject (target);
 
             mode = serObj.FindProperty ("mode");
@@ -56,7 +56,7 @@ namespace UnityStandardAssets.ImageEffects
             selectiveToColor = serObj.FindProperty ("selectiveToColor");
         }
 
-        void CurveGui ( string name, SerializedProperty animationCurve, Color color) {
+        private void CurveGui ( string name, SerializedProperty animationCurve, Color color) {
             // @NOTE: EditorGUILayout.CurveField is buggy and flickers, using PropertyField for now
             //animationCurve.animationCurveValue = EditorGUILayout.CurveField (GUIContent (name), animationCurve.animationCurveValue, color, Rect (0.0f,0.0f,1.0f,1.0f));
             EditorGUILayout.PropertyField (animationCurve, new GUIContent (name));
@@ -64,11 +64,11 @@ namespace UnityStandardAssets.ImageEffects
                 applyCurveChanges = true;
         }
 
-        void BeginCurves () {
+        private void BeginCurves () {
             applyCurveChanges = false;
         }
 
-        void ApplyCurves () {
+        private void ApplyCurves () {
             if (applyCurveChanges) {
                 serObj.ApplyModifiedProperties ();
                 (serObj.targetObject as ColorCorrectionCurves).gameObject.SendMessage ("UpdateTextures");

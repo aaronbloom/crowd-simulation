@@ -54,12 +54,12 @@ namespace UnityStandardAssets.ImageEffects
         }
 
 
-        void OnDisable()
+        private void OnDisable()
         {
             DestroyMaterial (m_SSAOMaterial);
         }
 
-        void Start()
+        private void Start()
         {
             if (!SystemInfo.supportsImageEffects || !SystemInfo.SupportsRenderTextureFormat (RenderTextureFormat.Depth))
             {
@@ -81,7 +81,7 @@ namespace UnityStandardAssets.ImageEffects
             m_Supported = true;
         }
 
-        void OnEnable () {
+        private void OnEnable () {
             GetComponent<Camera>().depthTextureMode |= DepthTextureMode.DepthNormals;
         }
 
@@ -95,7 +95,7 @@ namespace UnityStandardAssets.ImageEffects
         }
 
         [ImageEffectOpaque]
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
         {
             if (!m_Supported || !m_SSAOShader.isSupported) {
                 enabled = false;

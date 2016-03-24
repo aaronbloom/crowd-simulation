@@ -12,7 +12,7 @@ namespace UnityStandardAssets.ImageEffects
         public Vector2 center = new Vector2(0.5F, 0.5F);
 		
         // Called by camera to apply image effect
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
         {
             ImageEffects.RenderDistortion (material, source, destination, angle, center, radius);
         }

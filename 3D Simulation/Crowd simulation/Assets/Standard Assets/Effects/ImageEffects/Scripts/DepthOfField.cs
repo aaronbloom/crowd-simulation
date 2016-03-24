@@ -67,12 +67,12 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnEnable () {
+        private void OnEnable () {
             cachedCamera = GetComponent<Camera>();
             cachedCamera.depthTextureMode |= DepthTextureMode.Depth;
         }
 
-        void OnDisable () {
+        private void OnDisable () {
             ReleaseComputeResources ();
 
             if (dofHdrMaterial) DestroyImmediate(dofHdrMaterial);
@@ -81,14 +81,14 @@ namespace UnityStandardAssets.ImageEffects
             dx11bokehMaterial = null;
         }
 
-        void ReleaseComputeResources () {
+        private void ReleaseComputeResources () {
             if (cbDrawArgs != null) cbDrawArgs.Release();
             cbDrawArgs = null;
             if (cbPoints != null) cbPoints.Release();
             cbPoints = null;
         }
 
-        void CreateComputeResources () {
+        private void CreateComputeResources () {
             if (cbDrawArgs == null)
             {
                 cbDrawArgs = new ComputeBuffer (1, 16, ComputeBufferType.DrawIndirect);
@@ -102,7 +102,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        float FocalDistance01 ( float worldDist) {
+        private float FocalDistance01 ( float worldDist) {
             return cachedCamera.WorldToViewportPoint((worldDist-cachedCamera.nearClipPlane) * cachedCamera.transform.forward + cachedCamera.transform.position).z / (cachedCamera.farClipPlane-cachedCamera.nearClipPlane);
         }
 
@@ -144,7 +144,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             if (!CheckResources ()) {
                 Graphics.Blit (source, destination);
                 return;

@@ -26,7 +26,7 @@ namespace UnityStandardAssets.ImageEffects
 
         public Shader blurShader = null;
 
-        static Material m_Material = null;
+        private static Material m_Material = null;
         protected Material material {
             get {
                 if (m_Material == null) {
@@ -84,7 +84,7 @@ namespace UnityStandardAssets.ImageEffects
         }
 
         // Called by the camera to apply the image effect
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             int rtW = source.width/4;
             int rtH = source.height/4;
             RenderTexture buffer = RenderTexture.GetTemporary(rtW, rtH, 0);

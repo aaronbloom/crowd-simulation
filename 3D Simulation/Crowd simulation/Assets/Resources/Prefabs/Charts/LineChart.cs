@@ -22,10 +22,10 @@ public class LineChart : Chart {
 	private int[] triangles;
 	private Vector2[] uvs;
 	private Color[] mColor; 
-	private float mWidth = 1.0f, mHeight = 1.0f; 
+	private float mWidth = 1.0f, mHeight = 1.0f;
 
 
-	LineChart() {
+    private LineChart() {
 		int length = 32; 
 		mData = new float[1][]; 
 		mData[0] = new float[length]; 

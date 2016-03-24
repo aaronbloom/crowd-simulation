@@ -25,14 +25,14 @@ namespace UnityStandardAssets.ImageEffects
             return isSupported;
         }
 
-        void OnDisable () {
+        private void OnDisable () {
             if (material) {
                 DestroyImmediate (material);
                 material = null;
             }
         }
 
-        void OnDestroy () {
+        private void OnDestroy () {
             if (converted3DLut)
                 DestroyImmediate (converted3DLut);
             converted3DLut = null;
@@ -108,7 +108,7 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination) {
+        private void OnRenderImage (RenderTexture source, RenderTexture destination) {
             if (CheckResources () == false || !SystemInfo.supports3DTextures) {
                 Graphics.Blit (source, destination);
                 return;

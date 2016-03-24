@@ -8,7 +8,7 @@ using UnityEngine;
 using Random = System.Random;
 
 namespace Assets.Scripts.Boid {
-    static class NameGenerator
+    internal static class NameGenerator
     {
 
         private static readonly Random random = new Random();

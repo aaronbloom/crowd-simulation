@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
-    class StatisticsInformationWindow {
+    internal class StatisticsInformationWindow {
 
         private const string BoidInformationPanelName = "StatisticsInformationPanel";
         private readonly GameObject statsInformationWindow;

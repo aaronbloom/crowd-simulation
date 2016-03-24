@@ -94,7 +94,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-        Quaternion ClampRotationAroundXAxis(Quaternion q)
+        private Quaternion ClampRotationAroundXAxis(Quaternion q)
         {
             q.x /= q.w;
             q.y /= q.w;

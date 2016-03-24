@@ -8,7 +8,7 @@ using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
-    class WorldBuilderPlacement : IBuilder {
+    internal class WorldBuilderPlacement : IBuilder {
 
         public WorldBuilderPlacement() {}
 

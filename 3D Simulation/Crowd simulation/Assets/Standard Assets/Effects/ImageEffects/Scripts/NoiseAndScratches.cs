@@ -103,7 +103,7 @@ namespace UnityStandardAssets.ImageEffects
         }
 
         // Called by the camera to apply the image effect
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
         {
             SanitizeParameters();
 

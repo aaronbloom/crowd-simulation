@@ -50,13 +50,13 @@ namespace UnityStandardAssets.ImageEffects
         private bool  updateTexturesOnStartup = true;
 
 
-        new void Start ()
+        private new void Start ()
 		{
             base.Start ();
             updateTexturesOnStartup = true;
         }
 
-        void Awake () {	}
+        private void Awake () {	}
 
 
         public override bool CheckResources ()
@@ -122,12 +122,12 @@ namespace UnityStandardAssets.ImageEffects
             }
         }
 
-        void UpdateTextures ()
+        private void UpdateTextures ()
 		{
             UpdateParameters ();
         }
 
-        void OnRenderImage (RenderTexture source, RenderTexture destination)
+        private void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             if (CheckResources()==false)
 			{

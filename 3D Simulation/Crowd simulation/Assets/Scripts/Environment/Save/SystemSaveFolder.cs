@@ -3,10 +3,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.Save {
-    static class SystemSaveFolder
+    internal static class SystemSaveFolder
     {
-
-        static readonly string systemSaveFolder = System.Environment.SpecialFolder.MyDocuments.ToString();
+        private static readonly string systemSaveFolder = System.Environment.SpecialFolder.MyDocuments.ToString();
         public static readonly string Extension = ".RAFT";
         public static readonly string WorldSaveName = "World";
 

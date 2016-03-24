@@ -25,18 +25,18 @@ public class ChartFrame : MonoBehaviour {
 
 	
 	// Use this for initialization
-	void Start () {
+    private void Start () {
 		initParameter(); 
 		CreateChartData(); 
 		
 	}
-	
 
-	void initParameter()
+
+    private void initParameter()
 	{
 	}
 
-	void UpdateData(int row, int col) 
+    private void UpdateData(int row, int col) 
 	{
 		row_max = row; 
 		col_max = col; 
@@ -44,10 +44,7 @@ public class ChartFrame : MonoBehaviour {
 	}
 
 
-
-
-	
-	void CreateChartData() {
+    private void CreateChartData() {
 		meshFilterFrame = (MeshFilter)GetComponent("MeshFilter");
 		meshFrame = meshFilterFrame.sharedMesh;//new Mesh();
 		if(meshFrame == null) {
@@ -132,7 +129,7 @@ public class ChartFrame : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+    private void Update () {
 		if(mAlreadyUpdated) {
 			mAlreadyUpdated = false; 
 		} else if(UpdateForEditor) {

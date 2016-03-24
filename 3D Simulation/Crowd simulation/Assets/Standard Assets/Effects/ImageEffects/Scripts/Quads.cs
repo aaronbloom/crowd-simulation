@@ -6,12 +6,12 @@ using Object = UnityEngine.Object;
 // saves fillrate at the expense for more triangles to issue
 namespace UnityStandardAssets.ImageEffects
 {
-    class Quads
+    internal class Quads
     {
-        static Mesh[] meshes;
-        static int currentQuads = 0;
+        private static Mesh[] meshes;
+        private static int currentQuads = 0;
 
-        static bool HasMeshes ()
+        private static bool HasMeshes ()
         {
             if (meshes == null)
                 return false;
@@ -66,7 +66,7 @@ namespace UnityStandardAssets.ImageEffects
             return meshes;
         }
 
-        static Mesh GetMesh (int triCount, int triOffset, int totalWidth, int totalHeight)
+        private static Mesh GetMesh (int triCount, int triOffset, int totalWidth, int totalHeight)
         {
             var mesh = new Mesh ();
             mesh.hideFlags = HideFlags.DontSave;
