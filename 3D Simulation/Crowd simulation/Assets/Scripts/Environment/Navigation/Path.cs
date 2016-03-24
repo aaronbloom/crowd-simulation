@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.Environment.Navigation {
     class Path : Graph {
 
-        private static float navigationAccuracy = 0.5f;
+        private static readonly float navigationAccuracy = 0.5f;
 
         //Constructs Path from ordered node list
         public Path(List<Node> nodes) : base(nodes) {

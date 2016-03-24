@@ -15,9 +15,9 @@ namespace Assets.Scripts.Camera
         private static readonly string Scrollwheel = "Mouse ScrollWheel";
         private static readonly int MiddleMouse = 2;
 
-        private float strafeSpeed = 1f;
-        private float forwardBackwardSpeed = 80f;
-        private float lookSpeed = 2f;
+        private readonly float strafeSpeed = 1f;
+        private readonly float forwardBackwardSpeed = 80f;
+        private readonly float lookSpeed = 2f;
 
         private EnvironmentManager environmentManager;
 

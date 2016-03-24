@@ -3,8 +3,8 @@ using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
     class DanceProcess : ThoughtProcess {
-        private Boid owner;
-        private Need ownerDesire;
+        private readonly Boid owner;
+        private readonly Need ownerDesire;
         private Goal currentGoal;
 
         public DanceProcess(Boid boid, Need toSatisfy) : base() {

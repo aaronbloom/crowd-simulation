@@ -15,12 +15,12 @@ namespace Assets.Scripts.Boid {
         public float ToiletNeed { get { return toiletNeed.Value; } }
         public float DanceNeed { get { return danceNeed.Value; } }
 
-        private Boid boid;
+        private readonly Boid boid;
         private ThoughtProcess thoughtProcess;
 
-        private Need drinkNeed;
-        private Need toiletNeed;
-        private Need danceNeed;
+        private readonly Need drinkNeed;
+        private readonly Need toiletNeed;
+        private readonly Need danceNeed;
 
         public Mind(Boid boid) {
             this.boid = boid;

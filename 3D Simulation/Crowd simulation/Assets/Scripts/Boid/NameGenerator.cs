@@ -11,13 +11,13 @@ namespace Assets.Scripts.Boid {
     static class NameGenerator
     {
 
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
         private static bool listsLoaded = false;
 
         private static List<string> maleFirstNames = new List<string>();
         private static List<string> femaleFirstNames = new List<string>();
         private static List<string> secondNames = new List<string>();
-        private static List<string> generatedNames = new List<string>();
+        private static readonly List<string> generatedNames = new List<string>();
 
         public static string GenerateFairlyUniqueName(Gender gender) {
             string potentialName = GenerateName(gender);

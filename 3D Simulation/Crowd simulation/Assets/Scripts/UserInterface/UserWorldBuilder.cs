@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Assets.Scripts.UserInterface {
     public class UserWorldBuilder {
 
-        private WorldBuilderCursor cursor;
+        private readonly WorldBuilderCursor cursor;
         private bool deletionToolActive;
 
         public UserWorldBuilder() {

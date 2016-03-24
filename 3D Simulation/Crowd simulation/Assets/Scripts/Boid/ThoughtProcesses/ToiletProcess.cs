@@ -9,9 +9,9 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
     class ToiletProcess : ThoughtProcess {
 
-        private Boid owner;
-        private Need ownerDesire;
-        private int satisfactionRate = 20;
+        private readonly Boid owner;
+        private readonly Need ownerDesire;
+        private readonly int satisfactionRate = 20;
 
         public ToiletProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;

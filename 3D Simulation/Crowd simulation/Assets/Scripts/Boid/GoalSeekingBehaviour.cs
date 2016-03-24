@@ -14,7 +14,7 @@ namespace Assets.Scripts.Boid {
         private Path path;
         private Graph graph;
         private DateTime hitLastNode;
-        private int nodeReachedTimeout = 5; //given in seconds
+        private readonly int nodeReachedTimeout = 5; //given in seconds
         private const float targetMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(Boid boid) : base(boid) {

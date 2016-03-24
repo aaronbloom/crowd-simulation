@@ -9,7 +9,7 @@ namespace Assets.Scripts.Boid {
 
         private static readonly string BoidTag = "Boid";
 
-        private EnvironmentManager environmentManager;
+        private readonly EnvironmentManager environmentManager;
         public float SeparationFactor { get; protected set; }
 
         private static readonly int closeBoidsCacheTime = 25;

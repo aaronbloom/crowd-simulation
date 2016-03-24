@@ -5,11 +5,11 @@ using System.Text;
 using Assets.Scripts.Environment.World.Objects;
 
 namespace Assets.Scripts.Boid.ThoughtProcesses {
-    class BarProcess : ThoughtProcess {
+    internal class BarProcess : ThoughtProcess {
 
-        private Boid owner;
-        private Need ownerDesire;
-        private int satisfactionMultiplier = 3;
+        private readonly Boid owner;
+        private readonly Need ownerDesire;
+        private const int SatisfactionMultiplier = 3;
         private Goal currentGoal;
 
         public BarProcess(Boid boid, Need toSatisfy) : base() {
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void drink()
         {
-            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate* satisfactionMultiplier);
+            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate * SatisfactionMultiplier);
             owner.LookAt(currentGoal.GameObject.transform.position);
         }
     }

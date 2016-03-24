@@ -12,8 +12,8 @@ namespace Assets.Scripts.Boid {
         private static readonly string[] MalePrefab = { "chr_mike", "chr_bro", "chr_beardo2" };
         private static readonly string[] FemalePrefab = { "chr_brookie", "chr_bridget", "chr_goth2" };
 
-        private GameObject gameObject;
-        private Mind mind;
+        private readonly GameObject gameObject;
+        private readonly Mind mind;
         public Transform Transform { get { return gameObject.transform; } }
         public Vector3 Position { get { return gameObject.transform.position; } }
         public string Name { get { return gameObject.name; } }
