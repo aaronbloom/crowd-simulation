@@ -14,8 +14,8 @@ namespace Assets.Scripts.Boid {
         private Path path;
         private Graph graph;
         private DateTime hitLastNode;
-        private readonly int nodeReachedTimeout = 5; //given in seconds
-        private const float targetMinimumDistance = 1.5f;
+        private const int NodeReachedTimeout = 5; //given in seconds
+        private const float TargetMinimumDistance = 1.5f;
 
         public GoalSeekingBehaviour(Boid boid) : base(boid) {
             this.boid = boid;
@@ -80,10 +80,10 @@ namespace Assets.Scripts.Boid {
         protected virtual void LineOfSightCheck() {}
 
         private void TargetNextNodeAlongPath() {
-            if (hitLastNode < DateTime.Now.AddSeconds(-nodeReachedTimeout)) {
+            if (hitLastNode < DateTime.Now.AddSeconds(-NodeReachedTimeout)) {
                 reseek(); //recalc after time
             } else {
-                if (Vector3.Distance(target.Position, this.boid.Position) < targetMinimumDistance) {
+                if (Vector3.Distance(target.Position, this.boid.Position) < TargetMinimumDistance) {
                     hitLastNode = DateTime.Now;
                     int index = path.Nodes.IndexOf(this.target) + 1;
                     this.LineOfSightCheck();

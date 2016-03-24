@@ -11,7 +11,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private readonly Boid owner;
         private readonly Need ownerDesire;
-        private readonly int satisfactionRate = 20;
+        private const int SatisfactionRate = 20;
 
         public ToiletProcess(Boid boid, Need toSatisfy) : base() {
             owner = boid;
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void pee()
         {
-            ownerDesire.SatisfyByValue(satisfactionRate);
+            ownerDesire.SatisfyByValue(SatisfactionRate);
         }
 
     }

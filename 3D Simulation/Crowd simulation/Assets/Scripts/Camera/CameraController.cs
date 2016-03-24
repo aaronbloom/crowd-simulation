@@ -7,17 +7,16 @@ namespace Assets.Scripts.Camera
 {
     public class CameraController : MonoBehaviour
     {
+        private const KeyCode Up = KeyCode.W;
+        private const KeyCode Left = KeyCode.A;
+        private const KeyCode Down = KeyCode.S;
+        private const KeyCode Right = KeyCode.D;
+        private const string Scrollwheel = "Mouse ScrollWheel";
+        private const int MiddleMouse = 2;
 
-        private static readonly KeyCode Up = KeyCode.W;
-        private static readonly KeyCode Left = KeyCode.A;
-        private static readonly KeyCode Down = KeyCode.S;
-        private static readonly KeyCode Right = KeyCode.D;
-        private static readonly string Scrollwheel = "Mouse ScrollWheel";
-        private static readonly int MiddleMouse = 2;
-
-        private readonly float strafeSpeed = 1f;
-        private readonly float forwardBackwardSpeed = 80f;
-        private readonly float lookSpeed = 2f;
+        private const float StrafeSpeed = 1f;
+        private const float ForwardBackwardSpeed = 80f;
+        private const float LookSpeed = 2f;
 
         private EnvironmentManager environmentManager;
 
@@ -67,7 +66,7 @@ namespace Assets.Scripts.Camera
 
         private void moveCamera(Vector3 direction)
         {
-            transform.Translate(direction*strafeSpeed);
+            transform.Translate(direction*StrafeSpeed);
         }
 
         private static bool isKeyInput(KeyCode keyCode)
@@ -80,7 +79,7 @@ namespace Assets.Scripts.Camera
             float mouseWheelChange = Input.GetAxis(Scrollwheel);
             if (mouseWheelChange != 0)
             {
-                transform.Translate(Vector3.forward*forwardBackwardSpeed*mouseWheelChange);
+                transform.Translate(Vector3.forward*ForwardBackwardSpeed*mouseWheelChange);
             }
         }
 
@@ -113,7 +112,7 @@ namespace Assets.Scripts.Camera
 
         private Quaternion rotateTowardsMouse(Quaternion targetRotation)
         {
-            return Quaternion.Slerp(transform.rotation, targetRotation, lookSpeed*Time.deltaTime);
+            return Quaternion.Slerp(transform.rotation, targetRotation, LookSpeed*Time.deltaTime);
         }
     }
 }

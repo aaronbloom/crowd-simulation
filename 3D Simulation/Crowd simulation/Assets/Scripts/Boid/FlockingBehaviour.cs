@@ -12,8 +12,8 @@ namespace Assets.Scripts.Boid {
         private readonly EnvironmentManager environmentManager;
         public float SeparationFactor { get; protected set; }
 
-        private static readonly int closeBoidsCacheTime = 25;
-        private int closeBoidsCacheCurrent = closeBoidsCacheTime;
+        private const int CloseBoidsCacheTime = 25;
+        private int closeBoidsCacheCurrent = CloseBoidsCacheTime;
         private List<Boid> closeBoids;
 
         public FlockingBehaviour(Boid boid) {
@@ -52,7 +52,7 @@ namespace Assets.Scripts.Boid {
 
         protected List<Boid> FindBoidsWithinView() {
             closeBoidsCacheCurrent++;
-            if (closeBoidsCacheCurrent >= closeBoidsCacheTime) {
+            if (closeBoidsCacheCurrent >= CloseBoidsCacheTime) {
                 closeBoidsCacheCurrent = 0;
                 closeBoids = new List<Boid>();
                 foreach (Boid otherBoid in BootStrapper.BoidManager.Boids) {
