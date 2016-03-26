@@ -12,9 +12,9 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         public DanceProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            ProcessList.Add((Action)navigateToStage);
-            ProcessList.Add((Action)continueWalkToStage);
-            ProcessList.Add((Action)reachStage);
+            ProcessList.Add(navigateToStage);
+            ProcessList.Add(continueWalkToStage);
+            ProcessList.Add(reachStage);
         }
 
         private void navigateToStage() {

@@ -5,11 +5,11 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
     internal class ThoughtProcess {
 
         protected int ProcessStep;
-        protected List<object> ProcessList;
+        protected List<Action> ProcessList;
 
         public ThoughtProcess() {
             ProcessStep = 0;
-            ProcessList = new List<object>();
+            ProcessList = new List<Action>();
         }
 
         public void NextStep() {
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         }
 
         private void callProcess(int step) {
-            ((Action)ProcessList[step])();
+            (ProcessList[step])();
         }
     }
 }

@@ -12,10 +12,10 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         public ToiletProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            ProcessList.Add((Action)navigateToToilet);
-            ProcessList.Add((Action)continueWalkToToilet);
-            ProcessList.Add((Action)reachToilet);
-            ProcessList.Add((Action)pee);
+            ProcessList.Add(navigateToToilet);
+            ProcessList.Add(continueWalkToToilet);
+            ProcessList.Add(reachToilet);
+            ProcessList.Add(pee);
         }
 
         private void navigateToToilet() {

@@ -14,10 +14,10 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
         public BarProcess(Boid boid, Need toSatisfy) {
             owner = boid;
             ownerDesire = toSatisfy;
-            ProcessList.Add((Action)navigateToBar);
-            ProcessList.Add((Action)continueWalkToBar);
-            ProcessList.Add((Action)reachBar);
-            ProcessList.Add((Action)drink);
+            ProcessList.Add(navigateToBar);
+            ProcessList.Add(continueWalkToBar);
+            ProcessList.Add(reachBar);
+            ProcessList.Add(drink);
         }
 
         private void navigateToBar() {
