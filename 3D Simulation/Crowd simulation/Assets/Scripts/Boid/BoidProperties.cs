@@ -6,16 +6,16 @@ namespace Assets.Scripts.Boid {
 
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
-        public DemographicProperties DemographicProperties { get; private set; }
-        public float MoveSpeed { get { return DemographicProperties.MoveSpeed; } }
-        public float ToiletNeedRate { get { return DemographicProperties.ToiletNeedRate; } }
-        public float DrinkNeedRate { get { return DemographicProperties.DrinkNeedRate; } }
-        public float DanceNeedRate { get { return DemographicProperties.DanceNeedRate; } }
+        public TraitProperties TraitProperties { get; private set; }
+        public float MoveSpeed { get { return TraitProperties.MoveSpeed; } }
+        public float ToiletNeedRate { get { return TraitProperties.ToiletNeedRate; } }
+        public float DrinkNeedRate { get { return TraitProperties.DrinkNeedRate; } }
+        public float DanceNeedRate { get { return TraitProperties.DanceNeedRate; } }
 
         public BoidProperties(float genderBias) {
             _genderBias = genderBias;
             Gender = getRandomGender();
-            DemographicProperties = new DemographicProperties();
+            TraitProperties = new TraitProperties();
             HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 

@@ -32,7 +32,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void reachStage() {
             //satisfy slowly
-            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DanceNeedRate + 1);
+            ownerDesire.SatisfyByValue((int) owner.Properties.TraitProperties.DanceNeedRate + 1);
             owner.Statistics.LogWatchingStage();
             owner.LookAt(currentGoal.GameObject.transform.position);
             //NextStep();

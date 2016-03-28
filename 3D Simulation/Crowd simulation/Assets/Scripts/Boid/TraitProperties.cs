@@ -3,9 +3,9 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
 
-    public class DemographicProperties {
+    public class TraitProperties {
 
-        private DemographicType demographicType;
+        private TraitType traitType;
 
         public float MoveSpeed { get; private set; }
         public float ToiletNeedRate { get; private set; }
@@ -13,41 +13,41 @@ namespace Assets.Scripts.Boid {
         public float DanceNeedRate { get; private set; }
 
         public override string ToString() {
-            return demographicType.ToString();
+            return traitType.ToString();
         }
 
-        public DemographicProperties(DemographicType type) {
-            updateType(type);
+        public TraitProperties(TraitType type) {
+            UpdateType(type);
         }
 
-        public DemographicProperties(int type) {
-            updateType((DemographicType) type);
+        public TraitProperties(int type) {
+            UpdateType((TraitType) type);
         }
 
-        public DemographicProperties() {
-            updateType((DemographicType) Random.Range(0, 5));
+        public TraitProperties() {
+            UpdateType((TraitType) Random.Range(0, 5));
         }
 
-        public void updateType(DemographicType type) {
-            demographicType = type;
+        public void UpdateType(TraitType type) {
+            traitType = type;
             setDefaultValues();
 
-            switch (demographicType) {
-                case DemographicType.Default:
+            switch (traitType) {
+                case TraitType.Default:
                     //Do Nothing
                     break;
-                case DemographicType.Slow:
+                case TraitType.Slow:
                     MoveSpeed = 3f;
                     break;
-                case DemographicType.Incontenent:
+                case TraitType.Incontenent:
                     MoveSpeed = 11f;
                     ToiletNeedRate = 1.5f;
                     break;
-                case DemographicType.Alcoholic:
+                case TraitType.Alcoholic:
                     MoveSpeed = 8f;
                     DrinkNeedRate = 6;
                     break;
-                case DemographicType.Dancer:
+                case TraitType.Dancer:
                     MoveSpeed = 14f;
                     DanceNeedRate = 7;
                     break;
@@ -64,7 +64,7 @@ namespace Assets.Scripts.Boid {
         }
     }
 
-    public enum DemographicType {
+    public enum TraitType {
         Default,
         Slow,
         Incontenent,

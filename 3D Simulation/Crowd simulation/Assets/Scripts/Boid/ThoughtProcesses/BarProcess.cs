@@ -40,7 +40,7 @@ namespace Assets.Scripts.Boid.ThoughtProcesses {
 
         private void drink()
         {
-            ownerDesire.SatisfyByValue((int) owner.Properties.DemographicProperties.DrinkNeedRate* SatisfactionMultiplier);
+            ownerDesire.SatisfyByValue((int) owner.Properties.TraitProperties.DrinkNeedRate* SatisfactionMultiplier);
             owner.LookAt(currentGoal.GameObject.transform.position);
         }
     }
