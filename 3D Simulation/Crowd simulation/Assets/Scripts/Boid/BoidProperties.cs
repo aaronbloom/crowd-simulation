@@ -2,7 +2,8 @@
 
 namespace Assets.Scripts.Boid {
     public class BoidProperties {
-        private readonly float _genderBias;
+
+        private readonly float genderBias;
 
         public string HumanName { get; private set; }
         public Gender Gender { get; private set; }
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Boid {
         public float DanceNeedRate { get { return TraitProperties.DanceNeedRate; } }
 
         public BoidProperties(float genderBias) {
-            _genderBias = genderBias;
+            this.genderBias = genderBias;
             Gender = getRandomGender();
             TraitProperties = new TraitProperties();
             HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Boid {
 
         private Gender getRandomGender() {
             float value = Random.Range(0, 101);
-            return value < _genderBias ? Gender.Male : Gender.Female;
+            return value < genderBias ? Gender.Male : Gender.Female;
         }
 
     }
