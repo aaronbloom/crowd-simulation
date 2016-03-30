@@ -8,12 +8,10 @@ using Random = UnityEngine.Random;
 namespace Assets.Scripts.Boid {
     public class GoalSeekingBehaviour : FlockingBehaviour {
 
+        protected Goal Goal;
+
         private const int NodeReachedTimeout = 5; //given in seconds
         private const float TargetMinimumDistance = 1.5f;
-
-        public Node GoalNode { get; protected set; }
-        public Goal Goal { get; protected set; }
-
         private Node target;
         private Path path;
         private Graph graph;
@@ -27,21 +25,33 @@ namespace Assets.Scripts.Boid {
             BehaviourComplete = false;
         }
 
+        /// <summary>
+        /// Find a navigation path to a goal, along a graph.
+        /// </summary>
+        /// <param name="goal">The goal to reach</param>
+        /// <param name="navGraph">The graph to navigate</param>
         public void Seek(Goal goal, Graph navGraph) {
             Node startNode = navGraph.FindClosestNode(Boid.Position);
             Node goalNode = navGraph.FindClosestNode(goal.FrontPosition());
             path = Path.Navigate(navGraph, startNode, goalNode);
             BehaviourComplete = false;
-            this.GoalNode = goalNode;
             this.Goal = goal;
             this.graph = navGraph;
             hitLastNode = DateTime.Now;
         }
 
+        /// <summary>
+        /// Returns the behaviours initial velocity.
+        /// </summary>
+        /// <returns>Initial velocity</returns>
         public override Vector3 InitialVelocity() {
             return Vector3.zero;
         }
 
+        /// <summary>
+        /// Returns the acceletation for one increment of the behaviour.
+        /// </summary>
+        /// <returns>Acceleration</returns>
         public override Vector3 UpdateAcceleration() {
             if (!BehaviourComplete) {
                 List<Boid> boids = FindBoidsWithinView();
@@ -56,22 +66,20 @@ namespace Assets.Scripts.Boid {
             return Vector3.zero;
         }
 
+        /// <summary>
+        /// Debug visual gizmo drawing.
+        /// </summary>
         public override void DrawGraphGizmo() {
             Gizmos.color = Color.green;
             path.DrawGraphGizmo();
         }
 
-        public void ChooseNewGoal() {
-            //Do something more intelligent here.            
-            List<Goal> goals = BootStrapper.EnvironmentManager.CurrentEnvironment.World.Goals;
-            if (goals.Count > 0) {
-                Goal targetGoal = goals[Random.Range(0, goals.Count)];
-                Seek(targetGoal, BootStrapper.EnvironmentManager.CurrentEnvironment.Graph);
-            } else {
-                BehaviourComplete = true; //Maybe really bad to say the goal is reached when there was never a goal?
-            }
-        }
-
+        /// <summary>
+        /// Finds the next behaviours goal randomly from a list of goals
+        /// </summary>
+        /// <typeparam name="T">A sub-class of Goal (WorldObject)</typeparam>
+        /// <param name="goals">List of goals</param>
+        /// <returns>Target goal</returns>
         public T ChooseClosestFromList<T>(List<T> goals) where T : Goal {
             if (goals.Count > 0) {
                 Goal targetGoal = goals[Random.Range(0, goals.Count)];

@@ -9,7 +9,7 @@ namespace Assets.Scripts.Boid {
 
         private const int CloseBoidsCacheTime = 25;
 
-        public float SeparationFactor { get; protected set; }
+        protected float SeparationFactor;
 
         private readonly EnvironmentManager environmentManager;
         private int closeBoidsCacheCurrent = CloseBoidsCacheTime;
@@ -24,8 +24,8 @@ namespace Assets.Scripts.Boid {
         }
 
         public override Vector3 InitialVelocity() {
-            float MaxSpeed = Boid.Properties.MoveSpeed;
-            return Random.onUnitSphere * Random.Range(MaxSpeed / 2, MaxSpeed);
+            float maxSpeed = Boid.Properties.MoveSpeed;
+            return Random.onUnitSphere * Random.Range(maxSpeed / 2, maxSpeed);
         }
 
         public override Vector3 UpdateAcceleration() {
@@ -122,7 +122,6 @@ namespace Assets.Scripts.Boid {
             }
             if (averageSteeringDirection.magnitude > 0) {
                 averageSteeringDirection.Normalize();
-                averageSteeringDirection *= Boid.Properties.MoveSpeed;
                 averageSteeringDirection = Vector3.ClampMagnitude(steeringDirectionAggregator, MaxForce);
             }
             return averageSteeringDirection;
