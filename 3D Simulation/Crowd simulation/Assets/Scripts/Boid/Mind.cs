@@ -4,6 +4,10 @@ using Assets.Scripts.Environment.World.Objects;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Boid {
+
+    /// <summary>
+    /// This class gives a boid the ability to make reasoned decisions on what to do
+    /// </summary>
     public class Mind {
 
         public Goal Goal { get; private set; }
@@ -19,6 +23,10 @@ namespace Assets.Scripts.Boid {
         private readonly Need toiletNeed;
         private readonly Need danceNeed;
 
+        /// <summary>
+        /// Creates new mind object for <paramref name="boid"/>
+        /// </summary>
+        /// <param name="boid"></param>
         public Mind(Boid boid) {
             this.boid = boid;
 
@@ -31,6 +39,9 @@ namespace Assets.Scripts.Boid {
             startNewProcess(evaluatePriorities());
         }
 
+        /// <summary>
+        /// This will cause the mind to cycle execution once, running one process flow step
+        /// </summary>
         public void Think() {
             desireNeeds();
             MindState oldMindState = CurrentNeed.MindState;
@@ -42,6 +53,10 @@ namespace Assets.Scripts.Boid {
             thoughtProcess.RunCurrentProcess();
         }
 
+        /// <summary>
+        /// This will see if the current need is not the strongest desired, and change it if so
+        /// </summary>
+        /// <returns>updated current need</returns>
         private MindState evaluatePriorities() {
             if (!CurrentNeed.Satisfied) return CurrentNeed.MindState;
             //else
@@ -52,12 +67,19 @@ namespace Assets.Scripts.Boid {
 
         }
 
+        /// <summary>
+        /// increases the desire for all needs
+        /// </summary>
         private void desireNeeds() {
             drinkNeed.Desire();
             toiletNeed.Desire();
             danceNeed.Desire();
         }
 
+        /// <summary>
+        /// begins a new process flow, usually on the event of a current need change
+        /// </summary>
+        /// <param name="mindState">The new current need type</param>
         private void startNewProcess(MindState mindState) {
             switch (mindState) {
                 case MindState.Thirsty:
@@ -76,6 +98,9 @@ namespace Assets.Scripts.Boid {
 
     }
 
+    /// <summary>
+    /// This class represents a boid's need, and it's desire for it.
+    /// </summary>
     public class Need {
 
         public static int DefaultThreshold = 100;
@@ -85,7 +110,8 @@ namespace Assets.Scripts.Boid {
         public float Value { get; private set; }
         public float Max { get; private set; }
         public float Min { get; private set; }
-
+        
+        /// <returns>if this need meets it's satisfaction criteria</returns>
         public bool Satisfied {
             get { return Value < satisfactionThreshold; }
         }
@@ -93,6 +119,11 @@ namespace Assets.Scripts.Boid {
         private readonly float increment;
         private readonly float satisfactionThreshold;
 
+        /// <summary>
+        /// Create new need with:
+        /// </summary>
+        /// <param name="mindState">Need type</param>
+        /// <param name="increment">Need desire rate</param>
         public Need(MindState mindState, float increment) {
             this.Max = 5000000;
             this.Min = 0;
@@ -101,34 +132,49 @@ namespace Assets.Scripts.Boid {
             this.MindState = mindState;
         }
 
-        //Increases Need
+        /// <summary>
+        /// Increases Need desire
+        /// </summary>
         public void Desire() {
             if (Value < Max) Value += increment;
         }
 
-        //Decreases Need to minimum value
+        /// <summary>
+        /// Decreases Need to minimum value
+        /// </summary>
         public void SatisfyCompletely() {
             Value = Min;
         }
 
-        //Decreases Need to point of satisfaction
+        /// <summary>
+        /// Decreases Need to point of satisfaction
+        /// </summary>
         public void SatifyToThreshhold() {
             Value = Math.Max(Min,satisfactionThreshold-ThresholdModifier);
         }
 
-        //Decreases Need by value
+        /// <summary>
+        /// Decreases Need by <paramref name="val"/>
+        /// </summary>
+        /// <param name="val">absolute value to decrease need by</param>
         public void SatisfyByValue(int val) {
             Value-= val;
             if (Value < 0) Value = 0;
         }
 
-        //Decreases Need by percent of current value
+        /// <summary>
+        /// Decreases Need by <paramref name="perc"/>%
+        /// </summary>
+        /// <param name="perc">percentage to decrease need by</param>
         public void SatisfyByPercent(float perc)
         {
             Value = (int) (Value * perc);
         }
     }
 
+    /// <summary>
+    /// The different need types
+    /// </summary>
     public enum MindState {
         Thirsty,
         Dancey,
