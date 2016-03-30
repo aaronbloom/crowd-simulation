@@ -1,14 +1,24 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Assets.Scripts.Environment.Save {
+
+    /// <summary>
+    /// Handles File Operations
+    /// </summary>
     internal static class SystemSaveFolder {
 
-        public const string Extension = ".RAFT";
+        public const string Extension = ".RAFT"; //Raft's A File Type
         public const string WorldSaveName = "World";
 
+        /// <summary>
+        /// Writes a serialisable object to a file with name: <paramref name="preferedFileName"/>, a (num) will be appended if the file exists already
+        /// </summary>
+        /// <param name="preferedFileName">The filename you want</param>
+        /// <param name="serialisable">A Serializable Object</param>
         public static void WriteObjectToFolder(string preferedFileName, object serialisable) {
             int fileNumber = 0;
             string fileName;
@@ -27,6 +37,11 @@ namespace Assets.Scripts.Environment.Save {
             }
         }
 
+        /// <summary>
+        /// Loads a file into an object, deserialising
+        /// </summary>
+        /// <param name="fileName">The serialised and saved object you wish to deserialise</param>
+        /// <returns>the deserialised object, ready for casting</returns>
         public static object LoadFileFromFolder(string fileName) {
             fileName = fileName + Extension;
             try {
@@ -40,6 +55,11 @@ namespace Assets.Scripts.Environment.Save {
             return null;
         }
 
+        /// <summary>
+        /// Returns the amount of files in the save folder which contain the name: <paramref name="fileName"/>
+        /// </summary>
+        /// <param name="fileName">The name to count</param>
+        /// <returns>the number of files with that name</returns>
         public static int AmountOfFilesWithNameInFolder(string fileName) {
             return Directory.GetFiles(System.Environment.CurrentDirectory).Count(file => file.Contains(fileName));
         }
