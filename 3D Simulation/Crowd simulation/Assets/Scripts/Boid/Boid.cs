@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
+
+    /// <summary>
+    /// Base boid class
+    /// </summary>
     public class Boid {
 
         private static readonly string[] malePrefab = { "chr_mike", "chr_bro", "chr_beardo2" };
@@ -27,19 +31,39 @@ namespace Assets.Scripts.Boid {
 
         private Vector3 acceleration;
 
+        /// <summary>
+        /// Initialises a new boid.
+        /// </summary>
+        /// <param name="position">Position in the environment to spawn</param>
+        /// <param name="genderBias">Gender bias for this particular boid conception</param>
+        /// <returns>Boid</returns>
         public static Boid Spawn(Vector3 position, float genderBias = 0.5f) {
             position.y = 0.1f;
             return new Boid(position, genderBias);
         }
 
+        /// <summary>
+        /// Changes boid roatation to look a position.
+        /// </summary>
+        /// <param name="position">Target position</param>
         public void LookAt(Vector3 position) {
             gameObject.transform.LookAt(position);
         }
 
+        /// <summary>
+        /// Is this boids GameObject, equal to another GameObject
+        /// </summary>
+        /// <param name="other">Other GameObject</param>
+        /// <returns>If they are equal</returns>
         public bool HasGameObject(GameObject other) {
             return this.gameObject.Equals(other);
         }
 
+        /// <summary>
+        /// Boid constructor
+        /// </summary>
+        /// <param name="position">Initial position</param>
+        /// <param name="genderBias">Gender Bias</param>
         private Boid(Vector3 position, float genderBias) {
             Properties = new BoidProperties(genderBias);
             Statistics = new BoidStatistics();
@@ -56,6 +80,9 @@ namespace Assets.Scripts.Boid {
 
         }
 
+        /// <summary>
+        /// Unity Update loop
+        /// </summary>
         internal void Update() {
             mind.Think();
             if (!BootStrapper.Pause) {
@@ -65,6 +92,9 @@ namespace Assets.Scripts.Boid {
             faceTravelDirection();
         }
 
+        /// <summary>
+        /// Boid position update, based upon current behaviour
+        /// </summary>
         private void calculateNewPosition() {
             this.acceleration = calculateAcceleration(this.acceleration);
             this.Velocity = calculateVelocity(this.Velocity);
@@ -75,10 +105,20 @@ namespace Assets.Scripts.Boid {
             this.Statistics.LogDistance(Vector3.Distance(oldPosition, newPosition));
         }
 
+        /// <summary>
+        /// Find current update cycle acceleration
+        /// </summary>
+        /// <param name="acceleration">Current acceleration</param>
+        /// <returns>New acceleration</returns>
         private Vector3 calculateAcceleration(Vector3 acceleration) {
             return acceleration + this.Behaviour.UpdateAcceleration();
         }
 
+        /// <summary>
+        /// Update velocity for this boid update cycle
+        /// </summary>
+        /// <param name="velocity">Current velocity</param>
+        /// <returns>New velocity</returns>
         private Vector3 calculateVelocity(Vector3 velocity) {
             velocity *= this.Behaviour.VelocityDamping;
             velocity += acceleration;
@@ -87,10 +127,16 @@ namespace Assets.Scripts.Boid {
             return velocity;
         }
 
+        /// <summary>
+        /// Reset acceleration to zero
+        /// </summary>
         private void resetAcceleration() {
             this.acceleration = Vector3.zero;
         }
 
+        /// <summary>
+        /// Makes the boid face the current direction of travel (velocity)
+        /// </summary>
         private void faceTravelDirection() {
             if (this.Velocity != Vector3.zero) {
                 gameObject.transform.rotation = Quaternion.LookRotation(this.Velocity);

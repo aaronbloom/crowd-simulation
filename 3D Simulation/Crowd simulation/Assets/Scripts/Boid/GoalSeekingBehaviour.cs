@@ -26,7 +26,7 @@ namespace Assets.Scripts.Boid {
         }
 
         /// <summary>
-        /// Find a navigation path to a goal, along a graph.
+        /// Find a navigation path to the <paramref name="goal"/>, along the <paramref name="navGraph"/>.
         /// </summary>
         /// <param name="goal">The goal to reach</param>
         /// <param name="navGraph">The graph to navigate</param>
@@ -75,11 +75,11 @@ namespace Assets.Scripts.Boid {
         }
 
         /// <summary>
-        /// Finds the next behaviours goal randomly from a list of goals
+        /// Finds the next behaviours goal randomly from the <paramref name="goals"/> of type <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">A sub-class of Goal (WorldObject)</typeparam>
         /// <param name="goals">List of goals</param>
-        /// <returns>Target goal</returns>
+        /// <returns></returns>
         public T ChooseClosestFromList<T>(List<T> goals) where T : Goal {
             if (goals.Count > 0) {
                 Goal targetGoal = goals[Random.Range(0, goals.Count)];

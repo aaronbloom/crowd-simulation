@@ -3,10 +3,13 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Assets.Scripts.Environment.World.Objects {
+
+    /// <summary>
+    /// World object class
+    /// </summary>
     public abstract class WorldObject {
 
         private string _identifer = String.Empty;
-        private string _tag = String.Empty;
 
         public string Identifier {
             get { return _identifer; }
@@ -28,6 +31,9 @@ namespace Assets.Scripts.Environment.World.Objects {
 
         public GameObject GameObject { get; set; }
 
+        /// <summary>
+        /// World object constructor
+        /// </summary>
         protected WorldObject() {
             InitialPositionOffSet = Vector3.zero;
             InitialRotationOffSet = Quaternion.identity;
@@ -36,7 +42,11 @@ namespace Assets.Scripts.Environment.World.Objects {
             CursorHeight = new Vector3(0, 0.1f, 0);
         }
 
-        //basic withinbounds checker, simple AABB collision detection
+        /// <summary>
+        /// Basic withinbounds checker, simple AABB collision detection
+        /// </summary>
+        /// <param name="worldObject">Another world object</param>
+        /// <returns>If <paramref name="worldObject"/> is overlapping</returns>
         public bool WithinBounds(WorldObject worldObject) {
             Vector3 position = GameObject.transform.position;
             Vector3 halfSize = this.Size / 2;
@@ -53,7 +63,11 @@ namespace Assets.Scripts.Environment.World.Objects {
             return (xDifference < halfWidthSum) && (zDifference < halfLengthSum); //AABB
         }
 
-        //Return true if arg within WorldObject bounds
+        /// <summary>
+        /// Return true if <paramref name="targetPosition"/> within WorldObject bounds
+        /// </summary>
+        /// <param name="targetPosition">A position</param>
+        /// <returns>Is <paramref name="targetPosition"/> within bounds</returns>
         public bool WithinBounds(Vector3 targetPosition) {
             Vector3 position = GameObject.transform.position;
             Vector3 halfSize = this.Size / 2;
@@ -64,6 +78,11 @@ namespace Assets.Scripts.Environment.World.Objects {
             return x && z;
         }
 
+        /// <summary>
+        /// Is a <paramref name="position"/> exactly the same as this objects position
+        /// </summary>
+        /// <param name="position">Another position</param>
+        /// <returns>Are they the same position</returns>
         public bool SamePosition(Vector3 position) {
             Vector3 gameObjectPosition = GameObject.transform.position;
             gameObjectPosition.y = 0;
@@ -71,16 +90,27 @@ namespace Assets.Scripts.Environment.World.Objects {
             return gameObjectPosition == position;
         }
 
+        /// <summary>
+        /// Destroy this world objects game object
+        /// </summary>
         public void Destroy() {
             Object.Destroy(GameObject);
         }
 
+        /// <summary>
+        /// Rotate the game object to face a direction
+        /// </summary>
+        /// <param name="normal">Facing direction</param>
         public void LookTowardsNormal(Vector3 normal) {
             this.GameObject.transform.forward = normal;
             this.GameObject.transform.rotation *= this.InitialRotationOffSet;
             AdjustSizing(normal);
         }
 
+        /// <summary>
+        /// Adjust the object size based upon facing direction
+        /// </summary>
+        /// <param name="direction">Facing direction</param>
         public void AdjustSizing(Vector3 direction) {
             float dotProduct = Vector3.Dot(this.FacingDirection, direction);
 
@@ -91,14 +121,23 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.FacingDirection = direction;
         }
 
-        //A position in-front of the front of the object
+        /// <summary>
+        /// A position in-front of the front of the object
+        /// </summary>
+        /// <returns>Front of object position</returns>
         public Vector3 FrontPosition() {
             return this.GameObject.transform.position
                    + Vector3.Scale(this.FacingDirection, this.Size/2); //The front face
         }
 
-        public static WorldObject Initialise(WorldObject worldObject, Vector3 position, Vector3 wallNormal)
-        {
+        /// <summary>
+        /// Initialise the game object into the environment
+        /// </summary>
+        /// <param name="worldObject">The world object to initialise</param>
+        /// <param name="position">Position within the environment</param>
+        /// <param name="wallNormal">The facing direction</param>
+        /// <returns>Initialised WorldObject</returns>
+        public static WorldObject Initialise(WorldObject worldObject, Vector3 position, Vector3 wallNormal) {
             worldObject.InitialWallNormal = Vector3.zero;
             worldObject.GameObject = (GameObject)BootStrapper.Initialise(
                 worldObject.Identifier,
@@ -108,8 +147,11 @@ namespace Assets.Scripts.Environment.World.Objects {
             return worldObject;
         }
 
-        public void ChangePrefab(string identifer)
-        {
+        /// <summary>
+        /// Changes the GameObejct model
+        /// </summary>
+        /// <param name="identifer">Replacement GameObject identifer</param>
+        public void ChangePrefab(string identifer) {
             GameObject toDestroy = this.GameObject;
             var rotation = this.GameObject.transform.rotation;
             var position = this.GameObject.transform.position;
@@ -120,6 +162,11 @@ namespace Assets.Scripts.Environment.World.Objects {
                 rotation);
         }
 
+        /// <summary>
+        /// Creates new world object based upon identifier
+        /// </summary>
+        /// <param name="objectName">World object identifier</param>
+        /// <returns>A new instance of world object</returns>
         public static WorldObject DetermineObject(string objectName) {
             switch (objectName) {
                 case Wall.IdentifierStatic:

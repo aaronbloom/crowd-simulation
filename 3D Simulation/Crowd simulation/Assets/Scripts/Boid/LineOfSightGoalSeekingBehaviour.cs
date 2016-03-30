@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
+
+    /// <summary>
+    /// Line of sight goal seeking behaviour
+    /// </summary>
     internal class LineOfSightGoalSeekingBehaviour : GoalSeekingBehaviour {
 
         private const int MinimumDistance = 5;
