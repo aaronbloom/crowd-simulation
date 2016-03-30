@@ -5,36 +5,27 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Environment.Navigation {
+
+    /// <summary>
+    /// A class to represent a linear walk through a graph
+    /// </summary>
     internal class Path : Graph {
 
         private const float NavigationAccuracy = 0.5f;
 
-        //Constructs Path from ordered node list
+        /// <summary>
+        /// Constructs Path from ordered node list
+        /// </summary>
+        /// <param name="nodes">The nodes to be in the path</param>
         public Path(List<Node> nodes) : base(nodes) {}
 
-        public static Path Loiter(Graph graph, Node loiterNode, int maxLoiterDist, int minLoiterNodes, int maxLoiterNodes) {
-            List<Node> path = new List<Node>();
-
-            Node currNode = loiterNode;
-            path.Add(loiterNode);
-            int nodesToLoiter = Random.Range(minLoiterNodes, maxLoiterNodes);
-            for (; nodesToLoiter > 0; nodesToLoiter--) {
-                List<Node> potentialNodes = new List<Node>(currNode.TransitionsTo);
-                while (potentialNodes.Count > 0) {
-                    int index = Random.Range(0, potentialNodes.Count);
-                    Node potentialNode = potentialNodes[index];
-                    if (Node.distanceBetween(potentialNode, loiterNode) < maxLoiterDist) {
-                        path.Add(potentialNode);
-                        potentialNodes.Clear();
-                    } else {
-                        potentialNodes.RemoveAt(index);
-                    }
-                }
-            }
-
-            return new Path(path);
-        }
-
+        /// <summary>
+        /// Uses A* to navigate with a Graph (<paramref name="graph"/>), starting from <paramref name="startNode"/> ending at <paramref name="goalNode"/>
+        /// </summary>
+        /// <param name="graph">The Navigational Graph</param>
+        /// <param name="startNode">The Node to start at</param>
+        /// <param name="goalNode">The Node to end at</param>
+        /// <returns>The Subgraph of the <paramref name="graph"/> which maps a route from <paramref name="startNode"/> to <paramref name="goalNode"/></returns>
         public static Path Navigate(Graph graph, Node startNode, Node goalNode) {
 
             Dictionary<Vector3, HeuristicalNode> closedSet = new Dictionary<Vector3, HeuristicalNode>();
@@ -98,7 +89,11 @@ namespace Assets.Scripts.Environment.Navigation {
             throw new InvalidOperationException("Specified goalNode was not in the same navigational Graph as startNode");
         }
 
-        //Convert Dictionary Linkages to Linear Ordered List
+        /// <summary>
+        /// Convert Linked List of HeuristicalNodes to Linear Ordered List of Nodes
+        /// </summary>
+        /// <param name="goal">The node at the end of the linked list</param>
+        /// <returns>The entire list</returns>
         private static List<Node> convertParentageToList(HeuristicalNode goal) {
             List<Node> list = new List<Node> {goal.Node};
             for (HeuristicalNode n = goal; n != null; n = n.Parent) {
@@ -108,7 +103,11 @@ namespace Assets.Scripts.Environment.Navigation {
             return list;
         }
 
-        //Find the lowest scoring node in the provided set & dictionary.
+        /// <summary>
+        /// Find the lowest scoring node in the provided set & dictionary.
+        /// </summary>
+        /// <param name="set">List of HeuristicalNodes to scan</param>
+        /// <returns>The HeuristicalNode in the set with lowest f score</returns>
         private static HeuristicalNode lowestFScoreInSet(List<HeuristicalNode> set) {
             float lowest = float.MaxValue;
             HeuristicalNode winningNode = null;
@@ -122,7 +121,9 @@ namespace Assets.Scripts.Environment.Navigation {
             return winningNode;
         }
 
-        //Extension for Node providing storage and calculation for pathing heuristics
+        /// <summary>
+        /// Extension for Node providing storage and calculation for pathing heuristics
+        /// </summary>
         private class HeuristicalNode {
 
             public float ValueF { get; set; }
@@ -132,6 +133,10 @@ namespace Assets.Scripts.Environment.Navigation {
             private float ValueG { get; set; }
             private float ValueH { get; set; }
 
+            /// <summary>
+            /// Creates new HeuristicalNode
+            /// </summary>
+            /// <param name="node">The Node to wrap</param>
             public HeuristicalNode(Node node) {
                 ValueG = 0;
                 ValueH = 0;
@@ -140,39 +145,70 @@ namespace Assets.Scripts.Environment.Navigation {
                 Node = node;
             }
 
-            //calculates and sets heurisitics
+            /// <summary>
+            /// calculates and sets g
+            /// </summary>
+            /// <param name="parentNode">The best node leading to this one</param>
             public void SetG(HeuristicalNode parentNode) {
                 ValueG = calculateG(parentNode);
             }
+
+            /// <summary>
+            /// calcuates and sets h
+            /// </summary>
+            /// <param name="goalNode">The node we're trying to reach</param>
             public void SetH(HeuristicalNode goalNode) {
                 ValueH = calculateH(goalNode);
             }
+
+            /// <summary>
+            /// calculates and sets f
+            /// </summary>
             public void SetF() {
                 ValueF = CalculateF();
             }
 
-            //calculates G (Cost Complete)
+            /// <summary>
+            /// calculates G (Cost Complete)
+            /// </summary>
+            /// <param name="parentNode">The best node leading to this one</param>
+            /// <returns>The g value of this node</returns>
             private float calculateG(HeuristicalNode parentNode) {
                 return parentNode.ValueG + distanceBetween(this.Node, parentNode.Node);
                 //return distanceBetween(this.Node, startNode.Node);
             }
 
-            //calculates H (Cost remaining [guessed])
+            /// <summary>
+            /// calculates H (Cost remaining [guessed])
+            /// </summary>
+            /// <param name="goalNode">The node we're trying to reach</param>
+            /// <returns>The h value of this node</returns>
             private float calculateH(HeuristicalNode goalNode) {
                 return distanceBetween(this.Node, goalNode.Node);
             }
 
-            //calculates F (Total Cost)
+            /// <summary>
+            /// calculates F (Total Cost)
+            /// </summary>
+            /// <returns>The f value of this node</returns>
             public float CalculateF() {
                 return ValueG + ValueH;
             }
 
-            //Returns position Vector as string
+            /// <summary>
+            /// Returns position Vector as string
+            /// </summary>
+            /// <returns>position vector string</returns>
             public override string ToString() {
-                return Node.Position.ToString() ?? "Null Node";
+                return Node.Position.ToString();
             }
 
-            //Return linear distance between 2 nodes
+            /// <summary>
+            /// Return linear distance between 2 nodes
+            /// </summary>
+            /// <param name="a">Node A</param>
+            /// <param name="b">Node B</param>
+            /// <returns>distance between point A and B</returns>
             private static float distanceBetween(Node a, Node b) {
                 return (a.Position - b.Position).magnitude;
             }
