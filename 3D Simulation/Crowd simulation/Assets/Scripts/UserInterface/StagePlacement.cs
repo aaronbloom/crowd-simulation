@@ -5,6 +5,9 @@ using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
+    /// <summary>
+    /// Calculates the rotation and shape of stages
+    /// </summary>
     internal class StagePlacement {
 
         private const string StageMiddle = "stage/stageMiddle";
@@ -18,6 +21,9 @@ namespace Assets.Scripts.UserInterface {
         private const int Forward = 270;
         private const float WhiskerDepth = 0.1f;
 
+        /// <summary>
+        /// Recalculates stage positions
+        /// </summary>
         public static void RecalcStages() {
             List<Stage> stages = new List<Stage>(BootStrapper.EnvironmentManager.CurrentEnvironment.World.Stages);
             foreach (Stage stage in stages) {
@@ -47,6 +53,16 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// <para>Returns an int[4] representing the four sides of <paramref name="obj"/></para>
+        /// <para>Each number represents if that side is blocked by another WorldObject</para>
+        /// <para>[0]: if 1, then left of <paramref name="obj"/> is blocked</para>
+        /// <para>[1]: if 1, then right of <paramref name="obj"/> is blocked</para>
+        /// <para>[2]: if 1, then up of <paramref name="obj"/> is blocked</para>
+        /// <para>[3]: if 1, then down of <paramref name="obj"/> is blocked</para>
+        /// </summary>
+        /// <param name="obj">The WorldObject you wish to see has blocked sides</param>
+        /// <returns>int[4] representing which directions are blocked by other WorldObjects</returns>
         private static int[] directionsBlocked(WorldObject obj) {
             Vector3 position = obj.GameObject.transform.position;
             Vector3 offsetX = new Vector3(obj.Size.x/2 + WhiskerDepth, 0, 0);
@@ -61,11 +77,23 @@ namespace Assets.Scripts.UserInterface {
             return directionsBlocked;
         }
 
+        /// <summary>
+        /// Checks if a point (<paramref name="location"/>) is occupied by a WorldObject
+        /// </summary>
+        /// <param name="location">The point to check</param>
+        /// <returns>1 if true, 0 if false</returns>
         private static int IsSpaceAlreadyOccupied(Vector3 location) {
             World world = BootStrapper.EnvironmentManager.CurrentEnvironment.World;
             return world.SpaceAlreadyOccupied(location) ? 1 : 0;
         }
 
+        /// <summary>
+        /// Tries to rotate to a new pattern, fails if the pattern is the same as the existing one
+        /// </summary>
+        /// <param name="pattern">The new pattern</param>
+        /// <param name="prefab">The new prefab</param>
+        /// <param name="stage">The Stage object to rotate</param>
+        /// <param name="yVal">The new yAngle to rotate to</param>
         private static void tryUpdatePattern(string pattern, string prefab, Stage stage, int yVal) {
             if (stage.IsNewPlacementPattern(pattern)) {
                 stage.PlacementPattern = pattern;
@@ -74,11 +102,22 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Gets the Quaternion result of rotating from <paramref name="obj"/>'s current rotation to the angle of <paramref name="yVal"/>
+        /// </summary>
+        /// <param name="obj">The Object to rotate</param>
+        /// <param name="yVal">The angle to rotate to</param>
+        /// <returns>The angle to rotate by</returns>
         private static Quaternion rotateToY(WorldObject obj, int yVal) {
             return Quaternion.Euler(obj.GameObject.transform.rotation.eulerAngles.x, yVal,
                 obj.GameObject.transform.rotation.eulerAngles.z);
         }
 
+        /// <summary>
+        /// Calculates the required angle to rotate to from a pattern with 1 blocked side
+        /// </summary>
+        /// <param name="pattern">The pattern with 1 blocked side</param>
+        /// <returns>The required angle</returns>
         private static int GetDirectionOneSide(string pattern) {
             int direction = -1;
             switch (pattern) {
@@ -98,6 +137,11 @@ namespace Assets.Scripts.UserInterface {
             return direction;
         }
 
+        /// <summary>
+        /// Calculates the required angle to rotate to from a pattern with 2 blocked sides
+        /// </summary>
+        /// <param name="pattern">The pattern with 2 blocked sides</param>
+        /// <returns>The required angle</returns>
         private static int GetDirectionTwoSides(string pattern) {
             int direction = -1;
             switch (pattern) {
@@ -123,6 +167,11 @@ namespace Assets.Scripts.UserInterface {
             return direction;
         }
 
+        /// <summary>
+        /// Calculates the required angle to rotate to from a pattern with 3 blocked sides
+        /// </summary>
+        /// <param name="pattern">The pattern with 3 blocked sides</param>
+        /// <returns>The required angle</returns>
         private static int GetDirectionThreeSides(string pattern) {
             int direction = -1;
             switch (pattern) {

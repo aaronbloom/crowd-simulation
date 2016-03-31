@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.Boid {
+    /// <summary>
+    /// Holds the properties of a boid.
+    /// </summary>
     public class BoidProperties {
 
         private readonly float genderBias;
@@ -13,6 +16,10 @@ namespace Assets.Scripts.Boid {
         public float DrinkNeedRate { get { return TraitProperties.DrinkNeedRate; } }
         public float DanceNeedRate { get { return TraitProperties.DanceNeedRate; } }
 
+        /// <summary>
+        /// Creates properties for a boid, using a gender bias
+        /// </summary>
+        /// <param name="genderBias">the % chance that boids will be female</param>
         public BoidProperties(float genderBias) {
             this.genderBias = genderBias;
             Gender = getRandomGender();
@@ -20,10 +27,9 @@ namespace Assets.Scripts.Boid {
             HumanName = NameGenerator.GenerateFairlyUniqueName(Gender);
         }
 
-        public BoidProperties(Gender gender) {
-            Gender = gender;
-        }
-
+        /// <summary>
+        /// Returns a random gender
+        /// </summary>
         private Gender getRandomGender() {
             float value = Random.Range(0, 101);
             return value < genderBias ? Gender.Male : Gender.Female;
