@@ -17,11 +17,15 @@ namespace Assets.Scripts.Boid {
         private Graph graph;
         private DateTime hitLastNode;
 
+        /// <summary>
+        /// Creates a new Goal seeking behaviour
+        /// </summary>
+        /// <param name="boid"></param>
         public GoalSeekingBehaviour(Boid boid) : base(boid) {
             this.Boid = boid;
             this.MaxForce = 2.4f;
             this.VelocityDamping = 0.4f;
-            this.SeparationFactor = 0.8f;
+            this.SeparationFactor = 1.4f;
             BehaviourComplete = false;
         }
 

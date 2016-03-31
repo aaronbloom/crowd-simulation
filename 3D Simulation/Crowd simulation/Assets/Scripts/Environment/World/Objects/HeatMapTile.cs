@@ -9,6 +9,9 @@ namespace Assets.Scripts.Environment.World.Objects {
         private static readonly Quaternion initialRotationOffSet = Quaternion.Euler(90, 0, 0);
         private static readonly Vector3 initialPositionOffSet = new Vector3(0, 0.02f, 0);
 
+        /// <summary>
+        /// Creates new Heatmaptile
+        /// </summary>
         public HeatMapTile() {
             this.Identifier = IdentifierStatic;
             this.InitialRotationOffSet = initialRotationOffSet;

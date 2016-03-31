@@ -10,6 +10,10 @@ namespace Assets.Scripts.Boid {
         private const int MinimumDistance = 5;
         private const int MaximumDistance = 15;
 
+        /// <summary>
+        /// Creates a new Line of sight goal seeking behaviour
+        /// </summary>
+        /// <param name="boid">the boid who the behaviour belongs to</param>
         public LineOfSightGoalSeekingBehaviour(Boid boid) : base(boid) {}
 
         /// <summary>

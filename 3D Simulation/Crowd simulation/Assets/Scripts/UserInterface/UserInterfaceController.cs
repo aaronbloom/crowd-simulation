@@ -34,6 +34,9 @@ namespace Assets.Scripts.UserInterface {
         private UserWorldBuilder userWorldBuilder;
         private AnalysisInterface analysisInterface;
 
+        /// <summary>
+        /// Initialises UI Controller
+        /// </summary>
         void Awake() {
             mainMenu = GameObject.Find(Mainmenu);
             setupMenu = GameObject.Find(Setupmenu);
@@ -44,6 +47,9 @@ namespace Assets.Scripts.UserInterface {
             analysisInterface = new AnalysisInterface();
         }
 
+        /// <summary>
+        /// Shows start menu
+        /// </summary>
         void Start() {
             setupMainMenu();
             ShowMenu(mainMenu);
@@ -54,6 +60,9 @@ namespace Assets.Scripts.UserInterface {
             HideMenu(analysisMenu);
         }
 
+        /// <summary>
+        /// Updates UI Controller
+        /// </summary>
         void Update () {
             if (userWorldBuilder != null) {
                 userWorldBuilder.UpdateCursorPosition();
@@ -82,11 +91,17 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Updates UI to show setup
+        /// </summary>
         public void NewSimulation() {
             HideMenu(mainMenu);
             ShowMenu(setupMenu);
         }
 
+        /// <summary>
+        /// Updates UI to show world builder
+        /// </summary>
         public void StartEnvironmentBuilder() {
             EnvironmentManager.Shared().InitialiseEnvironment(setupMenu.GetComponent<MenuControlController>().EnvironmentSizeValue);
             HideMenu(setupMenu);
@@ -94,6 +109,9 @@ namespace Assets.Scripts.UserInterface {
             userWorldBuilder = new UserWorldBuilder();
         }
 
+        /// <summary>
+        /// updates UI to show demographic setup
+        /// </summary>
         public void DemographicSetup() {
             if (EnvironmentManager.Shared().CurrentEnvironment.World.IsValidWorld()) {
                 userWorldBuilder.Destroy();
@@ -103,6 +121,9 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// updates UI to show the simulation
+        /// </summary>
         public void StartSimulation() {
             HideMenu(mainMenu);
             HideMenu(setupMenu);
@@ -115,7 +136,9 @@ namespace Assets.Scripts.UserInterface {
             ShowMenu(simulationMenu);
             boidInformationWindow = new BoidInformationWindow();
         }
-
+        /// <summary>
+        /// updates UI to show analysis
+        /// </summary>
         public void StopSimulation() {
             boidInformationWindow = null;
             HideMenu(simulationMenu);
@@ -123,35 +146,58 @@ namespace Assets.Scripts.UserInterface {
             GameObject.Find(Bootstrapper).GetComponent<BootStrapper>().StopSimulation();
         }
 
+        /// <summary>
+        /// updates UI to show boids eye view
+        /// </summary>
         public void BoidsEyeView() {
             BootStrapper.CameraManager.ActivateFirstPersonCamera();
             EventSystem.current.SetSelectedGameObject(null, null);
         }
 
+        /// <summary>
+        /// displays the heatmap
+        /// </summary>
         public void GenerateHeatMap() {
             BootStrapper.BoidManager.DisplayHeatMap();
             analysisInterface.StatisticsInformationWindow.Hide();
         }
 
+        /// <summary>
+        /// Shows the drinks chart
+        /// </summary>
         public void ShowDrinksBought() {
             analysisInterface.PopulateChart();
             analysisInterface.ViewChart();
             analysisInterface.StatisticsInformationWindow.Hide();
         }
 
+        /// <summary>
+        /// Shows the analysis statisics
+        /// </summary>
         public void ShowStatistics() {
             analysisInterface.StatisticsInformationWindow.Show();
             analysisInterface.SetStatisticsValues();
         }
 
+        /// <summary>
+        /// Sets current builder object 
+        /// </summary>
+        /// <param name="objectName"></param>
         public void SetCurrentPlacementObject(string objectName) {
             userWorldBuilder.SetCurrentPlacementObject(objectName);
         }
 
+        /// <summary>
+        /// Switches to deletion tool
+        /// </summary>
         public void EnableDeletionTool() {
             userWorldBuilder.EnableDeletionTool();
         }
 
+        /// <summary>
+        /// Hides a particular menu: <paramref name="menu"/>
+        /// </summary>
+        /// <param name="menu">the menu to hide</param>
         public static void HideMenu(GameObject menu) {
             menu.SetActive(false);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
@@ -160,6 +206,10 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Shows a particular menu: <paramref name="menu"/>
+        /// </summary>
+        /// <param name="menu">the menu to show</param>
         public static void ShowMenu(GameObject menu) {
             menu.SetActive(true);
             CanvasGroup canvasGroup = menu.GetComponentInChildren<CanvasGroup>();
@@ -168,10 +218,17 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Saves the world
+        /// </summary>
         public void SaveWorld() {
             BootStrapper.EnvironmentManager.CurrentEnvironment.SaveEnvironment();
         }
 
+        /// <summary>
+        /// Loads the world
+        /// </summary>
+        /// <param name="worldFileName">the file to load</param>
         public void LoadWorld(string worldFileName) {
             HideMenu(mainMenu);
             BootStrapper.EnvironmentManager.LoadEnvironmentFromFile(worldFileName);
@@ -179,6 +236,9 @@ namespace Assets.Scripts.UserInterface {
             userWorldBuilder = new UserWorldBuilder();
         }
 
+        /// <summary>
+        /// Sets up the main menu
+        /// </summary>
         private void setupMainMenu() {
             int x = 0;
             int y = 90;

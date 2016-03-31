@@ -28,6 +28,9 @@ namespace Assets.Scripts.UserInterface {
         private Boid.Boid currentBoid;
         private GameObject selectionGameObject;
 
+        /// <summary>
+        /// Creates new boid information window
+        /// </summary>
         public BoidInformationWindow() {
             boidInformationWindow = GameObject.Find(BoidInformationPanelName);
             thirstSlider = GameObject.Find(ThirstSlider).GetComponent<Slider>();
@@ -37,6 +40,10 @@ namespace Assets.Scripts.UserInterface {
             UserInterfaceController.HideMenu(boidInformationWindow);
         }
 
+        /// <summary>
+        /// Loads a boid into the boid information window if there is one below the cursor
+        /// </summary>
+        /// <param name="screenPosition"></param>
         public void FindBoid(Vector3 screenPosition) {
             RaycastHit raycastHit;
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPosition);
@@ -53,6 +60,9 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Updates the boid information window
+        /// </summary>
         public void Update() {
             if (currentBoid != null) {
                 UpdateSelectionGameObject();
@@ -66,16 +76,28 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Sets the value of a slide in the boid information window
+        /// </summary>
+        /// <param name="slider">the slider to update</param>
+        /// <param name="value">the value</param>
         private void setSliderValue(Slider slider, float value) {
             slider.value = value;
             InterpolateColour(slider);
         }
 
+        /// <summary>
+        /// Gives a smooth colour to the slider
+        /// </summary>
+        /// <param name="slider">the slider to give a colour to</param>
         private void InterpolateColour(Slider slider) {
             Image fill = slider.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == Fill);
             fill.color = Color.Lerp(minHealthColor, maxHealthColor, slider.value/1);
         }
 
+        /// <summary>
+        /// Update the floating boid status indicator
+        /// </summary>
         private void UpdateSelectionGameObject() {
             if ((selectionGameObject == null) || (currentNeed != currentBoid.CurrentNeed)) {
                 if (selectionGameObject != null) {

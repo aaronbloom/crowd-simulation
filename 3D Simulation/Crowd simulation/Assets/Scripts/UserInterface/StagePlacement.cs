@@ -5,6 +5,7 @@ using Assets.Scripts.Environment.World.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.UserInterface {
+
     /// <summary>
     /// Calculates the rotation and shape of stages
     /// </summary>

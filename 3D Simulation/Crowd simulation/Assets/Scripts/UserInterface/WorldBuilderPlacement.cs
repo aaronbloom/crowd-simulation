@@ -6,6 +6,13 @@ using UnityEngine;
 namespace Assets.Scripts.UserInterface {
     internal class WorldBuilderPlacement : IBuilder {
 
+        /// <summary>
+        /// Sees if the cursor is over a wall and if a worldobject is placeable on it
+        /// </summary>
+        /// <param name="normal">normal</param>
+        /// <param name="position">position</param>
+        /// <param name="cursor">object to place</param>
+        /// <returns>true if placement possible</returns>
         public bool WallPlacement(out Vector3 normal, out Vector3 position, WorldObject cursor) { //is the cursor over a wall
             RaycastHit hit;
             GameObject gameObject;
@@ -73,6 +80,12 @@ namespace Assets.Scripts.UserInterface {
             return false;
         }
 
+        /// <summary>
+        /// Places a worldobject at a position with a direction
+        /// </summary>
+        /// <param name="worldObject">worldobject</param>
+        /// <param name="position">position</param>
+        /// <param name="wallNormal">direction</param>
         public void Place(WorldObject worldObject, Vector3 position, Vector3 wallNormal) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
             worldObject.InitialWallNormal = wallNormal;
@@ -81,12 +94,25 @@ namespace Assets.Scripts.UserInterface {
             StagePlacement.RecalcStages();
         }
 
+        /// <summary>
+        /// Places a worldobject at a position with a direction
+        /// </summary>
+        /// <param name="worldObject">worldobject</param>
+        /// <param name="position">position</param>
         public void Place(WorldObject worldObject, Vector3 position) {
             BootStrapper.EnvironmentManager.CurrentEnvironment.Place(worldObject, position);
             BarPlacement.RecalcBars();
             StagePlacement.RecalcStages();
         }
 
+        /// <summary>
+        /// Places a few worldobjects in a line
+        /// </summary>
+        /// <param name="start">The placement start point</param>
+        /// <param name="end">The placement end point</param>
+        /// <param name="wallNormal">the direction</param>
+        /// <param name="objectName">the object to place</param>
+        /// <returns>list of placed worldobjects</returns>
         public WorldObject[] PlaceLine(Vector3 start, Vector3 end, Vector3 wallNormal, String objectName) {
             Vector3 step;
             var xDiff = start.x - end.x;
@@ -111,6 +137,11 @@ namespace Assets.Scripts.UserInterface {
             return createdWorldObjects;
         }
 
+        /// <summary>
+        /// Places many wall worldobjects around the edge of the environment
+        /// </summary>
+        /// <param name="origin">the centre of the environment</param>
+        /// <param name="bounds">the size of the environment</param>
         public void PlacePerimeterWall(Vector3 origin, Vector3 bounds) {
             float spacing = Wall.SizeStatic.x / 2;
             for (var x = origin.x; x < bounds.x + origin.x; x+= spacing) {

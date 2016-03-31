@@ -8,6 +8,9 @@ namespace Assets.Scripts.Environment.World.Objects {
         private static readonly Quaternion initialRotationOffSet = Quaternion.Euler(90, 180, 180);
         private static readonly Vector3 initialPositionOffSet = new Vector3(0, -2, 0);
 
+        /// <summary>
+        /// Creates new ToiletMale Object
+        /// </summary>
         public ToiletMale() {
             this.Identifier = IdentifierStatic;
             this.InitialRotationOffSet = initialRotationOffSet;
@@ -16,6 +19,7 @@ namespace Assets.Scripts.Environment.World.Objects {
             this.GridPlaceable = false;
         }
 
+        /// <returns>This</returns>
         public WorldObject GetObject() {
             return this;
         }

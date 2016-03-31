@@ -16,10 +16,17 @@ namespace Assets.Scripts.UserInterface {
         private bool startedPlacement;
         private Vector3 currentPlacementNormal;
 
+        /// <summary>
+        /// Creates new World builder cursor
+        /// </summary>
         public WorldBuilderCursor() {
             worldBuilderPlacement = new WorldBuilderPlacement();
         }
 
+        /// <summary>
+        /// Updates Cursor
+        /// </summary>
+        /// <param name="groundPosition">new ground positon</param>
         public void Update(Vector3 groundPosition) {
             if (primaryCursor != null) {
                 if (secondCursor != null) { Object.Destroy(secondCursor.GameObject); }
@@ -31,6 +38,10 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Updates primary cursor
+        /// </summary>
+        /// <param name="groundPosition">new ground position</param>
         public void UpdatePrimaryCursor(Vector3 groundPosition) {
             if (primaryCursor.GameObject != null) {
                 if (!primaryCursor.GridPlaceable) { // wall placement
@@ -55,6 +66,10 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// updates ghost cursor
+        /// </summary>
+        /// <param name="groundPosition">current ground position</param>
         public void UpdateSecondaryCursor(Vector3 groundPosition) { //secondary cursor for drag to place
             secondCursor = NewCursor(WorldObject.DetermineObject(currentItem), groundPosition);
             Vector3 mousePosition = groundPosition;
@@ -87,12 +102,21 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Sets the current placement object
+        /// </summary>
+        /// <param name="objectName">new placement object</param>
+        /// <param name="groundPosition">current ground position</param>
         public void SetPlacementObject(string objectName, Vector3 groundPosition) {
             currentItem = objectName;
             DestroyCursors();
             primaryCursor = NewCursor(WorldObject.DetermineObject(objectName), groundPosition);
         }
 
+        /// <summary>
+        /// Starts placement of the current world object
+        /// </summary>
+        /// <param name="groundPosition">the position to start placement</param>
         public void StartPlaceWorldObject(Vector3 groundPosition) {
             if (currentItem != null) {
                 if (UserWorldBuilder.NotOverUI()) {
@@ -111,6 +135,10 @@ namespace Assets.Scripts.UserInterface {
             }
         }
 
+        /// <summary>
+        /// Ends placement of the current world object
+        /// </summary>
+        /// <param name="groundPosition">the position to end placement</param>
         public void EndPlaceWorldObject(Vector3 groundPosition) {
             if (currentItem != null) {
                 if (UserWorldBuilder.NotOverUI()) {
@@ -130,25 +158,46 @@ namespace Assets.Scripts.UserInterface {
             startedPlacement = false;
         }
 
+        /// <summary>
+        /// Destroy primary cursor
+        /// </summary>
         public void DestroyCursors() {
             if (primaryCursor != null) {
                 Object.Destroy(primaryCursor.GameObject);
             }
         }
-
+        
+        /// <summary>
+        /// Sets a cursor material to green
+        /// </summary>
+        /// <param name="cursor">cursor</param>
         private void SetCursorValid(WorldObject cursor) {
             cursor.GameObject.GetComponent<Renderer>().material = cursorMaterial;
         }
 
+        /// <summary>
+        /// sets a cursor material to red
+        /// </summary>
+        /// <param name="cursor">cursor</param>
         private void SetCursorInvalid(WorldObject cursor) {
             cursor.GameObject.GetComponent<Renderer>().material = invalidCursorMaterial;
         }
 
+        /// <summary>
+        /// Sets height of cursor
+        /// </summary>
+        /// <param name="cursor">cursor</param>
         private void SetCursorHeight(WorldObject cursor) {
             var position = cursor.GameObject.transform.position;
             cursor.GameObject.transform.position = new Vector3(position.x, cursor.CursorHeight.y, position.z);
         }
 
+        /// <summary>
+        /// Creates a new cursor with the given worldobject
+        /// </summary>
+        /// <param name="worldObject">the world object the cursor should look like</param>
+        /// <param name="groundPosition">the position of the cursor</param>
+        /// <returns>the new cursor object</returns>
         private WorldObject NewCursor(WorldObject worldObject, Vector3 groundPosition) {
             var cursor = WorldObject.Initialise(worldObject, groundPosition, Vector3.zero);
             SetCursorValid(cursor);

@@ -139,7 +139,10 @@ namespace Assets.Scripts.Boid {
         /// </summary>
         private void faceTravelDirection() {
             if (this.Velocity != Vector3.zero) {
-                gameObject.transform.rotation = Quaternion.LookRotation(this.Velocity);
+                //gameObject.transform.rotation = Quaternion.LookRotation(this.Velocity);
+                var targetRotation = Quaternion.LookRotation(this.Velocity);
+                var str = Mathf.Min(8f * Time.deltaTime, 1);
+                gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, targetRotation, str);
             }
         }
     }

@@ -54,8 +54,8 @@ namespace Assets.Scripts.Environment.World.Objects {
             Vector3 otherPosition = worldObject.GameObject.transform.position;
             Vector3 otherHalfSize = worldObject.Size / 2;
 
-            var xDifference = MathHelper.Difference(position.x, otherPosition.x);
-            var zDifference = MathHelper.Difference(position.z, otherPosition.z);
+            var xDifference = Mathf.Abs(position.x - otherPosition.x);
+            var zDifference = Mathf.Abs(position.z - otherPosition.z);
 
             var halfWidthSum = halfSize.x + otherHalfSize.x;
             var halfLengthSum = halfSize.z + otherHalfSize.z;

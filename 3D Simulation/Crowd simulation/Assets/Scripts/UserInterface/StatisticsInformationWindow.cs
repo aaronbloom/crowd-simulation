@@ -11,10 +11,16 @@ namespace Assets.Scripts.UserInterface {
             UserInterfaceController.HideMenu(statsInformationWindow);
         }
 
+        /// <summary>
+        /// Shows statistics information window
+        /// </summary>
         public void Show() {
             UserInterfaceController.ShowMenu(statsInformationWindow);
         }
 
+        /// <summary>
+        /// Hides statisitcs information window
+        /// </summary>
         public void Hide() {
             UserInterfaceController.HideMenu(statsInformationWindow);
         }

@@ -26,10 +26,16 @@ namespace Assets.Scripts.UserInterface {
         private BarChart barChartData;
         private GameObject chartBackgroundPlane;
 
+        /// <summary>
+        /// Creates new Analysis interface
+        /// </summary>
         public AnalysisInterface() {
             StatisticsInformationWindow = new StatisticsInformationWindow();
         }
 
+        /// <summary>
+        /// Poplates the drinks graph
+        /// </summary>
         public void PopulateChart() {
             addCharts();
             barChartData.UpdateData(
@@ -48,14 +54,23 @@ namespace Assets.Scripts.UserInterface {
             chartYText.text = BootStrapper.BoidManager.Boids.Max(boid => boid.Statistics.DrinksBought).ToString();
         }
 
+        /// <summary>
+        /// Switches camera to view the drinks chart
+        /// </summary>
         public void ViewChart() {
             BootStrapper.CameraManager.SwitchToStatsCamera(chartPosition + Vector3.left*0.4f, Vector3.forward);
         }
 
+        /// <summary>
+        /// Switches back to the normal camera
+        /// </summary>
         public void HideChart() {
             BootStrapper.CameraManager.ActivateRTSCamera();
         }
 
+        /// <summary>
+        /// Sets the values of the analysis stats screen
+        /// </summary>
         public void SetStatisticsValues() {
             Text distanceCoveredAverageText = GameObject.Find(Distancecoveredaveragetext).GetComponent<Text>();
             Text distanceCoveredMinText = GameObject.Find(Distancecoveredmintext).GetComponent<Text>();
@@ -74,6 +89,9 @@ namespace Assets.Scripts.UserInterface {
             stageViewingMinText.text = BootStrapper.BoidManager.Boids.Min(boid => boid.Statistics.StageWatchedAmount).ToString();
         }
 
+        /// <summary>
+        /// Adds the drinks chart to the bootstrapper
+        /// </summary>
         private void addCharts() {
             chartBackgroundPlane = BootStrapper.Initialise(ChartsChartbackground) as GameObject;
             barChartObject = BootStrapper.Initialise(ChartsBarchartStandard) as GameObject;
